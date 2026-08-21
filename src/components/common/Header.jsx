@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ArrowLeft, Type, BoxSelect, Layers } from 'lucide-react';
+import { ArrowLeft, Type, BoxSelect, Image as ImageIcon, Layers } from 'lucide-react';
 
 export default function Header() {
   const location = useLocation();
   const isHome = location.pathname === '/';
   const isClamp = location.pathname === '/fluidclamp';
   const isBox = location.pathname === '/fluidbox';
+  const isImage = location.pathname === '/fluidimage';
 
   return (
     <nav className="border-b border-zinc-800/60 bg-black/90 backdrop-blur-md sticky top-0 z-50">
@@ -18,16 +19,18 @@ export default function Header() {
               <Type className="w-4 h-4 text-white" />
             ) : isBox ? (
               <BoxSelect className="w-4 h-4 text-white" />
+            ) : isImage ? (
+              <ImageIcon className="w-4 h-4 text-emerald-400" />
             ) : (
               <Layers className="w-4 h-4 text-white" />
             )}
           </div>
           <div className="flex items-baseline gap-2">
             <span className="font-semibold text-base tracking-tight text-white group-hover:text-zinc-200 transition-colors">
-              {isClamp ? 'FluidClamp' : isBox ? 'FluidBox' : 'FluidTools'}
+              {isClamp ? 'FluidClamp' : isBox ? 'FluidBox' : isImage ? 'FluidImage' : 'FluidTools'}
             </span>
             <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 mono tracking-wider">
-              {isClamp ? 'v1.2' : isBox ? 'v1.0' : 'v1.0'}
+              {isClamp ? 'v1.2' : isBox ? 'v1.0' : isImage ? 'v1.0' : 'v1.0'}
             </span>
           </div>
         </Link>

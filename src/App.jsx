@@ -6,6 +6,7 @@ import ScrollToTop from './components/common/ScrollToTop';
 import Dashboard from './components/Dashboard';
 import FluidClampTool from './components/tools/FluidClampTool';
 import FluidBoxTool from './components/tools/FluidBoxTool';
+import FluidImageTool from './components/tools/FluidImageTool';
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/fluidclamp" element={<FluidClampTool />} />
           <Route path="/fluidbox" element={<FluidBoxTool />} />
+          <Route path="/fluidimage" element={<FluidImageTool />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

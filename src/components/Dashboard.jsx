@@ -1,12 +1,23 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Type, BoxSelect, Search, ArrowRight, Layers, Check } from 'lucide-react';
+import { Type, BoxSelect, Image as ImageIcon, Search, ArrowRight, Layers, Check } from 'lucide-react';
 
 export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState('all');
 
   const tools = [
+    {
+      id: 'fluidimage',
+      path: '/fluidimage',
+      name: 'FluidImage',
+      version: 'v1.0',
+      category: 'media',
+      subtitle: 'Image Format Converter & Smart Compressor',
+      renderIcon: () => <ImageIcon className="w-5 h-5 text-emerald-400" />,
+      description: 'Convert PNG, JPEG, WebP, AVIF & BMP images locally with live quality tuning, dimensional scaling, and side-by-side comparison. 100% private.',
+      tags: ['WebP / AVIF / PNG / JPG', 'Batch Converter', 'Quality Slider', 'Side-by-Side Inspector', '100% Private Browser API'],
+    },
     {
       id: 'fluidclamp',
       path: '/fluidclamp',
@@ -56,7 +67,7 @@ export default function Dashboard() {
           <span className="text-zinc-400 font-normal">Toolbox</span>
         </h1>
         <p className="text-zinc-400 text-sm sm:text-base leading-relaxed max-w-lg mx-auto">
-          Lightweight, zero-dependency developer tools to generate responsive typography, screen containers, and layout code in seconds.
+          Lightweight, zero-dependency developer tools to generate responsive typography, screen containers, image optimization, and layout code in seconds.
         </p>
 
         {/* Live Search Bar */}
@@ -67,7 +78,7 @@ export default function Dashboard() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search tools by name, tag, or keyword (e.g. clamp, container)..."
+              placeholder="Search tools by name, tag, or keyword (e.g. webp, clamp, container)..."
               className="w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors"
             />
           </div>
@@ -82,6 +93,16 @@ export default function Dashboard() {
               }`}
             >
               All Tools
+            </button>
+            <button
+              onClick={() => setFilter('media')}
+              className={`px-3 py-1 rounded-lg border font-medium transition-all ${
+                filter === 'media'
+                  ? 'bg-zinc-800 text-white border-zinc-700'
+                  : 'bg-zinc-950 text-zinc-400 border-zinc-800 hover:text-white'
+              }`}
+            >
+              Media & Images
             </button>
             <button
               onClick={() => setFilter('typography')}
