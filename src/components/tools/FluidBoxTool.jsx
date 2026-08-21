@@ -1,231 +1,588 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { triggerCopyConfetti } from '../../utils/helpers';
-import CodeModal from '../common/CodeModal';
-import { Box, Sparkles, Sliders, Monitor, Smartphone, Tablet, Laptop, Code, Check, Copy, Layers, Layout } from 'lucide-react';
+import { Smartphone, Laptop, Sliders, Eye, Check, Copy, AlertTriangle, CheckCircle2, Wand2, ArrowUpDown } from 'lucide-react';
 
 export default function FluidBoxTool() {
-  const [artboardWidth, setArtboardWidth] = useState(1512);
-  const [artboardHeight, setArtboardHeight] = useState(982);
-  const [sidePadding, setSidePadding] = useState(64);
-  const [verticalPadding, setVerticalPadding] = useState(80);
-  const [useContainerQueries, setUseContainerQueries] = useState(false);
+  // Mobile Spec State
+  const [mobScreenWidth, setMobScreenWidth] = useState(440);
+  const [mobContainerWidth, setMobContainerWidth] = useState(360);
+  const [mobSidePad, setMobSidePad] = useState(40);
+  const [mobSideUnit, setMobSideUnit] = useState('px');
+  const [mobVPad, setMobVPad] = useState(16);
+  const [mobVUnit, setMobVUnit] = useState('px');
 
+  // PC Spec State
+  const [pcScreenWidth, setPcScreenWidth] = useState(1920);
+  const [pcContainerWidth, setPcContainerWidth] = useState(1440);
+  const [pcSidePad, setPcSidePad] = useState(240);
+  const [pcSideUnit, setPcSideUnit] = useState('px');
+  const [pcVPad, setPcVPad] = useState(48);
+  const [pcVUnit, setPcVUnit] = useState('px');
+
+  // Options & Tabs
+  const [includeVPad, setIncludeVPad] = useState(true);
+  const [activeTab, setActiveTab] = useState('css');
+  const [simWidth, setSimWidth] = useState(1440);
   const [copied, setCopied] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Calculate inner container width
-  const containerWidth = useMemo(() => {
-    return Math.max(0, artboardWidth - sidePadding * 2);
-  }, [artboardWidth, sidePadding]);
-
-  // Artboard Presets
-  const presets = [
-    { name: 'iPhone 15 Pro', width: 393, height: 852, icon: Smartphone, type: 'Mobile' },
-    { name: 'iPad Pro 11"', width: 834, height: 1194, icon: Tablet, type: 'Tablet' },
-    { name: 'MacBook Pro 14"', width: 1512, height: 982, icon: Laptop, type: 'Laptop' },
-    { name: 'Desktop 4K', width: 2560, height: 1440, icon: Monitor, type: 'Desktop' },
-  ];
-
-  const applyPreset = (preset) => {
-    setArtboardWidth(preset.width);
-    setArtboardHeight(preset.height);
+  // Helper calculation
+  const getPx = (val, unit) => {
+    const num = parseFloat(val) || 0;
+    return unit === 'rem' ? num * 16 : num;
   };
 
-  const snippets = {
-    css: `.container {\n  width: 100%;\n  max-width: ${containerWidth}px;\n  margin-left: auto;\n  margin-right: auto;\n  padding-left: ${sidePadding}px;\n  padding-right: ${sidePadding}px;\n  padding-top: ${verticalPadding}px;\n  padding-bottom: ${verticalPadding}px;\n}`,
-    tailwind: `className="w-full max-w-[${containerWidth}px] mx-auto px-[${sidePadding}px] py-[${verticalPadding}px]"`,
-    scss: `$container-max-width: ${containerWidth}px;\n.layout-wrapper {\n  max-width: $container-max-width;\n  margin: 0 auto;\n  padding: ${verticalPadding}px ${sidePadding}px;\n}`,
-    bootstrap: `<div class="container-fluid px-sm-${Math.round(sidePadding / 16)} py-${Math.round(verticalPadding / 16)}">\n  <div className="mx-auto" style="max-width: ${containerWidth}px;">...</div>\n</div>`,
-    vars: `:root {\n  --container-max-w: ${containerWidth}px;\n  --container-px: ${sidePadding}px;\n  --container-py: ${verticalPadding}px;\n}`,
+  const round = (n, d = 3) => {
+    const f = Math.pow(10, d);
+    return Math.round(n * f) / f;
   };
 
-  const handleQuickCopy = () => {
-    navigator.clipboard.writeText(snippets.css);
+  // Convert inputs to numbers
+  const mobScreenPx = parseFloat(mobScreenWidth) || 440;
+  const mobContainerPx = parseFloat(mobContainerWidth) || 360;
+  const mobSidePx = getPx(mobSidePad, mobSideUnit);
+  const mobVPx = getPx(mobVPad, mobVUnit);
+
+  const pcScreenPx = parseFloat(pcScreenWidth) || 1920;
+  const pcContainerPx = parseFloat(pcContainerWidth) || 1440;
+  const pcSidePx = getPx(pcSidePad, pcSideUnit);
+  const pcVPx = getPx(pcVPad, pcVUnit);
+
+  // Gutter & Rem calculations
+  const mobTotalGutterPx = mobSidePx * 2;
+  const mobTotalGutterRem = round(mobTotalGutterPx / 16);
+  const pcMaxRem = round(pcContainerPx / 16);
+  const mobVRem = round(mobVPx / 16);
+  const pcVRem = round(pcVPx / 16);
+
+  // Geometry Overflow Hazard Check
+  const mobNeeded = mobContainerPx + mobSidePx * 2;
+  const pcNeeded = pcContainerPx + pcSidePx * 2;
+  const mobOverflow = mobNeeded - mobScreenPx;
+  const pcOverflow = pcNeeded - pcScreenPx;
+  const hasHazard = mobOverflow > 0 || pcOverflow > 0;
+
+  // Auto Fix Geometry
+  const autoFixGeometry = () => {
+    const safeMobContainer = Math.max(0, mobScreenPx - mobSidePx * 2);
+    setMobContainerWidth(safeMobContainer);
+    const safePcContainer = Math.max(0, pcScreenPx - pcSidePx * 2);
+    setPcContainerWidth(safePcContainer);
+  };
+
+  // Presets
+  const applyPresetUser = () => {
+    setMobScreenWidth(440);
+    setMobContainerWidth(360);
+    setMobSidePad(40);
+    setMobSideUnit('px');
+    setMobVPad(16);
+    setMobVUnit('px');
+    setPcScreenWidth(1920);
+    setPcContainerWidth(1440);
+    setPcSidePad(240);
+    setPcSideUnit('px');
+    setPcVPad(48);
+    setPcVUnit('px');
+  };
+
+  const applyPresetStd = () => {
+    setMobScreenWidth(390);
+    setMobContainerWidth(358);
+    setMobSidePad(16);
+    setMobSideUnit('px');
+    setMobVPad(16);
+    setMobVUnit('px');
+    setPcScreenWidth(1440);
+    setPcContainerWidth(1280);
+    setPcSidePad(80);
+    setPcSideUnit('px');
+    setPcVPad(32);
+    setPcVUnit('px');
+  };
+
+  // Generate Code Output
+  const generatedCode = useMemo(() => {
+    // 1. Custom CSS
+    let cssLines = [];
+    cssLines.push(`width: calc(100% - ${mobTotalGutterRem}rem);`);
+    cssLines.push(`max-width: ${pcMaxRem}rem;`);
+    cssLines.push(`margin-inline: auto;`);
+    if (includeVPad && mobVPx > 0) {
+      cssLines.push(`padding-block: ${mobVRem}rem;`);
+    }
+
+    let cssMQ = '';
+    if (includeVPad && pcVPx !== mobVPx) {
+      cssMQ = `\n\n@media (min-width: 1024px) {\n  .main-container {\n    padding-block: ${pcVRem}rem;\n  }\n}`;
+    }
+    const cssCode = `/* Generated from Figma: Mobile (${mobScreenPx}px / ${mobContainerPx}px) & PC (${pcScreenPx}px / ${pcContainerPx}px) */\n.main-container {\n  ${cssLines.join('\n  ')}\n}${cssMQ}`;
+
+    // 2. Tailwind CSS
+    let twClasses = [];
+    twClasses.push(`w-[calc(100%-${mobTotalGutterRem}rem)]`);
+    twClasses.push(`max-w-[${pcMaxRem}rem]`);
+    twClasses.push(`mx-auto`);
+    if (includeVPad && mobVPx > 0) {
+      twClasses.push(`py-[${mobVRem}rem]`);
+    }
+    if (includeVPad && pcVPx !== mobVPx) {
+      twClasses.push(`lg:py-[${pcVRem}rem]`);
+    }
+    const twCode = `<!-- Tailwind CSS Container -->\n<div class="${twClasses.join(' ')}">\n  <!-- Your fluid content here -->\n</div>`;
+
+    // 3. Bootstrap 5
+    const bsCode = `/* Bootstrap 5 Custom Fluid Container */\n.main-container {\n  ${cssLines.join('\n  ')}\n}${cssMQ}\n\n<!-- HTML Markup -->\n<div class="main-container">\n  <!-- Your content here -->\n</div>`;
+
+    if (activeTab === 'tw') return twCode;
+    if (activeTab === 'bs') return bsCode;
+    return cssCode;
+  }, [
+    activeTab,
+    mobTotalGutterRem,
+    pcMaxRem,
+    includeVPad,
+    mobVPx,
+    mobVRem,
+    pcVPx,
+    pcVRem,
+    mobScreenPx,
+    mobContainerPx,
+    pcScreenPx,
+    pcContainerPx,
+  ]);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(generatedCode);
     setCopied(true);
     triggerCopyConfetti();
-    setTimeout(() => setCopied(false), 2000);
+    setTimeout(() => setCopied(false), 1600);
   };
+
+  // Simulator Calculations
+  let currentSidePx = mobSidePx;
+  let currentVPx = mobVPx;
+  let deviceTag = '📱 Mobile';
+  if (simWidth >= 1024) {
+    currentSidePx = pcSidePx;
+    currentVPx = pcVPx;
+    deviceTag = '💻 Desktop';
+  } else if (simWidth >= 768) {
+    const factor = (simWidth - 768) / (1024 - 768);
+    currentSidePx = Math.round(mobSidePx + (pcSidePx - mobSidePx) * factor);
+    currentVPx = Math.round(mobVPx + (pcVPx - mobVPx) * factor);
+    deviceTag = '📑 Tablet';
+  }
+
+  const actualContainerW = Math.min(simWidth, pcContainerPx);
+  const containerPct = simWidth > 0 ? Math.max(15, Math.min(100, (actualContainerW / simWidth) * 100)) : 100;
 
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
-      {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-amber-950/40 via-zinc-950 to-zinc-950 border border-amber-800/40 rounded-3xl p-6 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 blur-[90px] pointer-events-none rounded-full"></div>
-        <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-950 border border-amber-800/60 text-xs text-amber-300 font-mono">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>Figma Artboard Container Calculator</span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            FluidBox Container & Artboard Studio
-          </h1>
-          <p className="text-sm text-zinc-400 max-w-xl">
-            Proportional layout containers and Figma artboard side/vertical padding code generator.
-          </p>
+      {/* Header Section */}
+      <header className="text-center space-y-3">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-950/40 border border-amber-800/60 text-xs text-amber-300 mb-1">
+          <i className="fa-brands fa-figma text-amber-400"></i>
+          <span>Figma Design-to-Code Container Generator</span>
         </div>
+        <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-white">
+          Fluid Layout <code className="mono text-emerald-300 font-semibold">Container</code>
+        </h1>
+        <p className="text-zinc-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
+          Control side & top/bottom padding for Mobile and PC to generate responsive <code class="mono text-zinc-200">calc(100% - X)</code> container CSS.
+        </p>
+      </header>
 
-        <div className="flex items-center gap-3 shrink-0">
-          <button
-            onClick={handleQuickCopy}
-            className="px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 hover:bg-zinc-800 text-xs font-semibold text-white flex items-center gap-2 transition-all shadow-md active:scale-95"
-          >
-            {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4 text-zinc-300" />}
-            <span>{copied ? 'Copied!' : 'Copy CSS'}</span>
-          </button>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs flex items-center gap-2 transition-all shadow-lg shadow-amber-500/20 active:scale-95"
-          >
-            <Code className="w-4 h-4" />
-            <span>Export Code</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Main Grid: Controls + Visual Artboard Simulator */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Left Column: Sliders & Figma Presets (5 Cols) */}
-        <div className="lg:col-span-5 space-y-6">
-          <div className="glass-panel rounded-2xl p-6 space-y-6">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-2">
-              <Sliders className="w-4 h-4 text-amber-400" /> Artboard & Padding Controls
+      {/* Main Generator Card */}
+      <div className="bg-zinc-950/90 border border-zinc-800 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl space-y-8">
+        {/* Controls Section */}
+        <div>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
+              <Sliders className="w-4 h-4 text-emerald-400" /> Responsive Figma & Padding Controls
             </h2>
 
-            {/* Presets Grid */}
-            <div className="space-y-2">
-              <span className="text-xs font-semibold text-zinc-400">Figma Artboard Presets</span>
-              <div className="grid grid-cols-2 gap-2">
-                {presets.map((p) => {
-                  const IconComp = p.icon;
-                  const isSelected = artboardWidth === p.width;
-                  return (
-                    <button
-                      key={p.name}
-                      onClick={() => applyPreset(p)}
-                      className={`p-3 rounded-xl border text-left flex items-center gap-3 transition-all ${
-                        isSelected
-                          ? 'bg-amber-950/60 border-amber-500 text-white shadow-md'
-                          : 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-900'
-                      }`}
-                    >
-                      <IconComp className={`w-4 h-4 ${isSelected ? 'text-amber-400' : 'text-zinc-500'}`} />
-                      <div>
-                        <div className="text-xs font-bold">{p.name}</div>
-                        <div className="text-[10px] mono text-zinc-500">{p.width} × {p.height}</div>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Side Padding Slider */}
-            <div className="space-y-2 pt-2 border-t border-zinc-800/80">
-              <div className="flex justify-between items-center text-xs">
-                <span className="font-semibold text-zinc-300">Side Padding (X-Axis):</span>
-                <span className="mono text-amber-400 font-bold">{sidePadding}px</span>
-              </div>
-              <input
-                type="range"
-                min="0"
-                max="300"
-                value={sidePadding}
-                onChange={(e) => setSidePadding(Number(e.target.value))}
-                className="w-full cursor-pointer accent-amber-400"
-              />
-            </div>
-
-            {/* Vertical Padding Slider */}
-            <div className="space-y-2">
-              <div className="flex justify-between items-center text-xs">
-                <span className="font-semibold text-zinc-300">Vertical Padding (Y-Axis):</span>
-                <span className="mono text-amber-400 font-bold">{verticalPadding}px</span>
-              </div>
-              <input
-                type="range"
-                min="0"
-                max="200"
-                value={verticalPadding}
-                onChange={(e) => setVerticalPadding(Number(e.target.value))}
-                className="w-full cursor-pointer accent-amber-400"
-              />
-            </div>
-
-            {/* Output Summary Card */}
-            <div className="p-4 rounded-xl bg-black border border-zinc-800 space-y-2 text-xs font-mono">
-              <div className="flex justify-between text-zinc-400">
-                <span>Artboard Width:</span>
-                <span className="text-white">{artboardWidth}px</span>
-              </div>
-              <div className="flex justify-between text-amber-300 font-bold">
-                <span>Max Container Width:</span>
-                <span>{containerWidth}px</span>
-              </div>
-              <div className="flex justify-between text-zinc-400">
-                <span>Side Gaps (Total):</span>
-                <span className="text-white">{sidePadding * 2}px</span>
-              </div>
+            {/* Quick Presets */}
+            <div className="flex items-center gap-2 text-xs">
+              <button
+                type="button"
+                onClick={applyPresetUser}
+                className="px-2.5 py-1 rounded-lg bg-emerald-950/90 text-emerald-300 border border-emerald-800/80 text-[11px] mono font-medium hover:bg-emerald-900 transition-colors"
+              >
+                440px / 360px (40px Side)
+              </button>
+              <button
+                type="button"
+                onClick={applyPresetStd}
+                className="px-2.5 py-1 rounded-lg bg-zinc-900 text-zinc-400 border border-zinc-800 text-[11px] mono hover:text-white transition-colors"
+              >
+                390px / 358px (16px Side)
+              </button>
             </div>
           </div>
-        </div>
 
-        {/* Right Column: Visual Layout Canvas Simulator (7 Cols) */}
-        <div className="lg:col-span-7 space-y-6">
-          {/* Visual Device Frame */}
-          <div className="glass-panel rounded-2xl p-6 space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-2">
-                <Layout className="w-4 h-4 text-amber-400" /> Interactive Artboard Simulator
-              </h2>
-              <span className="text-xs mono font-bold text-amber-400">
-                Inner Content Width: {containerWidth}px
-              </span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {/* 1. Mobile Viewport Spec */}
+            <div className="p-4 rounded-xl bg-black border border-zinc-800/90 space-y-3.5">
+              <div className="flex items-center justify-between text-xs font-semibold text-white border-b border-zinc-900 pb-2">
+                <span className="flex items-center gap-1.5">
+                  <Smartphone className="w-4 h-4 text-emerald-400" /> Mobile Viewport Spec
+                </span>
+                <span className="mono text-[11px] px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-800/60">
+                  Total Gutter: {mobTotalGutterRem}rem ({mobTotalGutterPx}px)
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                <div>
+                  <label className="text-[11px] text-zinc-400 block mb-1">Figma Screen</label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      value={mobScreenWidth}
+                      onChange={(e) => setMobScreenWidth(e.target.value)}
+                      className="mono w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-2.5 pr-7 py-1.5 text-white text-xs focus:outline-none focus:border-emerald-500"
+                    />
+                    <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-zinc-500 mono">px</span>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[11px] text-zinc-400 block mb-1">Container</label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      value={mobContainerWidth}
+                      onChange={(e) => setMobContainerWidth(e.target.value)}
+                      className="mono w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-2.5 pr-7 py-1.5 text-white text-xs focus:outline-none focus:border-emerald-500"
+                    />
+                    <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-zinc-500 mono">px</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Mobile Paddings Row */}
+              <div className="grid grid-cols-2 gap-3 text-xs pt-1 border-t border-zinc-900/80">
+                <div>
+                  <label className="text-[11px] text-emerald-400 font-medium block mb-1">Mobile Side Pad</label>
+                  <div className="relative flex items-center">
+                    <input
+                      type="number"
+                      value={mobSidePad}
+                      onChange={(e) => setMobSidePad(e.target.value)}
+                      className="mono w-full bg-zinc-900 border border-emerald-500/70 rounded-lg pl-2.5 pr-14 py-1.5 text-white text-xs focus:outline-none focus:ring-1 focus:ring-emerald-400"
+                    />
+                    <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center">
+                      <select
+                        value={mobSideUnit}
+                        onChange={(e) => setMobSideUnit(e.target.value)}
+                        className="dec-select pl-1.5 pr-3 py-0.5 rounded text-[10px] text-emerald-300 mono cursor-pointer bg-zinc-950 border border-zinc-800"
+                      >
+                        <option value="px">px</option>
+                        <option value="rem">rem</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[11px] text-amber-400 font-medium block mb-1">Mobile Top/Bottom</label>
+                  <div className="relative flex items-center">
+                    <input
+                      type="number"
+                      value={mobVPad}
+                      onChange={(e) => setMobVPad(e.target.value)}
+                      className="mono w-full bg-zinc-900 border border-amber-500/70 rounded-lg pl-2.5 pr-14 py-1.5 text-white text-xs focus:outline-none focus:ring-1 focus:ring-amber-400"
+                    />
+                    <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center">
+                      <select
+                        value={mobVUnit}
+                        onChange={(e) => setMobVUnit(e.target.value)}
+                        className="dec-select pl-1.5 pr-3 py-0.5 rounded text-[10px] text-amber-300 mono cursor-pointer bg-zinc-950 border border-zinc-800"
+                      >
+                        <option value="px">px</option>
+                        <option value="rem">rem</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            {/* Visual Canvas Representation */}
-            <div className="w-full bg-black rounded-2xl border border-zinc-800/90 p-6 flex flex-col items-center justify-center min-h-[320px] relative overflow-hidden">
-              {/* Simulated Artboard Outer Box */}
-              <div className="w-full max-w-xl bg-zinc-950 border border-zinc-800 rounded-xl p-4 space-y-4 shadow-2xl relative">
-                {/* Padding Visualization Highlight */}
-                <div
-                  className="border-2 border-dashed border-amber-500/50 bg-amber-500/10 rounded-lg transition-all duration-150 flex flex-col items-center justify-center text-center p-6 space-y-3"
-                  style={{
-                    paddingLeft: `${Math.min(60, sidePadding / 4)}px`,
-                    paddingRight: `${Math.min(60, sidePadding / 4)}px`,
-                    paddingTop: `${Math.min(40, verticalPadding / 4)}px`,
-                    paddingBottom: `${Math.min(40, verticalPadding / 4)}px`,
-                  }}
-                >
-                  <div className="w-full bg-zinc-900 border border-zinc-700/80 rounded-md p-4 space-y-2">
-                    <div className="h-3 w-3/4 bg-amber-400/80 rounded animate-pulse"></div>
-                    <div className="h-2 w-1/2 bg-zinc-700 rounded"></div>
-                    <div className="h-2 w-5/6 bg-zinc-800 rounded"></div>
+            {/* 2. PC / Desktop Viewport Spec */}
+            <div className="p-4 rounded-xl bg-black border border-zinc-800/90 space-y-3.5">
+              <div className="flex items-center justify-between text-xs font-semibold text-white border-b border-zinc-900 pb-2">
+                <span className="flex items-center gap-1.5">
+                  <Laptop className="w-4 h-4 text-emerald-400" /> PC / Desktop Viewport Spec
+                </span>
+                <span className="mono text-[11px] px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-800/60">
+                  Max: {pcContainerPx}px ({pcMaxRem}rem)
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                <div>
+                  <label className="text-[11px] text-zinc-400 block mb-1">Figma Screen</label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      value={pcScreenWidth}
+                      onChange={(e) => setPcScreenWidth(e.target.value)}
+                      className="mono w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-2.5 pr-7 py-1.5 text-white text-xs focus:outline-none focus:border-emerald-500"
+                    />
+                    <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-zinc-500 mono">px</span>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[11px] text-zinc-400 block mb-1">Container Max</label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      value={pcContainerWidth}
+                      onChange={(e) => setPcContainerWidth(e.target.value)}
+                      className="mono w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-2.5 pr-7 py-1.5 text-white text-xs focus:outline-none focus:border-emerald-500"
+                    />
+                    <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-zinc-500 mono">px</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* PC Paddings Row */}
+              <div className="grid grid-cols-2 gap-3 text-xs pt-1 border-t border-zinc-900/80">
+                <div>
+                  <label className="text-[11px] text-emerald-400 font-medium block mb-1">PC Side Pad</label>
+                  <div className="relative flex items-center">
+                    <input
+                      type="number"
+                      value={pcSidePad}
+                      onChange={(e) => setPcSidePad(e.target.value)}
+                      className="mono w-full bg-zinc-900 border border-emerald-500/70 rounded-lg pl-2.5 pr-14 py-1.5 text-white text-xs focus:outline-none focus:ring-1 focus:ring-emerald-400"
+                    />
+                    <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center">
+                      <select
+                        value={pcSideUnit}
+                        onChange={(e) => setPcSideUnit(e.target.value)}
+                        className="dec-select pl-1.5 pr-3 py-0.5 rounded text-[10px] text-emerald-300 mono cursor-pointer bg-zinc-950 border border-zinc-800"
+                      >
+                        <option value="px">px</option>
+                        <option value="rem">rem</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[11px] text-amber-400 font-medium block mb-1">PC Top/Bottom</label>
+                  <div className="relative flex items-center">
+                    <input
+                      type="number"
+                      value={pcVPad}
+                      onChange={(e) => setPcVPad(e.target.value)}
+                      className="mono w-full bg-zinc-900 border border-amber-500/70 rounded-lg pl-2.5 pr-14 py-1.5 text-white text-xs focus:outline-none focus:ring-1 focus:ring-amber-400"
+                    />
+                    <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center">
+                      <select
+                        value={pcVUnit}
+                        onChange={(e) => setPcVUnit(e.target.value)}
+                        className="dec-select pl-1.5 pr-3 py-0.5 rounded text-[10px] text-amber-300 mono cursor-pointer bg-zinc-950 border border-zinc-800"
+                      >
+                        <option value="px">px</option>
+                        <option value="rem">rem</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Quick CSS Output Snippet */}
-          <div className="glass-panel rounded-2xl p-6 space-y-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-              <Code className="w-4 h-4" /> Generated Tailwind CSS Class
+          {/* Geometry Ergonomics & Safety Warning Banner */}
+          {hasHazard ? (
+            <div className="mt-4 p-4 rounded-xl border border-rose-800/80 bg-rose-950/40 text-rose-200 transition-all duration-200">
+              <div className="flex items-start gap-3">
+                <AlertTriangle className="w-5 h-5 text-rose-400 mt-0.5 shrink-0" />
+                <div className="flex-1 text-xs space-y-1.5">
+                  <div className="font-semibold text-sm text-rose-300">⚠️ Screen Overflow Geometry Hazard</div>
+                  <div className="text-zinc-300 leading-relaxed">
+                    {mobOverflow > 0 && pcOverflow > 0
+                      ? `Both Mobile & PC containers overflow screen limits! Mobile exceeds by ${mobOverflow}px, and PC exceeds by ${pcOverflow}px.`
+                      : mobOverflow > 0
+                      ? `Mobile container (${mobContainerPx}px) + side padding (${mobSidePx * 2}px) = ${mobNeeded}px, which exceeds screen (${mobScreenPx}px) by ${mobOverflow}px!`
+                      : `PC container (${pcContainerPx}px) + side padding (${pcSidePx * 2}px) = ${pcNeeded}px, which exceeds screen (${pcScreenPx}px) by ${pcOverflow}px!`}
+                  </div>
+                  <div className="pt-1.5">
+                    <button
+                      type="button"
+                      onClick={autoFixGeometry}
+                      className="px-3 py-1.5 rounded-lg bg-rose-900/80 hover:bg-rose-800 text-rose-100 font-semibold text-xs border border-rose-700 shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <Wand2 className="w-3.5 h-3.5 text-xs" />
+                      <span>Auto-Fix Container & Padding Geometry</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="mt-4 p-4 rounded-xl border border-emerald-800/60 bg-emerald-950/30 text-emerald-200 transition-all duration-200">
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-emerald-400 mt-0.5 shrink-0" />
+                <div className="flex-1 text-xs space-y-1">
+                  <div className="font-semibold text-sm text-emerald-300">✅ Ergonomic & Responsive Geometry Approved</div>
+                  <div className="text-zinc-300 leading-relaxed">
+                    All side paddings and container widths fit cleanly inside Mobile ({mobScreenPx}px) and PC ({pcScreenPx}px) viewports with safe side gutters.
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Interactive Screen Simulator */}
+        <div className="space-y-3 pt-2">
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-1.5">
+              <Eye className="w-4 h-4 text-zinc-400" /> Interactive Viewport Simulator
             </span>
-            <pre className="bg-black border border-zinc-800 rounded-xl p-4 font-mono text-xs sm:text-sm text-amber-300 overflow-x-auto select-all shadow-inner">
-              <code>{snippets.tailwind}</code>
-            </pre>
+            <div className="flex items-center gap-2">
+              <span className="text-zinc-500">Screen Width:</span>
+              <span className="mono font-semibold px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-white">
+                {Math.round(simWidth)}px ({deviceTag})
+              </span>
+            </div>
+          </div>
+
+          <input
+            type="range"
+            min="320"
+            max="2560"
+            value={simWidth}
+            onChange={(e) => setSimWidth(Number(e.target.value))}
+            className="w-full cursor-pointer accent-emerald-400"
+          />
+
+          {/* Live Screen Frame */}
+          <div className="bg-black border border-zinc-800 rounded-xl h-56 flex flex-col items-center justify-center overflow-hidden p-4 relative">
+            <div
+              className="h-40 bg-zinc-950 border border-zinc-800 rounded-lg p-2 flex flex-col items-center justify-between relative transition-all duration-150"
+              style={{ width: `${containerPct}%` }}
+            >
+              <div className="w-full border-b border-zinc-900 pb-1.5 flex items-center justify-between text-[10px] text-zinc-600 font-mono px-2">
+                <span>
+                  viewport-width: <strong className="text-zinc-300">{Math.round(simWidth)}px</strong>
+                </span>
+                <span className="text-emerald-400 font-semibold">
+                  Container Width: {Math.round(actualContainerW)}px
+                </span>
+              </div>
+
+              {/* Inner Container Bounds */}
+              <div className="w-full h-full my-auto rounded border-2 border-dashed border-emerald-500/60 bg-emerald-950/20 relative flex flex-col justify-between transition-all duration-150 overflow-hidden">
+                {/* Top Padding Strip */}
+                {includeVPad && currentVPx > 0 && (
+                  <div className="w-full bg-amber-500/15 border-b border-amber-500/30 flex items-center justify-center text-[9px] font-mono text-amber-300 py-0.5">
+                    <span>Top Padding: {Math.round(currentVPx)}px</span>
+                  </div>
+                )}
+
+                {/* Side Strips & Center Area */}
+                <div className="flex-1 w-full flex items-stretch">
+                  <div className="bg-emerald-500/15 border-r border-emerald-500/40 flex items-center justify-center text-[9px] font-mono text-emerald-300 px-1">
+                    <span>{Math.round(currentSidePx)}px</span>
+                  </div>
+
+                  <div className="flex-1 bg-zinc-900/90 border border-zinc-800 m-1 rounded flex flex-col items-center justify-center p-2 text-center shadow-inner">
+                    <div className="text-xs font-semibold text-white tracking-tight flex items-center gap-1.5">
+                      <i className="fa-solid fa-cube text-emerald-400"></i>
+                      <span>Main Container Content Area</span>
+                    </div>
+                    <div className="text-[11px] mono text-zinc-400 mt-1">
+                      width: calc(100% - {mobTotalGutterRem}rem) • max-width: {pcMaxRem}rem
+                    </div>
+                  </div>
+
+                  <div className="bg-emerald-500/15 border-l border-emerald-500/40 flex items-center justify-center text-[9px] font-mono text-emerald-300 px-1">
+                    <span>{Math.round(currentSidePx)}px</span>
+                  </div>
+                </div>
+
+                {/* Bottom Padding Strip */}
+                {includeVPad && currentVPx > 0 && (
+                  <div className="w-full bg-amber-500/15 border-t border-amber-500/30 flex items-center justify-center text-[9px] font-mono text-amber-300 py-0.5">
+                    <span>Bottom Padding: {Math.round(currentVPx)}px</span>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Code Modal */}
-      <CodeModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        codeSnippets={snippets}
-        title="FluidBox Container Code Export"
-      />
+        {/* Output Code Section */}
+        <div className="space-y-3 pt-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-800 pb-2.5">
+            <div className="flex gap-2">
+              <button
+                onClick={() => setActiveTab('css')}
+                className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all flex items-center gap-1.5 ${
+                  activeTab === 'css'
+                    ? 'bg-zinc-800 text-white'
+                    : 'bg-transparent text-zinc-400 hover:text-zinc-200'
+                }`}
+              >
+                Custom CSS
+              </button>
+              <button
+                onClick={() => setActiveTab('tw')}
+                className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all flex items-center gap-1.5 ${
+                  activeTab === 'tw'
+                    ? 'bg-zinc-800 text-white'
+                    : 'bg-transparent text-zinc-400 hover:text-zinc-200'
+                }`}
+              >
+                Tailwind CSS
+              </button>
+              <button
+                onClick={() => setActiveTab('bs')}
+                className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all flex items-center gap-1.5 ${
+                  activeTab === 'bs'
+                    ? 'bg-zinc-800 text-white'
+                    : 'bg-transparent text-zinc-400 hover:text-zinc-200'
+                }`}
+              >
+                Bootstrap 5
+              </button>
+            </div>
+
+            {/* Vertical Padding Toggle */}
+            <label className="flex items-center cursor-pointer gap-2 bg-zinc-900/90 border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-lg transition-all">
+              <ArrowUpDown className="w-3.5 h-3.5 text-amber-400" />
+              <span className="text-xs font-medium text-zinc-300">
+                {includeVPad ? `Include Top/Bottom Padding (${mobVPx}px / ${pcVPx}px)` : 'Exclude Top/Bottom Padding'}
+              </span>
+              <input
+                type="checkbox"
+                checked={includeVPad}
+                onChange={(e) => setIncludeVPad(e.target.checked)}
+                className="ml-1 rounded bg-zinc-800 border-zinc-700 text-emerald-500 focus:ring-emerald-500"
+              />
+            </label>
+          </div>
+
+          {/* Code Viewer */}
+          <pre className="mono bg-black border border-zinc-800 rounded-xl p-4 text-xs sm:text-sm leading-relaxed overflow-x-auto min-h-[110px] text-zinc-200 select-all whitespace-pre-wrap">
+            <code>{generatedCode}</code>
+          </pre>
+
+          <button
+            onClick={handleCopy}
+            className="w-full bg-zinc-100 hover:bg-white active:bg-zinc-200 text-black transition-all text-xs sm:text-sm font-semibold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg cursor-pointer"
+          >
+            {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+            <span>{copied ? 'Copied to Clipboard!' : 'Copy Generated Code'}</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
