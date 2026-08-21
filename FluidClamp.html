@@ -1,0 +1,1221 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FluidClamp — Minimalist Fluid Typography & Clamp Analyzer</title>
+    <link rel="icon" type="image/svg+xml" href="./icon/fluidclamp.svg?v=2" />
+    <link rel="shortcut icon" href="./icon/fluidclamp.svg?v=2" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome 6 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background-color: #000000;
+        color: #f4f4f5;
+      }
+      .mono {
+        font-family: "JetBrains Mono", monospace;
+      }
+      /* Minimalist Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #000000;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #27272a;
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #3f3f46;
+      }
+      /* Minimalist Slider Styling */
+      input[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        height: 4px;
+        background: #18181b;
+        border-radius: 9999px;
+        outline: none;
+        border: 1px solid #27272a;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #ffffff;
+        cursor: pointer;
+        border: 2px solid #000000;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        transition:
+          transform 0.15s ease,
+          background-color 0.15s ease;
+      }
+      input[type="range"]::-webkit-slider-thumb:hover {
+        transform: scale(1.15);
+      }
+      input[type="range"]::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #ffffff;
+        cursor: pointer;
+        border: 2px solid #000000;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        transition:
+          transform 0.15s ease,
+          background-color 0.15s ease;
+      }
+      input[type="range"]::-moz-range-thumb:hover {
+        transform: scale(1.15);
+      }
+      /* Grid background subtlety */
+      .bg-grid-pattern {
+        background-image: radial-gradient(
+          rgba(255, 255, 255, 0.07) 1px,
+          transparent 1px
+        );
+        background-size: 24px 24px;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-black text-zinc-100 min-h-screen flex flex-col antialiased selection:bg-zinc-800 selection:text-white relative"
+  >
+    <!-- Subtle Ambient Glow -->
+    <div
+      class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-64 bg-emerald-950/20 blur-[140px] pointer-events-none rounded-full"
+    ></div>
+
+    <!-- Navigation Bar -->
+    <nav
+      class="border-b border-zinc-800/80 bg-black/80 backdrop-blur-md sticky top-0 z-50"
+    >
+      <div
+        class="max-w-4xl mx-auto px-4 py-4 sm:px-6 h-auto flex items-center justify-between"
+      >
+        <!-- Logo & Title -->
+        <div class="flex items-center gap-3">
+          <div class="relative group">
+            <img
+              src="icon/fluidclamp.svg"
+              alt="FluidClamp Logo"
+              class="w-14 h-14 rounded-lg shadow-sm border border-zinc-800 transition-transform duration-300 group-hover:scale-105"
+            />
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span class="font-bold text-lg tracking-tight text-white"
+              >FluidClamp</span
+            >
+            <span
+              class="text-xs px-2 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-800/60 text-emerald-300 mono"
+              >v1.2</span
+            >
+          </div>
+        </div>
+
+        <!-- Navbar Links & FontAwesome Icons -->
+        <div class="flex items-center gap-2 text-sm">
+          <a
+            href="index.html"
+            title="FluidTools Suite Dashboard"
+            class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-xs transition-colors"
+          >
+            <img src="icon/fuildtool.svg" alt="FluidTools" class="w-4 h-4 rounded" />
+            <span class="font-medium">Dashboard</span>
+          </a>
+          <a
+            href="FluidBox.html"
+            title="Switch to FluidBox Tool"
+            class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-xs transition-colors"
+          >
+            <img src="icon/fluidbox.svg" alt="FluidBox" class="w-4 h-4 rounded" />
+            <span class="hidden sm:inline font-medium">FluidBox</span>
+          </a>
+          <a
+            href="https://fontawesome.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Font Awesome Included"
+            class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-xs transition-colors"
+          >
+            <i class="fa-brands fa-font-awesome text-white"></i>
+            <span class="hidden sm:inline font-medium">Font Awesome</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main
+      class="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 bg-grid-pattern"
+    >
+      <!-- Header Section -->
+      <header class="mb-10 text-center space-y-3">
+        <div
+          class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-950/40 border border-emerald-800/60 text-xs text-emerald-300 mb-1"
+        >
+          <i class="fa-solid fa-sparkles text-amber-400"></i>
+          <span>Fluid Typography Generator</span>
+        </div>
+        <h1 class="text-3xl sm:text-5xl font-bold tracking-tight text-white">
+          Responsive CSS
+          <code class="mono text-emerald-300 font-semibold">clamp()</code>
+        </h1>
+        <p
+          class="text-zinc-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed"
+        >
+          Create minimal, seamless font size scaling across mobile and desktop
+          viewports without media queries.
+        </p>
+      </header>
+
+      <!-- Presets Bar -->
+      <section class="mb-6">
+        <div class="flex items-center justify-between mb-3">
+          <span
+            class="text-xs font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-1.5"
+          >
+            <i class="fa-solid fa-sliders text-zinc-400"></i> Quick Presets
+          </span>
+          <span class="text-xs text-zinc-500"
+            >Click to apply configuration</span
+          >
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+          <button
+            type="button"
+            class="preset-btn px-3.5 py-2.5 rounded-xl bg-zinc-950 hover:bg-zinc-900 border border-zinc-800 text-left transition-all hover:border-zinc-700 group"
+            data-preset="hero"
+          >
+            <div
+              class="flex items-center justify-between text-xs font-medium text-white group-hover:text-zinc-200"
+            >
+              <span
+                ><i class="fa-solid fa-heading text-zinc-500 mr-1.5"></i>Hero
+                Title</span
+              >
+            </div>
+            <div class="text-[11px] mono text-zinc-500 mt-1">
+              32px &rarr; 64px
+            </div>
+          </button>
+
+          <button
+            type="button"
+            class="preset-btn px-3.5 py-2.5 rounded-xl bg-zinc-950 hover:bg-zinc-900 border border-zinc-800 text-left transition-all hover:border-zinc-700 group"
+            data-preset="h2"
+          >
+            <div
+              class="flex items-center justify-between text-xs font-medium text-white group-hover:text-zinc-200"
+            >
+              <span
+                ><i class="fa-solid fa-align-left text-zinc-500 mr-1.5"></i
+                >Section H2</span
+              >
+            </div>
+            <div class="text-[11px] mono text-zinc-500 mt-1">
+              24px &rarr; 40px
+            </div>
+          </button>
+
+          <button
+            type="button"
+            class="preset-btn px-3.5 py-2.5 rounded-xl bg-zinc-950 hover:bg-zinc-900 border border-zinc-800 text-left transition-all hover:border-zinc-700 group"
+            data-preset="sub"
+          >
+            <div
+              class="flex items-center justify-between text-xs font-medium text-white group-hover:text-zinc-200"
+            >
+              <span
+                ><i class="fa-solid fa-text-height text-zinc-500 mr-1.5"></i
+                >Subtitle</span
+              >
+            </div>
+            <div class="text-[11px] mono text-zinc-500 mt-1">
+              16px &rarr; 24px
+            </div>
+          </button>
+
+          <button
+            type="button"
+            class="preset-btn px-3.5 py-2.5 rounded-xl bg-zinc-950 hover:bg-zinc-900 border border-zinc-800 text-left transition-all hover:border-zinc-700 group"
+            data-preset="body"
+          >
+            <div
+              class="flex items-center justify-between text-xs font-medium text-white group-hover:text-zinc-200"
+            >
+              <span
+                ><i class="fa-solid fa-paragraph text-zinc-500 mr-1.5"></i>Body
+                Text</span
+              >
+            </div>
+            <div class="text-[11px] mono text-zinc-500 mt-1">
+              14px &rarr; 18px
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <!-- Generator Container Card -->
+      <div
+        class="bg-zinc-950/90 border border-zinc-800 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl space-y-8"
+      >
+        <!-- Input Parameters Grid -->
+        <div>
+          <h2
+            class="text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-4 flex items-center gap-1.5"
+          >
+            <i class="fa-solid fa-pen-ruler text-zinc-400"></i> Viewport & Font
+            Parameters
+          </h2>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <!-- Min Width -->
+            <div>
+              <label
+                class="block text-xs font-medium text-zinc-400 mb-1.5 flex items-center justify-between"
+              >
+                <span>Min Viewport</span>
+                <i
+                  class="fa-solid fa-mobile-screen text-[10px] text-zinc-600"
+                ></i>
+              </label>
+              <div class="relative">
+                <input
+                  id="minW"
+                  type="number"
+                  value="320"
+                  min="0"
+                  class="mono w-full bg-black border border-zinc-800 focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none transition-colors"
+                />
+                <span
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs mono"
+                  >px</span
+                >
+              </div>
+            </div>
+
+            <!-- Mobile Width -->
+            <div>
+              <label
+                class="block text-xs font-medium text-zinc-400 mb-1.5 flex items-center justify-between"
+              >
+                <span>Mobile Viewport</span>
+                <i class="fa-solid fa-mobile text-[10px] text-zinc-600"></i>
+              </label>
+              <div class="relative">
+                <input
+                  id="mobileW"
+                  type="number"
+                  value="440"
+                  min="0"
+                  class="mono w-full bg-black border border-zinc-800 focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none transition-colors"
+                />
+                <span
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs mono"
+                  >px</span
+                >
+              </div>
+            </div>
+
+            <!-- Mobile Font -->
+            <div>
+              <label
+                class="block text-xs font-semibold text-white mb-1.5 flex items-center justify-between"
+              >
+                <span>Mobile Size</span>
+                <i class="fa-solid fa-font text-[10px] text-zinc-400"></i>
+              </label>
+              <div class="relative">
+                <input
+                  id="mobileFont"
+                  type="number"
+                  value="16"
+                  min="0"
+                  step="0.1"
+                  class="mono w-full bg-black border border-zinc-700 focus:border-white focus:ring-1 focus:ring-white rounded-xl px-3.5 py-2.5 text-sm font-medium text-white focus:outline-none transition-colors"
+                />
+                <span
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 text-xs mono"
+                  >px</span
+                >
+              </div>
+            </div>
+
+            <!-- Desktop Font -->
+            <div>
+              <label
+                class="block text-xs font-semibold text-white mb-1.5 flex items-center justify-between"
+              >
+                <span>Desktop Size</span>
+                <i class="fa-solid fa-font text-[12px] text-zinc-400"></i>
+              </label>
+              <div class="relative">
+                <input
+                  id="desktopFont"
+                  type="number"
+                  value="24"
+                  min="0"
+                  step="0.1"
+                  class="mono w-full bg-black border border-zinc-700 focus:border-white focus:ring-1 focus:ring-white rounded-xl px-3.5 py-2.5 text-sm font-medium text-white focus:outline-none transition-colors"
+                />
+                <span
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 text-xs mono"
+                  >px</span
+                >
+              </div>
+            </div>
+
+            <!-- Desktop Width -->
+            <div>
+              <label
+                class="block text-xs font-medium text-zinc-400 mb-1.5 flex items-center justify-between"
+              >
+                <span>Desktop Viewport</span>
+                <i class="fa-solid fa-laptop text-[10px] text-zinc-600"></i>
+              </label>
+              <div class="relative">
+                <input
+                  id="desktopW"
+                  type="number"
+                  value="1440"
+                  min="0"
+                  class="mono w-full bg-black border border-zinc-800 focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none transition-colors"
+                />
+                <span
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs mono"
+                  >px</span
+                >
+              </div>
+            </div>
+
+            <!-- Max Width -->
+            <div>
+              <label
+                class="block text-xs font-medium text-zinc-400 mb-1.5 flex items-center justify-between"
+              >
+                <span>Max Viewport</span>
+                <i class="fa-solid fa-desktop text-[10px] text-zinc-600"></i>
+              </label>
+              <div class="relative">
+                <input
+                  id="maxW"
+                  type="number"
+                  value="1920"
+                  min="0"
+                  class="mono w-full bg-black border border-zinc-800 focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none transition-colors"
+                />
+                <span
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs mono"
+                  >px</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Live Preview Slider -->
+        <div class="space-y-3 pt-2">
+          <div class="flex items-center justify-between text-xs">
+            <span
+              class="font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-1.5"
+            >
+              <i class="fa-solid fa-eye text-zinc-400"></i> Interactive Live
+              Preview
+            </span>
+            <div class="flex items-center gap-2">
+              <span class="text-zinc-500">Current Width:</span>
+              <span
+                id="previewWidthLabel"
+                class="mono font-semibold px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-white"
+                >440px</span
+              >
+              <span class="text-zinc-500 ml-1">Computed Font:</span>
+              <span
+                id="previewFontLabel"
+                class="mono font-semibold px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-300"
+                >16.0px</span
+              >
+            </div>
+          </div>
+
+          <input
+            id="previewSlider"
+            type="range"
+            min="320"
+            max="1920"
+            value="440"
+            class="w-full cursor-pointer"
+          />
+
+          <div
+            class="bg-black border border-zinc-800 rounded-xl h-36 flex items-center justify-center overflow-hidden p-6 relative group"
+          >
+            <div
+              class="absolute top-3 left-3 text-[10px] uppercase tracking-widest text-zinc-600 font-mono"
+            >
+              Simulated Viewport Output
+            </div>
+            <span
+              id="previewText"
+              class="font-semibold text-center text-white tracking-tight leading-tight transition-all duration-75 px-4 select-none"
+            >
+              Scales smoothly across viewports
+            </span>
+          </div>
+
+          <!-- Fluid Growth Curve Visualizer -->
+          <div class="bg-black border border-zinc-800 rounded-xl p-4 space-y-2 mt-4">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-chart-line text-zinc-400"></i> Fluid Growth Curve Visualizer
+              </span>
+              <span class="text-[11px] text-zinc-500 font-mono flex items-center gap-3">
+                <span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-white"></span> Curve Path</span>
+                <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> Active Slider</span>
+              </span>
+            </div>
+
+            <div class="w-full h-44 relative">
+              <svg id="growthCurveSvg" viewBox="0 0 600 180" class="w-full h-full overflow-visible">
+                <defs>
+                  <linearGradient id="curveGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15" />
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.0" />
+                  </linearGradient>
+                </defs>
+
+                <!-- Grid Background Lines -->
+                <line x1="50" y1="25" x2="560" y2="25" stroke="#27272a" stroke-dasharray="3,3" stroke-width="1" />
+                <line x1="50" y1="90" x2="560" y2="90" stroke="#18181b" stroke-dasharray="3,3" stroke-width="1" />
+                <line x1="50" y1="155" x2="560" y2="155" stroke="#27272a" stroke-width="1" />
+                <line x1="50" y1="25" x2="50" y2="155" stroke="#27272a" stroke-width="1" />
+                <line x1="560" y1="25" x2="560" y2="155" stroke="#27272a" stroke-width="1" />
+
+                <!-- Area Under Curve -->
+                <path id="curveArea" fill="url(#curveGradient)" d="" />
+
+                <!-- Main Curve Line -->
+                <path id="curvePath" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" d="" />
+
+                <!-- Mobile Point Marker & Label -->
+                <g id="mobileMarkerGroup">
+                  <line id="mobileVLine" x1="0" y1="25" x2="0" y2="155" stroke="#3f3f46" stroke-dasharray="2,2" stroke-width="1" />
+                  <circle id="mobilePoint" cx="0" cy="0" r="4.5" fill="#000000" stroke="#a1a1aa" stroke-width="2" />
+                  <text id="mobileLabel" x="0" y="0" fill="#a1a1aa" font-size="10" font-family="JetBrains Mono" text-anchor="middle" stroke="#000000" stroke-width="3" paint-order="stroke fill" stroke-linejoin="round">Mobile</text>
+                </g>
+
+                <!-- Desktop Point Marker & Label -->
+                <g id="desktopMarkerGroup">
+                  <line id="desktopVLine" x1="0" y1="25" x2="0" y2="155" stroke="#3f3f46" stroke-dasharray="2,2" stroke-width="1" />
+                  <circle id="desktopPoint" cx="0" cy="0" r="4.5" fill="#000000" stroke="#a1a1aa" stroke-width="2" />
+                  <text id="desktopLabel" x="0" y="0" fill="#a1a1aa" font-size="10" font-family="JetBrains Mono" text-anchor="middle" stroke="#000000" stroke-width="3" paint-order="stroke fill" stroke-linejoin="round">Desktop</text>
+                </g>
+
+                <!-- Active Slider Tracker Line & Point -->
+                <g id="activeTrackerGroup">
+                  <line id="trackerVLine" x1="0" y1="25" x2="0" y2="155" stroke="#34d399" stroke-dasharray="3,3" stroke-width="1.5" />
+                  <circle id="trackerPointBg" cx="0" cy="0" r="6" fill="#10b981" opacity="0.3" />
+                  <circle id="trackerPoint" cx="0" cy="0" r="4" fill="#34d399" stroke="#000000" stroke-width="1.5" />
+                  <text id="trackerText" x="0" y="0" fill="#34d399" font-size="10" font-weight="600" font-family="JetBrains Mono" text-anchor="middle" stroke="#000000" stroke-width="3" paint-order="stroke fill" stroke-linejoin="round">440px</text>
+                </g>
+
+                <!-- Y Axis Text Labels (Font Sizes) -->
+                <text id="yLabelHigh" x="42" y="28" fill="#71717a" font-size="9" font-family="JetBrains Mono" text-anchor="end">24px</text>
+                <text id="yLabelLow" x="42" y="158" fill="#71717a" font-size="9" font-family="JetBrains Mono" text-anchor="end">16px</text>
+
+                <!-- X Axis Text Labels (Viewports) -->
+                <text id="xLabelMin" x="50" y="172" fill="#71717a" font-size="9" font-family="JetBrains Mono" text-anchor="start">320px</text>
+                <text id="xLabelMax" x="560" y="172" fill="#71717a" font-size="9" font-family="JetBrains Mono" text-anchor="end">1920px</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Generated Output Section -->
+        <div class="space-y-3 pt-2">
+          <div
+            class="flex items-center justify-between border-b border-zinc-800 pb-2"
+          >
+            <div class="flex gap-2">
+              <button
+                data-tab="css"
+                class="tab-btn active px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-zinc-800 text-white transition-all flex items-center gap-1.5"
+              >
+                <i class="fa-brands fa-css3-alt text-zinc-300"></i> CSS
+              </button>
+              <button
+                data-tab="tw"
+                class="tab-btn px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-transparent hover:bg-zinc-900 text-zinc-400 hover:text-zinc-200 transition-all flex items-center gap-1.5"
+              >
+                <i class="fa-solid fa-wind text-zinc-400"></i> Tailwind CSS
+              </button>
+              <button
+                data-tab="bs"
+                class="tab-btn px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-transparent hover:bg-zinc-900 text-zinc-400 hover:text-zinc-200 transition-all flex items-center gap-1.5"
+              >
+                <i class="fa-brands fa-bootstrap text-zinc-400"></i> Bootstrap
+              </button>
+            </div>
+
+            <button
+              id="resetBtn"
+              class="text-xs text-zinc-500 hover:text-zinc-300 transition-colors flex items-center gap-1"
+              title="Reset defaults"
+            >
+              <i class="fa-solid fa-rotate-left"></i> Reset
+            </button>
+          </div>
+
+          <!-- Code Box -->
+          <div
+            id="output"
+            class="mono bg-black border border-zinc-800 rounded-xl p-4 text-xs sm:text-sm leading-relaxed overflow-x-auto min-h-[76px] text-zinc-200 select-all whitespace-pre-wrap"
+          ></div>
+
+          <!-- Copy Button -->
+          <button
+            id="copyBtn"
+            class="w-full bg-zinc-100 hover:bg-white active:bg-zinc-200 text-black transition-all text-xs sm:text-sm font-semibold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg"
+          >
+            <i class="fa-regular fa-copy text-sm" id="copyIcon"></i>
+            <span id="copyText">Copy Generated Code</span>
+          </button>
+        </div>
+
+        <!-- Viewport Size Checks Grid -->
+        <div class="pt-2">
+          <span
+            class="text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-3 block flex items-center gap-1.5"
+          >
+            <i class="fa-solid fa-chart-simple text-zinc-400"></i> Calculated
+            Font Extrapolation
+          </span>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-black border border-zinc-800 rounded-xl p-3">
+              <div
+                class="text-[10px] uppercase tracking-wider text-zinc-500 mb-1 flex items-center justify-between"
+              >
+                <span>Min Bound</span>
+                <i class="fa-solid fa-angle-left text-[10px]"></i>
+              </div>
+              <div
+                id="chk-min"
+                class="mono text-xs sm:text-sm text-zinc-300"
+              ></div>
+            </div>
+
+            <div class="bg-black border border-zinc-700/80 rounded-xl p-3">
+              <div
+                class="text-[10px] uppercase tracking-wider text-zinc-400 mb-1 flex items-center justify-between"
+              >
+                <span>Mobile Point</span>
+                <i class="fa-solid fa-mobile-screen-button text-[10px]"></i>
+              </div>
+              <div
+                id="chk-mobile"
+                class="mono text-xs sm:text-sm text-white font-medium"
+              ></div>
+            </div>
+
+            <div class="bg-black border border-zinc-700/80 rounded-xl p-3">
+              <div
+                class="text-[10px] uppercase tracking-wider text-zinc-400 mb-1 flex items-center justify-between"
+              >
+                <span>Desktop Point</span>
+                <i class="fa-solid fa-laptop text-[10px]"></i>
+              </div>
+              <div
+                id="chk-desktop"
+                class="mono text-xs sm:text-sm text-white font-medium"
+              ></div>
+            </div>
+
+            <div class="bg-black border border-zinc-800 rounded-xl p-3">
+              <div
+                class="text-[10px] uppercase tracking-wider text-zinc-500 mb-1 flex items-center justify-between"
+              >
+                <span>Max Bound</span>
+                <i class="fa-solid fa-angle-right text-[10px]"></i>
+              </div>
+              <div
+                id="chk-max"
+                class="mono text-xs sm:text-sm text-zinc-300"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Typography Accessibility & Ergonomics Validator -->
+        <div class="pt-6 border-t border-zinc-800/80 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 class="text-xs font-semibold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
+                <i class="fa-solid fa-shield-halved text-zinc-300"></i> Typography Accessibility & Ergonomics Audit
+              </h3>
+              <p class="text-[11px] text-zinc-500 mt-0.5">Evaluates WCAG 2.1 legibility standards & responsive visual hierarchy suitability</p>
+            </div>
+            
+            <!-- Target Element Selector -->
+            <div class="flex items-center gap-1 overflow-x-auto py-1" id="elemTypeSelector">
+              <button type="button" data-elem="p" class="elem-btn active text-[11px] px-2.5 py-1 rounded-lg border border-zinc-700 bg-zinc-800 text-white font-medium transition-all">Body (p)</button>
+              <button type="button" data-elem="h1" class="elem-btn text-[11px] px-2.5 py-1 rounded-lg border border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white transition-all font-medium">H1 Hero</button>
+              <button type="button" data-elem="h2" class="elem-btn text-[11px] px-2.5 py-1 rounded-lg border border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white transition-all font-medium">H2 Title</button>
+              <button type="button" data-elem="h3" class="elem-btn text-[11px] px-2.5 py-1 rounded-lg border border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white transition-all font-medium">H3 Subtitle</button>
+              <button type="button" data-elem="button" class="elem-btn text-[11px] px-2.5 py-1 rounded-lg border border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white transition-all font-medium">Button</button>
+              <button type="button" data-elem="small" class="elem-btn text-[11px] px-2.5 py-1 rounded-lg border border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white transition-all font-medium">Small</button>
+            </div>
+          </div>
+
+          <!-- Overall Audit Status Banner -->
+          <div id="auditBanner" class="p-3.5 rounded-xl border flex items-start gap-3 transition-colors bg-emerald-950/40 border-emerald-800/80 text-emerald-300">
+            <i id="auditIcon" class="fa-solid fa-circle-check text-base mt-0.5 text-emerald-400"></i>
+            <div class="flex-1 text-xs">
+              <div id="auditTitle" class="font-semibold text-sm mb-0.5">WCAG Compliant & Legible</div>
+              <div id="auditDesc" class="text-zinc-300 leading-relaxed">Font sizes meet WCAG readability standards and provide optimal ergonomics across all devices.</div>
+            </div>
+          </div>
+
+          <!-- Device Viewport Audit Breakdown Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <!-- Mobile Card -->
+            <div class="bg-black border border-zinc-800 rounded-xl p-3.5 space-y-1.5">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-zinc-400 font-medium flex items-center gap-1.5"><i class="fa-solid fa-mobile-screen text-zinc-500"></i> Mobile (320-440px)</span>
+                <span id="audit-badge-mobile" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-950 text-emerald-300 border border-emerald-800/80 flex items-center gap-1">
+                  <i class="fa-solid fa-check text-[9px]"></i> Pass
+                </span>
+              </div>
+              <div id="audit-val-mobile" class="mono text-xs font-semibold text-white">16.0px</div>
+              <div id="audit-msg-mobile" class="text-[11px] text-zinc-400 leading-snug">Excellent body legibility. Prevents iOS Safari form zoom.</div>
+            </div>
+
+            <!-- Tablet Card -->
+            <div class="bg-black border border-zinc-800 rounded-xl p-3.5 space-y-1.5">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-zinc-400 font-medium flex items-center gap-1.5"><i class="fa-solid fa-tablet-screen-button text-zinc-500"></i> Tablet (768px)</span>
+                <span id="audit-badge-tablet" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-950 text-emerald-300 border border-emerald-800/80 flex items-center gap-1">
+                  <i class="fa-solid fa-check text-[9px]"></i> Pass
+                </span>
+              </div>
+              <div id="audit-val-tablet" class="mono text-xs font-semibold text-white">19.4px</div>
+              <div id="audit-msg-tablet" class="text-[11px] text-zinc-400 leading-snug">Comfortable scaling transition on medium screens.</div>
+            </div>
+
+            <!-- Desktop Card -->
+            <div class="bg-black border border-zinc-800 rounded-xl p-3.5 space-y-1.5">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-zinc-400 font-medium flex items-center gap-1.5"><i class="fa-solid fa-desktop text-zinc-500"></i> Desktop (1440px+)</span>
+                <span id="audit-badge-desktop" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-950 text-emerald-300 border border-emerald-800/80 flex items-center gap-1">
+                  <i class="fa-solid fa-check text-[9px]"></i> Pass
+                </span>
+              </div>
+              <div id="audit-val-desktop" class="mono text-xs font-semibold text-white">24.0px</div>
+              <div id="audit-msg-desktop" class="text-[11px] text-zinc-400 leading-snug">Clear desktop proportions and strong visual weight.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Minimalist Footer -->
+    <footer
+      class="border-t border-zinc-800/80 bg-black py-6 text-center text-xs text-zinc-500 mt-12"
+    >
+      <div
+        class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3"
+      >
+        <div class="flex items-center gap-2">
+          <img src="icon/fluidclamp.svg" alt="FluidClamp" class="w-4 h-4 opacity-70" />
+          <span>FluidClamp Minimalist Fluid Clamp & Analyzer Tool</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="text-zinc-600"
+            >Built with Vanilla HTML & Font Awesome</span
+          >
+        </div>
+      </div>
+    </footer>
+
+    <!-- Logic JavaScript -->
+    <script>
+      let activeTab = "css";
+      let current = { css: "", tw: "", bs: "", fontAt: () => 16 };
+
+      const presets = {
+        hero: { mobileFont: 32, desktopFont: 64, mobileW: 440, desktopW: 1440 },
+        h2: { mobileFont: 24, desktopFont: 40, mobileW: 440, desktopW: 1440 },
+        sub: { mobileFont: 16, desktopFont: 24, mobileW: 440, desktopW: 1440 },
+        body: { mobileFont: 14, desktopFont: 18, mobileW: 440, desktopW: 1440 },
+      };
+
+      function round(n, d = 4) {
+        const f = Math.pow(10, d);
+        return Math.round(n * f) / f;
+      }
+
+      function compute() {
+        const minW = parseFloat(document.getElementById("minW").value) || 0;
+        const mobileW =
+          parseFloat(document.getElementById("mobileW").value) || 0;
+        const desktopW =
+          parseFloat(document.getElementById("desktopW").value) || 0;
+        const maxW = parseFloat(document.getElementById("maxW").value) || 0;
+        const mobileFont =
+          parseFloat(document.getElementById("mobileFont").value) || 0;
+        const desktopFont =
+          parseFloat(document.getElementById("desktopFont").value) || 0;
+
+        const widthDiff = desktopW - mobileW;
+        if (widthDiff === 0) {
+          document.getElementById("output").innerHTML =
+            '<span class="text-red-400 font-sans flex items-center gap-1.5"><i class="fa-solid fa-circle-exclamation"></i> Mobile and Desktop widths must be different.</span>';
+          return;
+        }
+
+        const slope = (desktopFont - mobileFont) / widthDiff;
+        const intercept = mobileFont - slope * mobileW;
+        const fontAt = (w) => slope * w + intercept;
+
+        const fontAtMin = fontAt(minW);
+        const fontAtMax = fontAt(maxW);
+
+        const lowPx = Math.min(fontAtMin, fontAtMax);
+        const highPx = Math.max(fontAtMin, fontAtMax);
+
+        const lowRem = round(lowPx / 16, 4);
+        const highRem = round(highPx / 16, 4);
+        const interceptRem = round(intercept / 16, 4);
+        const vwCoef = round(slope * 100, 4);
+
+        const preferred = `calc(${interceptRem}rem + ${vwCoef}vw)`;
+
+        current.css = `font-size: clamp(${lowRem}rem, ${preferred}, ${highRem}rem);`;
+        current.tw = `text-[clamp(${lowRem}rem,${preferred.replace(/\s/g, "")},${highRem}rem)]`;
+        current.bs = `.fs-custom {\n  font-size: clamp(${lowRem}rem, ${preferred}, ${highRem}rem);\n}`;
+
+        current.cssHtml = `<span class="text-zinc-400">font-size:</span> <span class="text-white font-semibold">clamp</span>(<span class="text-zinc-300">${lowRem}rem</span>, ${preferred}, <span class="text-zinc-300">${highRem}rem</span>);`;
+        current.twHtml = `<span class="text-zinc-400">text-</span>[clamp(${lowRem}rem,${preferred.replace(/\s/g, "")},${highRem}rem)]`;
+        current.bsHtml = `.<span class="text-zinc-300">fs-custom</span> {\n  <span class="text-zinc-400">font-size:</span> <span class="text-white font-semibold">clamp</span>(<span class="text-zinc-300">${lowRem}rem</span>, ${preferred}, <span class="text-zinc-300">${highRem}rem</span>);\n}`;
+
+        document.getElementById("chk-min").innerHTML =
+          `${round(fontAtMin, 1)}px <span class="text-zinc-600">/</span> ${round(fontAtMin / 16, 3)}rem`;
+        document.getElementById("chk-mobile").innerHTML =
+          `${mobileFont}px <span class="text-zinc-500">/</span> ${round(mobileFont / 16, 3)}rem`;
+        document.getElementById("chk-desktop").innerHTML =
+          `${desktopFont}px <span class="text-zinc-500">/</span> ${round(desktopFont / 16, 3)}rem`;
+        document.getElementById("chk-max").innerHTML =
+          `${round(fontAtMax, 1)}px <span class="text-zinc-600">/</span> ${round(fontAtMax / 16, 3)}rem`;
+
+        current.fontAt = fontAt;
+
+        const slider = document.getElementById("previewSlider");
+        slider.min = minW;
+        slider.max = maxW;
+        if (+slider.value < minW || +slider.value > maxW) {
+          slider.value = mobileW;
+        }
+
+        renderOutput();
+        updatePreview();
+        validateAccessibility(mobileFont, desktopFont, fontAt);
+      }
+
+      function renderOutput() {
+        const map = {
+          css: current.cssHtml,
+          tw: current.twHtml,
+          bs: current.bsHtml,
+        };
+        document.getElementById("output").innerHTML = map[activeTab] || "";
+      }
+
+      function updatePreview() {
+        const w =
+          parseFloat(document.getElementById("previewSlider").value) || 440;
+        document.getElementById("previewWidthLabel").textContent =
+          `${Math.round(w)}px`;
+        const fontPx = current.fontAt ? current.fontAt(w) : 16;
+        const safePx = Math.max(0, fontPx);
+        document.getElementById("previewFontLabel").textContent =
+          `${round(safePx, 1)}px`;
+        document.getElementById("previewText").style.fontSize = `${safePx}px`;
+
+        renderGrowthCurve(w);
+      }
+
+      function renderGrowthCurve(currentSliderW) {
+        const minW = parseFloat(document.getElementById("minW").value) || 320;
+        const mobileW = parseFloat(document.getElementById("mobileW").value) || 440;
+        const desktopW = parseFloat(document.getElementById("desktopW").value) || 1440;
+        const maxW = parseFloat(document.getElementById("maxW").value) || 1920;
+        const mobileFont = parseFloat(document.getElementById("mobileFont").value) || 16;
+        const desktopFont = parseFloat(document.getElementById("desktopFont").value) || 24;
+
+        if (!current.fontAt) return;
+        const fontAt = current.fontAt;
+        const sliderW = currentSliderW || (parseFloat(document.getElementById("previewSlider").value) || mobileW);
+
+        const xMin = 50;
+        const xMax = 560;
+        const graphW = xMax - xMin;
+
+        const yMin = 155;
+        const yMax = 25;
+        const graphH = yMin - yMax;
+
+        const mapX = (w) => {
+          if (maxW === minW) return xMin;
+          const pct = Math.max(0, Math.min(1, (w - minW) / (maxW - minW)));
+          return xMin + pct * graphW;
+        };
+
+        const fontMin = fontAt(minW);
+        const fontMax = fontAt(maxW);
+        const lowPx = Math.min(fontMin, fontMax, mobileFont, desktopFont);
+        const highPx = Math.max(fontMin, fontMax, mobileFont, desktopFont);
+        const rangeY = (highPx - lowPx) || 1;
+
+        const mapY = (f) => {
+          const pct = Math.max(0, Math.min(1, (f - lowPx) / rangeY));
+          return yMin - pct * graphH;
+        };
+
+        // Key Points
+        const ptMin = { x: mapX(minW), y: mapY(fontMin) };
+        const ptMob = { x: mapX(mobileW), y: mapY(mobileFont) };
+        const ptDesk = { x: mapX(desktopW), y: mapY(desktopFont) };
+        const ptMax = { x: mapX(maxW), y: mapY(fontMax) };
+
+        // SVG Path String
+        const dPath = `M ${ptMin.x},${ptMin.y} L ${ptMob.x},${ptMob.y} L ${ptDesk.x},${ptDesk.y} L ${ptMax.x},${ptMax.y}`;
+        const dArea = `M ${ptMin.x},${yMin} L ${ptMin.x},${ptMin.y} L ${ptMob.x},${ptMob.y} L ${ptDesk.x},${ptDesk.y} L ${ptMax.x},${ptMax.y} L ${ptMax.x},${yMin} Z`;
+
+        const pathEl = document.getElementById("curvePath");
+        const areaEl = document.getElementById("curveArea");
+        if (pathEl) pathEl.setAttribute("d", dPath);
+        if (areaEl) areaEl.setAttribute("d", dArea);
+
+        // Mobile Marker
+        const mobVLine = document.getElementById("mobileVLine");
+        const mobPoint = document.getElementById("mobilePoint");
+        const mobLabel = document.getElementById("mobileLabel");
+        let mobLabelAbove = (ptMob.y - 12) >= yMax;
+        let mobLabelY = mobLabelAbove ? ptMob.y - 10 : ptMob.y + 16;
+        if (mobVLine) {
+          mobVLine.setAttribute("x1", ptMob.x);
+          mobVLine.setAttribute("x2", ptMob.x);
+        }
+        if (mobPoint) {
+          mobPoint.setAttribute("cx", ptMob.x);
+          mobPoint.setAttribute("cy", ptMob.y);
+        }
+        if (mobLabel) {
+          mobLabel.setAttribute("x", ptMob.x);
+          mobLabel.setAttribute("y", mobLabelY);
+          mobLabel.textContent = `Mobile ${mobileFont}px`;
+        }
+
+        // Desktop Marker
+        const deskVLine = document.getElementById("desktopVLine");
+        const deskPoint = document.getElementById("desktopPoint");
+        const deskLabel = document.getElementById("desktopLabel");
+        let deskLabelAbove = (ptDesk.y - 12) >= yMax;
+        let deskLabelY = deskLabelAbove ? ptDesk.y - 10 : ptDesk.y + 16;
+        if (deskVLine) {
+          deskVLine.setAttribute("x1", ptDesk.x);
+          deskVLine.setAttribute("x2", ptDesk.x);
+        }
+        if (deskPoint) {
+          deskPoint.setAttribute("cx", ptDesk.x);
+          deskPoint.setAttribute("cy", ptDesk.y);
+        }
+        if (deskLabel) {
+          deskLabel.setAttribute("x", ptDesk.x);
+          deskLabel.setAttribute("y", deskLabelY);
+          deskLabel.textContent = `Desktop ${desktopFont}px`;
+        }
+
+        // Active Tracker with Smart Collision Avoidance
+        const trackerPx = fontAt(sliderW);
+        const trackerX = mapX(sliderW);
+        const trackerY = mapY(trackerPx);
+
+        let trackerYPos = trackerY - 12;
+        if (Math.abs(trackerX - ptMob.x) < 50) {
+          trackerYPos = mobLabelAbove ? ptMob.y + 16 : ptMob.y - 12;
+        } else if (Math.abs(trackerX - ptDesk.x) < 50) {
+          trackerYPos = deskLabelAbove ? ptDesk.y + 16 : ptDesk.y - 12;
+        } else {
+          if (trackerY - 12 < yMax) {
+            trackerYPos = trackerY + 16;
+          } else {
+            trackerYPos = trackerY - 12;
+          }
+        }
+
+        const trackerVLine = document.getElementById("trackerVLine");
+        const trackerPoint = document.getElementById("trackerPoint");
+        const trackerPointBg = document.getElementById("trackerPointBg");
+        const trackerText = document.getElementById("trackerText");
+
+        if (trackerVLine) {
+          trackerVLine.setAttribute("x1", trackerX);
+          trackerVLine.setAttribute("x2", trackerX);
+        }
+        if (trackerPoint) {
+          trackerPoint.setAttribute("cx", trackerX);
+          trackerPoint.setAttribute("cy", trackerY);
+        }
+        if (trackerPointBg) {
+          trackerPointBg.setAttribute("cx", trackerX);
+          trackerPointBg.setAttribute("cy", trackerY);
+        }
+        if (trackerText) {
+          trackerText.setAttribute("x", trackerX);
+          trackerText.setAttribute("y", trackerYPos);
+          trackerText.textContent = `${Math.round(sliderW)}px (${round(trackerPx, 1)}px)`;
+        }
+
+        // Y and X Axis Labels
+        const yHigh = document.getElementById("yLabelHigh");
+        const yLow = document.getElementById("yLabelLow");
+        const xMinLbl = document.getElementById("xLabelMin");
+        const xMaxLbl = document.getElementById("xLabelMax");
+
+        if (yHigh) yHigh.textContent = `${round(highPx, 1)}px`;
+        if (yLow) yLow.textContent = `${round(lowPx, 1)}px`;
+        if (xMinLbl) xMinLbl.textContent = `${minW}px`;
+        if (xMaxLbl) xMaxLbl.textContent = `${maxW}px`;
+      }
+
+      // Accessibility & Ergonomics Validator Logic
+      let selectedElem = "p";
+
+      function evaluateViewportSize(elem, fontPx, viewportType) {
+        if (fontPx <= 0) return { status: 'fail', msg: 'Font size cannot be zero or negative.' };
+
+        if (elem === 'p') {
+          if (fontPx < 12) return { status: 'fail', msg: 'Unreadable (<12px). Violates WCAG legibility guidelines.' };
+          if (fontPx < 14) return { status: 'warn', msg: 'Suboptimal (12-14px). Small on mobile; 16px is ideal.' };
+          if (fontPx >= 16) return { status: 'pass', msg: 'Optimal body size. Prevents iOS Safari input auto-zoom.' };
+          return { status: 'pass', msg: 'Acceptable body text legibility.' };
+        }
+
+        if (elem === 'h1') {
+          if (viewportType === 'mobile' && fontPx < 20) return { status: 'fail', msg: 'Too small for H1 heading (<20px) on mobile.' };
+          if (viewportType === 'desktop' && fontPx < 28) return { status: 'warn', msg: 'Suboptimal H1 contrast on desktop (<28px).' };
+          if (fontPx > 96) return { status: 'warn', msg: 'Very large heading (>96px). Ensure no viewport overflow.' };
+          return { status: 'pass', msg: 'Strong heading hierarchy and visual impact.' };
+        }
+
+        if (elem === 'h2') {
+          if (fontPx < 18) return { status: 'warn', msg: 'H2 text is under 18px; may blend in with body copy.' };
+          return { status: 'pass', msg: 'Good section heading contrast and readability.' };
+        }
+
+        if (elem === 'h3') {
+          if (fontPx < 16) return { status: 'warn', msg: 'H3 text under 16px lacks distinct subtitle hierarchy.' };
+          return { status: 'pass', msg: 'Well-proportioned subtitle font size.' };
+        }
+
+        if (elem === 'button') {
+          if (fontPx < 12) return { status: 'fail', msg: 'Illegible button text (<12px) for touch interfaces.' };
+          if (fontPx < 14) return { status: 'warn', msg: 'Button text (12-14px) is small for touch targets.' };
+          return { status: 'pass', msg: 'Excellent touch target & label legibility.' };
+        }
+
+        if (elem === 'small') {
+          if (fontPx < 10) return { status: 'fail', msg: 'Illegible small text (<10px). Violates WCAG contrast/size criteria.' };
+          if (fontPx < 12) return { status: 'warn', msg: 'Fine print (10-12px); suitable for secondary captions.' };
+          return { status: 'pass', msg: 'Clear small text readability.' };
+        }
+
+        return { status: 'pass', msg: 'Valid font size.' };
+      }
+
+      function updateAuditBadge(elementId, badgeId, valId, fontPx, res) {
+        const valEl = document.getElementById(valId);
+        const badgeEl = document.getElementById(badgeId);
+        const msgEl = document.getElementById(elementId);
+
+        valEl.textContent = `${round(fontPx, 1)}px`;
+        msgEl.textContent = res.msg;
+
+        if (res.status === 'pass') {
+          badgeEl.className = "px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-950/80 text-emerald-300 border border-emerald-800/80 flex items-center gap-1";
+          badgeEl.innerHTML = '<i class="fa-solid fa-check text-[9px]"></i> Pass';
+        } else if (res.status === 'warn') {
+          badgeEl.className = "px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-950/80 text-amber-300 border border-amber-800/80 flex items-center gap-1";
+          badgeEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-[9px]"></i> Warning';
+        } else {
+          badgeEl.className = "px-2 py-0.5 rounded-full text-[10px] font-semibold bg-rose-950/80 text-rose-300 border border-rose-800/80 flex items-center gap-1";
+          badgeEl.innerHTML = '<i class="fa-solid fa-xmark text-[9px]"></i> Fail';
+        }
+      }
+
+      function validateAccessibility(mobileFont, desktopFont, fontAt) {
+        const mobileW = parseFloat(document.getElementById("mobileW").value) || 0;
+        const desktopW = parseFloat(document.getElementById("desktopW").value) || 0;
+        const tabletFont = fontAt(768);
+
+        const mobRes = evaluateViewportSize(selectedElem, mobileFont, 'mobile');
+        const tabRes = evaluateViewportSize(selectedElem, tabletFont, 'tablet');
+        const deskRes = evaluateViewportSize(selectedElem, desktopFont, 'desktop');
+
+        updateAuditBadge('audit-msg-mobile', 'audit-badge-mobile', 'audit-val-mobile', mobileFont, mobRes);
+        updateAuditBadge('audit-msg-tablet', 'audit-badge-tablet', 'audit-val-tablet', tabletFont, tabRes);
+        updateAuditBadge('audit-msg-desktop', 'audit-badge-desktop', 'audit-val-desktop', desktopFont, deskRes);
+
+        const banner = document.getElementById("auditBanner");
+        const icon = document.getElementById("auditIcon");
+        const title = document.getElementById("auditTitle");
+        const desc = document.getElementById("auditDesc");
+
+        if (mobileW >= desktopW) {
+          banner.className = "p-3.5 rounded-xl border flex items-start gap-3 transition-colors bg-rose-950/40 border-rose-800/80 text-rose-300";
+          icon.className = "fa-solid fa-triangle-exclamation text-base mt-0.5 text-rose-400";
+          title.textContent = "Invalid Viewport Range Warning";
+          desc.textContent = "Mobile viewport width must be smaller than Desktop viewport width.";
+          return;
+        }
+
+        let isInverse = mobileFont > desktopFont;
+
+        if (isInverse) {
+          banner.className = "p-3.5 rounded-xl border flex items-start gap-3 transition-colors bg-rose-950/40 border-rose-800/80 text-rose-300";
+          icon.className = "fa-solid fa-triangle-exclamation text-base mt-0.5 text-rose-400";
+          title.textContent = "Inverse Scaling Warning";
+          desc.textContent = "Mobile font size is larger than desktop font size (Negative Slope). Font will shrink as viewport width increases.";
+          return;
+        }
+
+        if (mobRes.status === 'fail' || deskRes.status === 'fail' || tabRes.status === 'fail') {
+          banner.className = "p-3.5 rounded-xl border flex items-start gap-3 transition-colors bg-rose-950/40 border-rose-800/80 text-rose-300";
+          icon.className = "fa-solid fa-circle-xmark text-base mt-0.5 text-rose-400";
+          title.textContent = "WCAG Accessibility Violation Detected";
+          desc.textContent = "One or more viewports fall below WCAG legibility limits for the selected element.";
+        } else if (mobRes.status === 'warn' || deskRes.status === 'warn' || tabRes.status === 'warn') {
+          banner.className = "p-3.5 rounded-xl border flex items-start gap-3 transition-colors bg-amber-950/40 border-amber-800/80 text-amber-300";
+          icon.className = "fa-solid fa-triangle-exclamation text-base mt-0.5 text-amber-400";
+          title.textContent = "Suboptimal Legibility / Hierarchy Warning";
+          desc.textContent = "Configuration is usable but may have contrast or legibility trade-offs on smaller devices.";
+        } else {
+          banner.className = "p-3.5 rounded-xl border flex items-start gap-3 transition-colors bg-emerald-950/40 border-emerald-800/80 text-emerald-300";
+          icon.className = "fa-solid fa-circle-check text-base mt-0.5 text-emerald-400";
+          title.textContent = "WCAG 2.1 Compliant & Ergonomically Sound";
+          desc.textContent = "Font sizes meet WCAG readability standards and provide optimal typography scaling across all screen sizes.";
+        }
+      }
+
+      // Event Listeners
+      document.querySelectorAll('input[type="number"]').forEach((el) => {
+        el.addEventListener("input", compute);
+      });
+
+      document
+        .getElementById("previewSlider")
+        .addEventListener("input", updatePreview);
+
+      // Element Type Selector Buttons
+      document.querySelectorAll(".elem-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".elem-btn").forEach((b) => {
+            b.classList.remove("active", "bg-zinc-800", "border-zinc-700", "text-white");
+            b.classList.add("bg-zinc-950", "border-zinc-800", "text-zinc-400");
+          });
+          btn.classList.add("active", "bg-zinc-800", "border-zinc-700", "text-white");
+          btn.classList.remove("bg-zinc-950", "border-zinc-800", "text-zinc-400");
+          selectedElem = btn.dataset.elem;
+          compute();
+        });
+      });
+
+      // Preset Buttons
+      document.querySelectorAll(".preset-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const key = btn.dataset.preset;
+          if (presets[key]) {
+            document.getElementById("mobileFont").value =
+              presets[key].mobileFont;
+            document.getElementById("desktopFont").value =
+              presets[key].desktopFont;
+            document.getElementById("mobileW").value = presets[key].mobileW;
+            document.getElementById("desktopW").value = presets[key].desktopW;
+            compute();
+          }
+        });
+      });
+
+      // Tab Buttons
+      document.querySelectorAll(".tab-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".tab-btn").forEach((b) => {
+            b.classList.remove("active", "bg-zinc-800", "text-white");
+            b.classList.add("bg-transparent", "text-zinc-400");
+          });
+          btn.classList.add("active", "bg-zinc-800", "text-white");
+          btn.classList.remove("bg-transparent", "text-zinc-400");
+          activeTab = btn.dataset.tab;
+          renderOutput();
+        });
+      });
+
+      // Reset Button
+      document.getElementById("resetBtn").addEventListener("click", () => {
+        document.getElementById("minW").value = 320;
+        document.getElementById("mobileW").value = 440;
+        document.getElementById("mobileFont").value = 16;
+        document.getElementById("desktopFont").value = 24;
+        document.getElementById("desktopW").value = 1440;
+        document.getElementById("maxW").value = 1920;
+        compute();
+      });
+
+      // Copy Button
+      document.getElementById("copyBtn").addEventListener("click", () => {
+        const text = current[activeTab];
+        navigator.clipboard.writeText(text).then(() => {
+          const copyText = document.getElementById("copyText");
+          const copyIcon = document.getElementById("copyIcon");
+
+          copyText.textContent = "Copied to Clipboard!";
+          copyIcon.className = "fa-solid fa-check text-sm text-emerald-600";
+
+          const btn = document.getElementById("copyBtn");
+          btn.classList.add("bg-emerald-100", "border-emerald-300");
+
+          setTimeout(() => {
+            copyText.textContent = "Copy Generated Code";
+            copyIcon.className = "fa-regular fa-copy text-sm";
+            btn.classList.remove("bg-emerald-100", "border-emerald-300");
+          }, 1600);
+        });
+      });
+
+      // Initialize
+      compute();
+    </script>
+  </body>
+</html>

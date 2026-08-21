@@ -1,0 +1,866 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FluidBox — Minimalist Figma-to-Code Responsive Container Generator</title>
+    <link rel="icon" type="image/svg+xml" href="./icon/fluidbox.svg?v=2" />
+    <link rel="shortcut icon" href="./icon/fluidbox.svg?v=2" />
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome 6 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background-color: #000000;
+        color: #f4f4f5;
+      }
+      .mono {
+        font-family: "JetBrains Mono", monospace;
+      }
+      /* Minimalist Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #000000;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #27272a;
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #3f3f46;
+      }
+      /* Minimalist Slider Styling */
+      input[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        height: 4px;
+        background: #18181b;
+        border-radius: 9999px;
+        outline: none;
+        border: 1px solid #27272a;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #ffffff;
+        cursor: pointer;
+        border: 2px solid #000000;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        transition:
+          transform 0.15s ease,
+          background-color 0.15s ease;
+      }
+      input[type="range"]::-webkit-slider-thumb:hover {
+        transform: scale(1.15);
+      }
+      /* Grid background subtlety */
+      .bg-grid-pattern {
+        background-image: radial-gradient(
+          rgba(255, 255, 255, 0.07) 1px,
+          transparent 1px
+        );
+        background-size: 24px 24px;
+      }
+      /* Toggle switch animation */
+      .toggle-checkbox:checked {
+        right: 0;
+        background-color: #ffffff;
+      }
+      .toggle-checkbox:checked + .toggle-label {
+        background-color: #27272a;
+        border-color: #52525b;
+      }
+      /* Subtle Decorative Dropdown Select Styling */
+      .dec-select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-color: #09090b;
+        background-image: linear-gradient(to bottom, #18181b, #09090b);
+        border: 1px solid #27272a;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+      .dec-select:hover {
+        border-color: #10b981;
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+      }
+      .dec-select:focus {
+        border-color: #10b981;
+        outline: none;
+        box-shadow: 0 0 0 1px #10b981;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-black text-zinc-100 min-h-screen flex flex-col antialiased selection:bg-zinc-800 selection:text-white relative"
+  >
+    <!-- Subtle Ambient Glow -->
+    <div
+      class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-64 bg-emerald-950/20 blur-[140px] pointer-events-none rounded-full"
+    ></div>
+
+    <!-- Navigation Bar -->
+    <nav
+      class="border-b border-zinc-800/80 bg-black/80 backdrop-blur-md sticky top-0 z-50"
+    >
+      <div
+        class="max-w-4xl mx-auto px-4 py-4 sm:px-6 h-auto flex items-center justify-between"
+      >
+        <!-- Logo & Title -->
+        <div class="flex items-center gap-3">
+          <a href="FluidBox.html" class="relative group block">
+            <img
+              src="icon/fluidbox.svg"
+              alt="FluidBox Logo"
+              class="w-11 h-11 rounded-lg shadow-sm border border-zinc-800 transition-transform duration-300 group-hover:scale-105"
+            />
+          </a>
+          <div class="flex items-baseline gap-2">
+            <span class="font-bold text-lg tracking-tight text-white"
+              >FluidBox</span
+            >
+            <span
+              class="text-xs px-2 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-800/60 text-emerald-300 mono"
+              >v1.0</span
+            >
+          </div>
+        </div>
+
+        <!-- Navbar Links & Tool Switcher -->
+        <div class="flex items-center gap-2 text-sm">
+          <a
+            href="index.html"
+            title="FluidTools Suite Dashboard"
+            class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-xs transition-colors"
+          >
+            <img src="icon/fuildtool.svg" alt="FluidTools" class="w-4 h-4 rounded" />
+            <span class="font-medium">Dashboard</span>
+          </a>
+          <a
+            href="FluidClamp.html"
+            title="Switch to FluidClamp Tool"
+            class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-xs transition-colors"
+          >
+            <img src="icon/fluidclamp.svg" alt="FluidClamp" class="w-4 h-4 rounded" />
+            <span class="hidden sm:inline font-medium">FluidClamp</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main
+      class="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 bg-grid-pattern space-y-8"
+    >
+      <!-- Header Section -->
+      <header class="text-center space-y-3">
+        <div
+          class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-950/40 border border-amber-800/60 text-xs text-amber-300 mb-1"
+        >
+          <i class="fa-brands fa-figma text-amber-400"></i>
+          <span>Figma Design-to-Code Container Generator</span>
+        </div>
+        <h1 class="text-3xl sm:text-5xl font-bold tracking-tight text-white">
+          Fluid Layout
+          <code class="mono text-emerald-300 font-semibold">Container</code>
+        </h1>
+        <p
+          class="text-zinc-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed"
+        >
+          Control side & top/bottom padding for Mobile and PC to generate responsive <code class="mono text-zinc-200">calc(100% - X)</code> container CSS.
+        </p>
+      </header>
+
+      <!-- Minimalist Generator Card -->
+      <div
+        class="bg-zinc-950/90 border border-zinc-800 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl space-y-8"
+      >
+        <!-- Figma & Padding Inputs Section -->
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <h2
+              class="text-xs font-semibold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5"
+            >
+              <i class="fa-solid fa-sliders text-emerald-400"></i> Responsive Figma & Padding Controls
+            </h2>
+            <!-- Quick Subtle Presets -->
+            <div class="flex items-center gap-1.5 overflow-x-auto text-xs">
+              <button type="button" id="btnPresetUser" class="px-2.5 py-1 rounded-lg bg-emerald-950/90 text-emerald-300 border border-emerald-800/80 text-[11px] mono font-medium hover:bg-emerald-900 transition-colors">
+                440px / 360px (40px Side)
+              </button>
+              <button type="button" id="btnPresetStd" class="px-2.5 py-1 rounded-lg bg-zinc-900 text-zinc-400 border border-zinc-800 text-[11px] mono hover:text-white transition-colors">
+                390px / 358px (16px Side)
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <!-- 1. Mobile Viewport Spec -->
+            <div class="p-4 rounded-xl bg-black border border-zinc-800/90 space-y-3.5">
+              <div class="flex items-center justify-between text-xs font-semibold text-white border-b border-zinc-900 pb-2">
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-mobile-screen text-emerald-400"></i> Mobile Viewport Spec</span>
+                <span id="mobSideBadge" class="mono text-[11px] px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-800/60">Total Gutter: 5rem (80px)</span>
+              </div>
+              
+              <div class="grid grid-cols-2 gap-3 text-xs">
+                <div>
+                  <label class="text-[11px] text-zinc-400 block mb-1">Figma Screen</label>
+                  <div class="relative">
+                    <input type="number" id="mobScreenWidth" value="440" class="mono w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-2.5 pr-7 py-1.5 text-white text-xs focus:outline-none focus:border-emerald-500" />
+                    <span class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-zinc-500 mono">px</span>
+                  </div>
+                </div>
+                <div>
+                  <label class="text-[11px] text-zinc-400 block mb-1">Container</label>
+                  <div class="relative">
+                    <input type="number" id="mobContainerWidth" value="360" class="mono w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-2.5 pr-7 py-1.5 text-white text-xs focus:outline-none focus:border-emerald-500" />
+                    <span class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-zinc-500 mono">px</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mobile Paddings Row (Subtle Emerald Side Pad & Subtle Amber Top/Bottom Pad) -->
+              <div class="grid grid-cols-2 gap-3 text-xs pt-1 border-t border-zinc-900/80">
+                <div>
+                  <label class="text-[11px] text-emerald-400 font-medium block mb-1">Mobile Side Pad</label>
+                  <div class="relative flex items-center">
+                    <input type="number" id="mobSidePadInput" value="40" class="mono w-full bg-zinc-900 border border-emerald-500/70 rounded-lg pl-2.5 pr-14 py-1.5 text-white text-xs focus:outline-none focus:ring-1 focus:ring-emerald-400" />
+                    <div class="absolute right-1 top-1/2 -translate-y-1/2 flex items-center">
+                      <select id="mobSideUnit" class="dec-select pl-1.5 pr-4 py-0.5 rounded text-[10px] text-emerald-300 mono cursor-pointer">
+                        <option value="px">px</option>
+                        <option value="rem">rem</option>
+                      </select>
+                      <i class="fa-solid fa-chevron-down text-[8px] text-emerald-400 absolute right-1 pointer-events-none"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="text-[11px] text-amber-400 font-medium block mb-1">Mobile Top/Bottom</label>
+                  <div class="relative flex items-center">
+                    <input type="number" id="mobVPadInput" value="16" class="mono w-full bg-zinc-900 border border-amber-500/70 rounded-lg pl-2.5 pr-14 py-1.5 text-white text-xs focus:outline-none focus:ring-1 focus:ring-amber-400" />
+                    <div class="absolute right-1 top-1/2 -translate-y-1/2 flex items-center">
+                      <select id="mobVUnit" class="dec-select pl-1.5 pr-4 py-0.5 rounded text-[10px] text-amber-300 mono cursor-pointer">
+                        <option value="px">px</option>
+                        <option value="rem">rem</option>
+                      </select>
+                      <i class="fa-solid fa-chevron-down text-[8px] text-amber-400 absolute right-1 pointer-events-none"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. PC / Desktop Viewport Spec -->
+            <div class="p-4 rounded-xl bg-black border border-zinc-800/90 space-y-3.5">
+              <div class="flex items-center justify-between text-xs font-semibold text-white border-b border-zinc-900 pb-2">
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-laptop text-emerald-400"></i> PC / Desktop Viewport Spec</span>
+                <span id="pcMaxBadge" class="mono text-[11px] px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-800/60">Max: 1440px (90rem)</span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3 text-xs">
+                <div>
+                  <label class="text-[11px] text-zinc-400 block mb-1">Figma Screen</label>
+                  <div class="relative">
+                    <input type="number" id="pcScreenWidth" value="1920" class="mono w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-2.5 pr-7 py-1.5 text-white text-xs focus:outline-none focus:border-emerald-500" />
+                    <span class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-zinc-500 mono">px</span>
+                  </div>
+                </div>
+                <div>
+                  <label class="text-[11px] text-zinc-400 block mb-1">Container Max</label>
+                  <div class="relative">
+                    <input type="number" id="pcContainerWidth" value="1440" class="mono w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-2.5 pr-7 py-1.5 text-white text-xs focus:outline-none focus:border-emerald-500" />
+                    <span class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-zinc-500 mono">px</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- PC Paddings Row (Subtle Emerald Side Pad & Subtle Amber Top/Bottom Pad) -->
+              <div class="grid grid-cols-2 gap-3 text-xs pt-1 border-t border-zinc-900/80">
+                <div>
+                  <label class="text-[11px] text-emerald-400 font-medium block mb-1">PC Side Pad</label>
+                  <div class="relative flex items-center">
+                    <input type="number" id="pcSidePadInput" value="240" class="mono w-full bg-zinc-900 border border-emerald-500/70 rounded-lg pl-2.5 pr-14 py-1.5 text-white text-xs focus:outline-none focus:ring-1 focus:ring-emerald-400" />
+                    <div class="absolute right-1 top-1/2 -translate-y-1/2 flex items-center">
+                      <select id="pcSideUnit" class="dec-select pl-1.5 pr-4 py-0.5 rounded text-[10px] text-emerald-300 mono cursor-pointer">
+                        <option value="px">px</option>
+                        <option value="rem">rem</option>
+                      </select>
+                      <i class="fa-solid fa-chevron-down text-[8px] text-emerald-400 absolute right-1 pointer-events-none"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="text-[11px] text-amber-400 font-medium block mb-1">PC Top/Bottom</label>
+                  <div class="relative flex items-center">
+                    <input type="number" id="pcVPadInput" value="48" class="mono w-full bg-zinc-900 border border-amber-500/70 rounded-lg pl-2.5 pr-14 py-1.5 text-white text-xs focus:outline-none focus:ring-1 focus:ring-amber-400" />
+                    <div class="absolute right-1 top-1/2 -translate-y-1/2 flex items-center">
+                      <select id="pcVUnit" class="dec-select pl-1.5 pr-4 py-0.5 rounded text-[10px] text-amber-300 mono cursor-pointer">
+                        <option value="px">px</option>
+                        <option value="rem">rem</option>
+                      </select>
+                      <i class="fa-solid fa-chevron-down text-[8px] text-amber-400 absolute right-1 pointer-events-none"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>          <!-- Real-Time Layout Geometry Ergonomics & Overflow Safety Card -->
+          <div id="geometrySafetyBanner" class="mt-4 p-4 rounded-xl border border-emerald-800/60 bg-emerald-950/30 text-emerald-200 transition-all duration-200">
+            <div class="flex items-start gap-3">
+              <i id="safetyIcon" class="fa-solid fa-circle-check text-base text-emerald-400 mt-0.5"></i>
+              <div class="flex-1 text-xs space-y-1">
+                <div id="safetyTitle" class="font-semibold text-sm text-emerald-300">✅ Ergonomic & Responsive Geometry Approved</div>
+                <div id="safetyDesc" class="text-zinc-300 leading-relaxed">
+                  All side paddings and container widths fit cleanly inside Mobile and PC viewports with safe side gutters.
+                </div>
+                <div id="safetyFixAction" class="pt-1.5 hidden">
+                  <!-- Auto Fix Action Button -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Screen Simulator & Viewport Preview -->
+        <div class="space-y-3 pt-2">
+          <div class="flex items-center justify-between text-xs">
+            <span
+              class="font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-1.5"
+            >
+              <i class="fa-solid fa-eye text-zinc-400"></i> Interactive Viewport Simulator
+            </span>
+            <div class="flex items-center gap-2">
+              <span class="text-zinc-500">Screen Width:</span>
+              <span
+                id="simWidthLabel"
+                class="mono font-semibold px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-white"
+                >1440px</span
+              >
+            </div>
+          </div>
+
+          <!-- Range Slider for Simulating Screen Sizes -->
+          <input
+            id="simSlider"
+            type="range"
+            min="320"
+            max="2560"
+            value="1440"
+            class="w-full cursor-pointer"
+          />
+
+          <!-- Live Visual Screen Canvas -->
+          <div
+            class="bg-black border border-zinc-800 rounded-xl h-56 flex flex-col items-center justify-center overflow-hidden p-4 relative"
+          >
+            <!-- Simulated Viewport Wrapper -->
+            <div
+              id="simScreenFrame"
+              class="w-full max-w-full h-40 bg-zinc-950 border border-zinc-800 rounded-lg p-2 flex flex-col items-center justify-between relative transition-all duration-150"
+            >
+              <div class="w-full border-b border-zinc-900 pb-1.5 flex items-center justify-between text-[10px] text-zinc-600 font-mono px-2">
+                <span>viewport-width: <strong id="simFrameWidthText" class="text-zinc-300">1440px</strong></span>
+                <span id="simMetricsText" class="text-emerald-400 font-semibold">Container: 1440px</span>
+              </div>
+
+              <!-- Container Bounds Box -->
+              <div
+                id="simContainerBounds"
+                class="w-full h-full my-auto rounded border-2 border-dashed border-emerald-500/60 bg-emerald-950/20 relative flex flex-col justify-between transition-all duration-150 overflow-hidden"
+              >
+                <!-- Top Padding Strip (Subtle Amber) -->
+                <div id="simTopPadStrip" class="w-full bg-amber-500/15 border-b border-amber-500/30 flex items-center justify-center text-[9px] font-mono text-amber-300">
+                  <span id="simTopPadText">Top Padding: 48px</span>
+                </div>
+
+                <!-- Middle Content Area (Subtle Emerald Side Strips) -->
+                <div class="flex-1 w-full flex items-stretch">
+                  <div id="simLeftPadStrip" class="bg-emerald-500/15 border-r border-emerald-500/40 flex items-center justify-center text-[9px] font-mono text-emerald-300 px-1">
+                    <span id="simLeftPadText">40px</span>
+                  </div>
+
+                  <div class="flex-1 bg-zinc-900/90 border border-zinc-800 m-1 rounded flex flex-col items-center justify-center p-2 text-center shadow-inner">
+                    <div class="text-xs font-semibold text-white tracking-tight flex items-center gap-1.5">
+                      <i class="fa-solid fa-cube text-emerald-400"></i>
+                      <span>Main Container Content Area</span>
+                    </div>
+                    <div id="simContentBoundsText" class="text-[11px] mono text-zinc-400 mt-1">
+                      width: calc(100% - 5rem) &bull; max-width: 90rem
+                    </div>
+                  </div>
+
+                  <div id="simRightPadStrip" class="bg-emerald-500/15 border-l border-emerald-500/40 flex items-center justify-center text-[9px] font-mono text-emerald-300 px-1">
+                    <span id="simRightPadText">40px</span>
+                  </div>
+                </div>
+
+                <!-- Bottom Padding Strip (Subtle Amber) -->
+                <div id="simBottomPadStrip" class="w-full bg-amber-500/15 border-t border-amber-500/30 flex items-center justify-center text-[9px] font-mono text-amber-300">
+                  <span id="simBottomPadText">Bottom Padding: 48px</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Generated Output Section -->
+        <div class="space-y-3 pt-2">
+          <div
+            class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-800 pb-2.5"
+          >
+            <!-- Code Tab Buttons -->
+            <div class="flex gap-2">
+              <button
+                data-tab="css"
+                class="tab-btn active px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-zinc-800 text-white transition-all flex items-center gap-1.5"
+              >
+                <i class="fa-brands fa-css3-alt text-amber-400"></i> Custom CSS
+              </button>
+              <button
+                data-tab="tw"
+                class="tab-btn px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-transparent hover:bg-zinc-900 text-zinc-400 hover:text-zinc-200 transition-all flex items-center gap-1.5"
+              >
+                <i class="fa-solid fa-wind text-emerald-400"></i> Tailwind CSS
+              </button>
+              <button
+                data-tab="bs"
+                class="tab-btn px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-transparent hover:bg-zinc-900 text-zinc-400 hover:text-zinc-200 transition-all flex items-center gap-1.5"
+              >
+                <i class="fa-brands fa-bootstrap text-amber-300"></i> Bootstrap 5
+              </button>
+            </div>
+
+            <!-- Include Vertical Padding Code Toggle Option -->
+            <label class="flex items-center cursor-pointer gap-2 bg-zinc-900/90 border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-lg transition-all">
+              <i class="fa-solid fa-arrows-up-down text-amber-400 text-xs"></i>
+              <span id="vPaddingStatusLabel" class="text-xs font-medium text-zinc-300">Include Top/Bottom Vertical Padding</span>
+              <div class="relative inline-block w-8 align-middle select-none ml-1">
+                <input
+                  type="checkbox"
+                  id="vPaddingToggle"
+                  checked
+                  class="toggle-checkbox absolute block w-4 h-4 rounded-full bg-white border-2 border-zinc-800 appearance-none cursor-pointer left-0 top-0 checked:left-4"
+                />
+                <label
+                  for="vPaddingToggle"
+                  class="toggle-label block overflow-hidden h-4 rounded-full bg-zinc-800 border border-zinc-700 cursor-pointer"
+                ></label>
+              </div>
+            </label>
+          </div>
+
+          <!-- Code Output Display Box -->
+          <div
+            id="outputCode"
+            class="mono bg-black border border-zinc-800 rounded-xl p-4 text-xs sm:text-sm leading-relaxed overflow-x-auto min-h-[110px] text-zinc-200 select-all whitespace-pre-wrap"
+          ></div>
+
+          <!-- Copy Button -->
+          <button
+            id="copyBtn"
+            class="w-full bg-zinc-100 hover:bg-white active:bg-zinc-200 text-black transition-all text-xs sm:text-sm font-semibold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg cursor-pointer"
+          >
+            <i class="fa-regular fa-copy text-sm" id="copyIcon"></i>
+            <span id="copyText">Copy Generated Code</span>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer
+      class="border-t border-zinc-800/80 bg-black py-6 text-center text-xs text-zinc-500 mt-12"
+    >
+      <div
+        class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3"
+      >
+        <div class="flex items-center gap-2">
+          <img src="icon/fluidbox.svg" alt="FluidBox" class="w-4 h-4 opacity-70" />
+          <span>FluidBox — Minimalist Figma-to-Code Container Generator</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="text-zinc-600">Built with Vanilla HTML & Tailwind</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Logic JavaScript -->
+    <script>
+      let activeTab = "css";
+      let codeMap = { css: "", tw: "", bs: "" };
+
+      function round(n, d = 3) {
+        const f = Math.pow(10, d);
+        return Math.round(n * f) / f;
+      }
+
+      function getPx(val, unit) {
+        const num = parseFloat(val) || 0;
+        return unit === "rem" ? num * 16 : num;
+      }
+
+      function compute(triggerSource = "figma") {
+        const mobScreenPx = parseFloat(document.getElementById("mobScreenWidth").value) || 440;
+        const pcScreenPx = parseFloat(document.getElementById("pcScreenWidth").value) || 1920;
+
+        const mobSideUnit = document.getElementById("mobSideUnit").value;
+        const mobVUnit = document.getElementById("mobVUnit").value;
+        const pcSideUnit = document.getElementById("pcSideUnit").value;
+        const pcVUnit = document.getElementById("pcVUnit").value;
+
+        // 1. Mobile Side Padding & Container
+        let mobSidePx = 40;
+        let mobContainerPx = 360;
+        if (triggerSource === "mobSidePad") {
+          const mobSideRaw = parseFloat(document.getElementById("mobSidePadInput").value) || 0;
+          mobSidePx = getPx(mobSideRaw, mobSideUnit);
+          mobContainerPx = Math.max(0, mobScreenPx - mobSidePx * 2);
+          document.getElementById("mobContainerWidth").value = mobContainerPx;
+        } else {
+          mobContainerPx = parseFloat(document.getElementById("mobContainerWidth").value) || 360;
+          mobSidePx = Math.max(0, (mobScreenPx - mobContainerPx) / 2);
+          const mobSideDisplay = mobSideUnit === "rem" ? round(mobSidePx / 16) : Math.round(mobSidePx);
+          document.getElementById("mobSidePadInput").value = mobSideDisplay;
+        }
+
+        // 2. Mobile Top/Bottom Padding
+        const mobVRaw = parseFloat(document.getElementById("mobVPadInput").value) || 0;
+        const mobVPx = getPx(mobVRaw, mobVUnit);
+        const mobVRem = round(mobVPx / 16);
+
+        // 3. PC Side Padding & Container
+        let pcSidePx = 240;
+        let pcContainerPx = 1440;
+        if (triggerSource === "pcSidePad") {
+          const pcSideRaw = parseFloat(document.getElementById("pcSidePadInput").value) || 0;
+          pcSidePx = getPx(pcSideRaw, pcSideUnit);
+          pcContainerPx = Math.max(0, pcScreenPx - pcSidePx * 2);
+          document.getElementById("pcContainerWidth").value = pcContainerPx;
+        } else {
+          pcContainerPx = parseFloat(document.getElementById("pcContainerWidth").value) || 1440;
+          pcSidePx = Math.max(0, (pcScreenPx - pcContainerPx) / 2);
+          const pcSideDisplay = pcSideUnit === "rem" ? round(pcSidePx / 16) : Math.round(pcSidePx);
+          document.getElementById("pcSidePadInput").value = pcSideDisplay;
+        }
+
+        // 4. PC Top/Bottom Padding
+        const pcVRaw = parseFloat(document.getElementById("pcVPadInput").value) || 0;
+        const pcVPx = getPx(pcVRaw, pcVUnit);
+        const pcVRem = round(pcVPx / 16);
+
+        const enableV = document.getElementById("vPaddingToggle").checked;
+
+        // Rem Calculations for Output
+        const mobTotalGutterPx = mobSidePx * 2;
+        const mobTotalGutterRem = round(mobTotalGutterPx / 16);
+        const pcMaxRem = round(pcContainerPx / 16);
+
+        // Update UI Badges
+        document.getElementById("mobSideBadge").textContent = `Total Gutter: ${mobTotalGutterRem}rem (${mobTotalGutterPx}px)`;
+        document.getElementById("pcMaxBadge").textContent = `Max: ${pcContainerPx}px (${pcMaxRem}rem)`;
+        document.getElementById("vPaddingStatusLabel").textContent = enableV ? `Include Top/Bottom Padding (${mobVPx}px / ${pcVPx}px)` : "Exclude Top/Bottom Padding";
+
+        // ==========================================
+        // 1. CUSTOM CSS (VANILLA)
+        // ==========================================
+        let cssLines = [];
+        cssLines.push(`width: calc(100% - ${mobTotalGutterRem}rem);`);
+        cssLines.push(`max-width: ${pcMaxRem}rem;`);
+        cssLines.push(`margin-inline: auto;`);
+        if (enableV && mobVPx > 0) {
+          cssLines.push(`padding-block: ${mobVRem}rem;`);
+        }
+
+        let cssMediaQueries = "";
+        if (enableV && pcVPx !== mobVPx) {
+          cssMediaQueries = `\n\n@media (min-width: 1024px) {\n  .main-container {\n    padding-block: ${pcVRem}rem;\n  }\n}`;
+        }
+
+        const cssCode = `.main-container {\n  ${cssLines.join("\n  ")}\n}${cssMediaQueries}`;
+        codeMap.css = cssCode;
+        codeMap.cssHtml = `<span class="text-zinc-500">/* Generated from Figma: Mobile (${mobScreenPx}px / ${mobContainerPx}px) & PC (${pcScreenPx}px / ${pcContainerPx}px) */</span>\n.<span class="text-emerald-300">main-container</span> {\n  ${cssLines.map(s => {
+          const parts = s.split(":");
+          return `<span class="text-zinc-400">${parts[0]}:</span><span class="text-white">${parts.slice(1).join(":")}</span>`;
+        }).join("\n  ")}\n}${cssMediaQueries ? `<span class="text-amber-300">${cssMediaQueries}</span>` : ''}`;
+
+        // ==========================================
+        // 2. TAILWIND CSS
+        // ==========================================
+        let twClasses = [];
+        twClasses.push(`w-[calc(100%-${mobTotalGutterRem}rem)]`);
+        twClasses.push(`max-w-[${pcMaxRem}rem]`);
+        twClasses.push(`mx-auto`);
+        if (enableV && mobVPx > 0) {
+          twClasses.push(`py-[${mobVRem}rem]`);
+        }
+        if (enableV && pcVPx !== mobVPx) {
+          twClasses.push(`lg:py-[${pcVRem}rem]`);
+        }
+
+        const twClassString = twClasses.join(" ");
+        codeMap.tw = twClassString;
+        codeMap.twHtml = `<span class="text-zinc-500">&lt;!-- Tailwind CSS Container --&gt;</span>\n&lt;<span class="text-emerald-400">div</span> <span class="text-zinc-400">class</span>=<span class="text-amber-300">"${twClassString}"</span>&gt;\n  <span class="text-zinc-500">&lt;!-- Your fluid content here --&gt;</span>\n&lt;/<span class="text-emerald-400">div</span>&gt;`;
+
+        // ==========================================
+        // 3. BOOTSTRAP 5
+        // ==========================================
+        codeMap.bs = cssCode;
+        codeMap.bsHtml = `<span class="text-zinc-500">/* Bootstrap 5 Custom Fluid Container */</span>\n.<span class="text-amber-300">main-container</span> {\n  ${cssLines.map(s => {
+          const parts = s.split(":");
+          return `<span class="text-zinc-400">${parts[0]}:</span><span class="text-white">${parts.slice(1).join(":")}</span>`;
+        }).join("\n  ")}\n}${cssMediaQueries ? `<span class="text-amber-300">${cssMediaQueries}</span>` : ''}\n\n<span class="text-zinc-500">&lt;!-- HTML Markup --&gt;</span>\n&lt;<span class="text-emerald-400">div</span> <span class="text-zinc-400">class</span>=<span class="text-amber-300">"main-container"</span>&gt;\n  <span class="text-zinc-500">&lt;!-- Your content here --&gt;</span>\n&lt;/<span class="text-emerald-400">div</span>&gt;`;
+
+        renderOutput();
+        updateSimulator(mobSidePx, pcSidePx, mobTotalGutterRem, pcContainerPx, pcMaxRem, mobVPx, pcVPx, enableV);
+        validateGeometry(mobScreenPx, mobContainerPx, mobSidePx, pcScreenPx, pcContainerPx, pcSidePx);
+      }
+
+      function validateGeometry(mobScreenPx, mobContainerPx, mobSidePx, pcScreenPx, pcContainerPx, pcSidePx) {
+        const mobNeeded = mobContainerPx + (mobSidePx * 2);
+        const pcNeeded = pcContainerPx + (pcSidePx * 2);
+
+        const mobOverflow = mobNeeded - mobScreenPx;
+        const pcOverflow = pcNeeded - pcScreenPx;
+
+        const banner = document.getElementById("geometrySafetyBanner");
+        const icon = document.getElementById("safetyIcon");
+        const title = document.getElementById("safetyTitle");
+        const desc = document.getElementById("safetyDesc");
+        const fixBtnArea = document.getElementById("safetyFixAction");
+
+        if (mobOverflow > 0 || pcOverflow > 0) {
+          banner.className = "mt-4 p-4 rounded-xl border border-rose-800/80 bg-rose-950/40 text-rose-200 transition-all duration-200";
+          icon.className = "fa-solid fa-triangle-exclamation text-base text-rose-400 mt-0.5";
+          title.className = "font-semibold text-sm text-rose-300";
+          title.textContent = "⚠️ Screen Overflow Geometry Hazard";
+
+          let msg = "";
+          if (mobOverflow > 0 && pcOverflow > 0) {
+            msg = `Both Mobile & PC containers overflow screen limits! Mobile exceeds by ${mobOverflow}px (${mobContainerPx}px container + ${mobSidePx*2}px side padding > ${mobScreenPx}px screen), and PC exceeds by ${pcOverflow}px.`;
+          } else if (mobOverflow > 0) {
+            msg = `Mobile container (${mobContainerPx}px) + side padding (${mobSidePx * 2}px total) = ${mobNeeded}px, which exceeds your ${mobScreenPx}px screen by ${mobOverflow}px! This causes horizontal scrolling on mobile.`;
+          } else {
+            msg = `PC container (${pcContainerPx}px) + side padding (${pcSidePx * 2}px total) = ${pcNeeded}px, which exceeds your ${pcScreenPx}px screen by ${pcOverflow}px!`;
+          }
+
+          desc.textContent = msg;
+          fixBtnArea.classList.remove("hidden");
+          fixBtnArea.innerHTML = `
+            <button type="button" onclick="autoFixGeometry()" class="px-3 py-1.5 rounded-lg bg-rose-900/80 hover:bg-rose-800 text-rose-100 font-semibold text-xs border border-rose-700 shadow-sm transition-all flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
+              <span>Auto-Fix Container & Padding Geometry</span>
+            </button>
+          `;
+        } else {
+          banner.className = "mt-4 p-4 rounded-xl border border-emerald-800/60 bg-emerald-950/30 text-emerald-200 transition-all duration-200";
+          icon.className = "fa-solid fa-circle-check text-base text-emerald-400 mt-0.5";
+          title.className = "font-semibold text-sm text-emerald-300";
+          title.textContent = "✅ Ergonomic & Responsive Geometry Approved";
+          desc.textContent = `All side paddings and container widths fit cleanly inside Mobile (${mobScreenPx}px) and PC (${pcScreenPx}px) viewports with safe side gutters.`;
+          fixBtnArea.classList.add("hidden");
+        }
+      }
+
+      function autoFixGeometry() {
+        const mobScreenPx = parseFloat(document.getElementById("mobScreenWidth").value) || 440;
+        const mobSidePx = getPx(parseFloat(document.getElementById("mobSidePadInput").value) || 0, document.getElementById("mobSideUnit").value);
+        const safeMobContainer = Math.max(0, mobScreenPx - mobSidePx * 2);
+        document.getElementById("mobContainerWidth").value = safeMobContainer;
+
+        const pcScreenPx = parseFloat(document.getElementById("pcScreenWidth").value) || 1920;
+        const pcSidePx = getPx(parseFloat(document.getElementById("pcSidePadInput").value) || 0, document.getElementById("pcSideUnit").value);
+        const safePcContainer = Math.max(0, pcScreenPx - pcSidePx * 2);
+        document.getElementById("pcContainerWidth").value = safePcContainer;
+
+        compute("figma");
+      }
+
+      function renderOutput() {
+        const map = {
+          css: codeMap.cssHtml,
+          tw: codeMap.twHtml,
+          bs: codeMap.bsHtml,
+        };
+        document.getElementById("outputCode").innerHTML = map[activeTab] || "";
+      }
+
+      function updateSimulator(mobSidePx, pcSidePx, mobTotalGutterRem, pcContainerPx, pcMaxRem, mobVPx, pcVPx, enableV) {
+        const sliderW = parseFloat(document.getElementById("simSlider").value) || 1440;
+        
+        let currentSidePx = mobSidePx;
+        let currentVPx = mobVPx;
+        let deviceTag = "📱 Mobile";
+
+        if (sliderW >= 1024) {
+          currentSidePx = pcSidePx;
+          currentVPx = pcVPx;
+          deviceTag = "💻 Desktop";
+        } else if (sliderW >= 768) {
+          const factor = (sliderW - 768) / (1024 - 768);
+          currentSidePx = Math.round(mobSidePx + (pcSidePx - mobSidePx) * factor);
+          currentVPx = Math.round(mobVPx + (pcVPx - mobVPx) * factor);
+          deviceTag = "📑 Tablet";
+        }
+
+        document.getElementById("simWidthLabel").textContent = `${Math.round(sliderW)}px (${deviceTag})`;
+        document.getElementById("simFrameWidthText").textContent = `${Math.round(sliderW)}px (${deviceTag})`;
+
+        const actualContainerW = Math.min(sliderW, pcContainerPx);
+        document.getElementById("simMetricsText").textContent = `Container Width: ${Math.round(actualContainerW)}px`;
+
+        const containerBounds = document.getElementById("simContainerBounds");
+        const containerRatio = sliderW > 0 ? (actualContainerW / sliderW) : 1;
+        const containerPct = Math.max(15, Math.min(100, containerRatio * 100));
+        containerBounds.style.width = `${containerPct}%`;
+        containerBounds.style.marginLeft = "auto";
+        containerBounds.style.marginRight = "auto";
+
+        document.getElementById("simLeftPadText").textContent = `${Math.round(currentSidePx)}px`;
+        document.getElementById("simRightPadText").textContent = `${Math.round(currentSidePx)}px`;
+
+        const topStrip = document.getElementById("simTopPadStrip");
+        const bottomStrip = document.getElementById("simBottomPadStrip");
+
+        if (enableV && currentVPx > 0) {
+          topStrip.style.display = "flex";
+          bottomStrip.style.display = "flex";
+          document.getElementById("simTopPadText").textContent = `Top Padding: ${Math.round(currentVPx)}px`;
+          document.getElementById("simBottomPadText").textContent = `Bottom Padding: ${Math.round(currentVPx)}px`;
+        } else {
+          topStrip.style.display = "none";
+          bottomStrip.style.display = "none";
+        }
+
+        document.getElementById("simContentBoundsText").textContent = 
+          `width: calc(100% - ${mobTotalGutterRem}rem) • max-width: ${pcMaxRem}rem`;
+      }
+
+      // Presets
+      document.getElementById("btnPresetUser").addEventListener("click", () => {
+        document.getElementById("mobScreenWidth").value = 440;
+        document.getElementById("mobContainerWidth").value = 360;
+        document.getElementById("mobSidePadInput").value = 40;
+        document.getElementById("mobVPadInput").value = 16;
+        document.getElementById("pcScreenWidth").value = 1920;
+        document.getElementById("pcContainerWidth").value = 1440;
+        document.getElementById("pcSidePadInput").value = 240;
+        document.getElementById("pcVPadInput").value = 48;
+        compute("figma");
+      });
+
+      document.getElementById("btnPresetStd").addEventListener("click", () => {
+        document.getElementById("mobScreenWidth").value = 390;
+        document.getElementById("mobContainerWidth").value = 358;
+        document.getElementById("mobSidePadInput").value = 16;
+        document.getElementById("mobVPadInput").value = 16;
+        document.getElementById("pcScreenWidth").value = 1440;
+        document.getElementById("pcContainerWidth").value = 1280;
+        document.getElementById("pcSidePadInput").value = 80;
+        document.getElementById("pcVPadInput").value = 32;
+        compute("figma");
+      });
+
+      // Bind Inputs
+      ["mobScreenWidth", "mobContainerWidth", "pcScreenWidth", "pcContainerWidth"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener("input", () => compute("figma"));
+          el.addEventListener("change", () => compute("figma"));
+          el.addEventListener("keyup", () => compute("figma"));
+        }
+      });
+
+      ["mobSidePadInput", "mobSideUnit"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener("input", () => compute("mobSidePad"));
+          el.addEventListener("change", () => compute("mobSidePad"));
+          el.addEventListener("keyup", () => compute("mobSidePad"));
+        }
+      });
+
+      ["pcSidePadInput", "pcSideUnit"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener("input", () => compute("pcSidePad"));
+          el.addEventListener("change", () => compute("pcSidePad"));
+          el.addEventListener("keyup", () => compute("pcSidePad"));
+        }
+      });
+
+      ["mobVPadInput", "mobVUnit", "pcVPadInput", "pcVUnit", "vPaddingToggle"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener("input", () => compute("vPad"));
+          el.addEventListener("change", () => compute("vPad"));
+          el.addEventListener("keyup", () => compute("vPad"));
+        }
+      });
+
+      document.getElementById("simSlider").addEventListener("input", () => compute("sim"));
+
+      // Code Tab Switcher
+      document.querySelectorAll(".tab-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".tab-btn").forEach((b) => {
+            b.classList.remove("active", "bg-zinc-800", "text-white");
+            b.classList.add("bg-transparent", "text-zinc-400");
+          });
+          btn.classList.add("active", "bg-zinc-800", "text-white");
+          btn.classList.remove("bg-transparent", "text-zinc-400");
+          activeTab = btn.dataset.tab;
+          renderOutput();
+        });
+      });
+
+      // Copy Button
+      document.getElementById("copyBtn").addEventListener("click", () => {
+        const rawCode = codeMap[activeTab] || "";
+        const tempEl = document.createElement("div");
+        tempEl.innerHTML = rawCode;
+        const textToCopy = tempEl.textContent || tempEl.innerText || "";
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          const copyText = document.getElementById("copyText");
+          const copyIcon = document.getElementById("copyIcon");
+          const btn = document.getElementById("copyBtn");
+
+          copyText.textContent = "Copied to Clipboard!";
+          copyIcon.className = "fa-solid fa-check text-sm text-emerald-600";
+          btn.classList.add("bg-emerald-100", "border-emerald-300");
+
+          setTimeout(() => {
+            copyText.textContent = "Copy Generated Code";
+            copyIcon.className = "fa-regular fa-copy text-sm";
+            btn.classList.remove("bg-emerald-100", "border-emerald-300");
+          }, 1600);
+        });
+      });
+
+      // Init
+      compute("figma");
+    </script>
+  </body>
+</html>
