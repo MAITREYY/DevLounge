@@ -8,8 +8,9 @@ import FluidBoxTool from './components/tools/FluidBoxTool';
 import GlassmorphismTool from './components/tools/GlassmorphismTool';
 import CssGridTool from './components/tools/CssGridTool';
 import ShadowStudioTool from './components/tools/ShadowStudioTool';
+import ImageConverterTool from './components/tools/ImageConverterTool';
 
-import { Type, Box, Sparkles, Grid, Layers, Sun } from 'lucide-react';
+import { Type, Box, Sparkles, Grid, Sun, FileImage } from 'lucide-react';
 
 export default function App() {
   const [activeTool, setActiveTool] = useState('dashboard');
@@ -42,6 +43,19 @@ export default function App() {
       color: 'text-amber-400',
       glowBg: 'bg-amber-500',
       borderAccent: 'border-amber-800/80',
+    },
+    {
+      id: 'imageconverter',
+      name: 'Image Format Converter',
+      subtitle: 'PNG, JPG, WebP, BMP Any-to-Any',
+      category: 'design',
+      version: 'v1.0',
+      description: 'Convert images client-side between PNG, JPG, WebP, and BMP formats with instant size reduction and custom resolution scale.',
+      tags: ['PNG ➔ WEBP', 'JPG ➔ WEBP', 'Image Compressor', 'Client-Side Privacy'],
+      icon: FileImage,
+      color: 'text-teal-400',
+      glowBg: 'bg-teal-500',
+      borderAccent: 'border-teal-800/80',
     },
     {
       id: 'glassmorphism',
@@ -139,6 +153,18 @@ export default function App() {
               transition={{ duration: 0.25 }}
             >
               <FluidBoxTool />
+            </motion.div>
+          )}
+
+          {activeTool === 'imageconverter' && (
+            <motion.div
+              key="imageconverter"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.25 }}
+            >
+              <ImageConverterTool />
             </motion.div>
           )}
 
