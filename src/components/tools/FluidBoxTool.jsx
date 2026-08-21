@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { triggerCopyConfetti } from '../../utils/helpers';
-import { Smartphone, Laptop, Sliders, Eye, Check, Copy, AlertTriangle, CheckCircle2, Wand2, ArrowUpDown } from 'lucide-react';
+import { Smartphone, Laptop, Sliders, Eye, Check, Copy, AlertTriangle, CheckCircle2, Wand2 } from 'lucide-react';
 
 export default function FluidBoxTool() {
   // Mobile Spec State
@@ -101,9 +101,9 @@ export default function FluidBoxTool() {
     setPcVUnit('px');
   };
 
-  // Generate Code Output
+  // Code Exporters
   const generatedCode = useMemo(() => {
-    // 1. Custom CSS
+    // 1. Vanilla CSS
     let cssLines = [];
     cssLines.push(`width: calc(100% - ${mobTotalGutterRem}rem);`);
     cssLines.push(`max-width: ${pcMaxRem}rem;`);
@@ -178,28 +178,28 @@ export default function FluidBoxTool() {
   const containerPct = simWidth > 0 ? Math.max(15, Math.min(100, (actualContainerW / simWidth) * 100)) : 100;
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-300">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="space-y-8">
       {/* Header Section */}
       <header className="text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-950/40 border border-amber-800/60 text-xs text-amber-300 mb-1">
-          <i className="fa-brands fa-figma text-amber-400"></i>
-          <span>Figma Design-to-Code Container Generator</span>
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs text-zinc-300 mb-1 font-mono">
+          <Smartphone className="w-3.5 h-3.5 text-zinc-400" />
+          <span>Figma Container Generator</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-white">
-          Fluid Layout <code className="mono text-emerald-300 font-semibold">Container</code>
+        <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+          Fluid Layout <code className="mono text-zinc-300 font-semibold">Container</code>
         </h1>
         <p className="text-zinc-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
-          Control side & top/bottom padding for Mobile and PC to generate responsive <code class="mono text-zinc-200">calc(100% - X)</code> container CSS.
+          Control side & top/bottom padding for Mobile and PC to generate responsive <code className="mono text-zinc-200">calc(100% - X)</code> container CSS.
         </p>
       </header>
 
       {/* Main Generator Card */}
-      <div className="bg-zinc-950/90 border border-zinc-800 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl space-y-8">
+      <div className="bg-black border border-zinc-800 rounded-2xl p-6 sm:p-8 space-y-8 shadow-xl">
         {/* Controls Section */}
         <div>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
-              <Sliders className="w-4 h-4 text-emerald-400" /> Responsive Figma & Padding Controls
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-1.5">
+              <Sliders className="w-3.5 h-3.5 text-zinc-400" /> Responsive Figma & Padding Controls
             </h2>
 
             {/* Quick Presets */}
@@ -207,14 +207,14 @@ export default function FluidBoxTool() {
               <button
                 type="button"
                 onClick={applyPresetUser}
-                className="px-2.5 py-1 rounded-lg bg-emerald-950/90 text-emerald-300 border border-emerald-800/80 text-[11px] mono font-medium hover:bg-emerald-900 transition-colors"
+                className="px-2.5 py-1 rounded-lg bg-zinc-900 text-zinc-300 border border-zinc-800 text-[11px] mono font-medium hover:bg-zinc-800 transition-colors"
               >
                 440px / 360px (40px Side)
               </button>
               <button
                 type="button"
                 onClick={applyPresetStd}
-                className="px-2.5 py-1 rounded-lg bg-zinc-900 text-zinc-400 border border-zinc-800 text-[11px] mono hover:text-white transition-colors"
+                className="px-2.5 py-1 rounded-lg bg-zinc-950 text-zinc-400 border border-zinc-800 text-[11px] mono hover:text-white transition-colors"
               >
                 390px / 358px (16px Side)
               </button>
@@ -223,12 +223,12 @@ export default function FluidBoxTool() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {/* 1. Mobile Viewport Spec */}
-            <div className="p-4 rounded-xl bg-black border border-zinc-800/90 space-y-3.5">
+            <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 space-y-3.5">
               <div className="flex items-center justify-between text-xs font-semibold text-white border-b border-zinc-900 pb-2">
                 <span className="flex items-center gap-1.5">
-                  <Smartphone className="w-4 h-4 text-emerald-400" /> Mobile Viewport Spec
+                  <Smartphone className="w-4 h-4 text-zinc-400" /> Mobile Viewport Spec
                 </span>
-                <span className="mono text-[11px] px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-800/60">
+                <span className="mono text-[11px] px-2 py-0.5 rounded bg-zinc-900 text-zinc-300 border border-zinc-800">
                   Total Gutter: {mobTotalGutterRem}rem ({mobTotalGutterPx}px)
                 </span>
               </div>
@@ -241,7 +241,7 @@ export default function FluidBoxTool() {
                       type="number"
                       value={mobScreenWidth}
                       onChange={(e) => setMobScreenWidth(e.target.value)}
-                      className="mono w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-2.5 pr-7 py-1.5 text-white text-xs focus:outline-none focus:border-emerald-500"
+                      className="mono w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-2.5 pr-7 py-1.5 text-white text-xs focus:outline-none focus:border-zinc-500"
                     />
                     <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-zinc-500 mono">px</span>
                   </div>
@@ -254,7 +254,7 @@ export default function FluidBoxTool() {
                       type="number"
                       value={mobContainerWidth}
                       onChange={(e) => setMobContainerWidth(e.target.value)}
-                      className="mono w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-2.5 pr-7 py-1.5 text-white text-xs focus:outline-none focus:border-emerald-500"
+                      className="mono w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-2.5 pr-7 py-1.5 text-white text-xs focus:outline-none focus:border-zinc-500"
                     />
                     <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-zinc-500 mono">px</span>
                   </div>
@@ -262,21 +262,21 @@ export default function FluidBoxTool() {
               </div>
 
               {/* Mobile Paddings Row */}
-              <div className="grid grid-cols-2 gap-3 text-xs pt-1 border-t border-zinc-900/80">
+              <div className="grid grid-cols-2 gap-3 text-xs pt-1 border-t border-zinc-900">
                 <div>
-                  <label className="text-[11px] text-emerald-400 font-medium block mb-1">Mobile Side Pad</label>
+                  <label className="text-[11px] text-zinc-300 font-medium block mb-1">Mobile Side Pad</label>
                   <div className="relative flex items-center">
                     <input
                       type="number"
                       value={mobSidePad}
                       onChange={(e) => setMobSidePad(e.target.value)}
-                      className="mono w-full bg-zinc-900 border border-emerald-500/70 rounded-lg pl-2.5 pr-14 py-1.5 text-white text-xs focus:outline-none focus:ring-1 focus:ring-emerald-400"
+                      className="mono w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-2.5 pr-14 py-1.5 text-white text-xs focus:outline-none focus:border-zinc-500"
                     />
                     <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center">
                       <select
                         value={mobSideUnit}
                         onChange={(e) => setMobSideUnit(e.target.value)}
-                        className="dec-select pl-1.5 pr-3 py-0.5 rounded text-[10px] text-emerald-300 mono cursor-pointer bg-zinc-950 border border-zinc-800"
+                        className="dec-select pl-1.5 pr-3 py-0.5 rounded text-[10px] text-zinc-300 mono cursor-pointer bg-zinc-950 border border-zinc-800"
                       >
                         <option value="px">px</option>
                         <option value="rem">rem</option>
@@ -286,19 +286,19 @@ export default function FluidBoxTool() {
                 </div>
 
                 <div>
-                  <label className="text-[11px] text-amber-400 font-medium block mb-1">Mobile Top/Bottom</label>
+                  <label className="text-[11px] text-zinc-300 font-medium block mb-1">Mobile Top/Bottom</label>
                   <div className="relative flex items-center">
                     <input
                       type="number"
                       value={mobVPad}
                       onChange={(e) => setMobVPad(e.target.value)}
-                      className="mono w-full bg-zinc-900 border border-amber-500/70 rounded-lg pl-2.5 pr-14 py-1.5 text-white text-xs focus:outline-none focus:ring-1 focus:ring-amber-400"
+                      className="mono w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-2.5 pr-14 py-1.5 text-white text-xs focus:outline-none focus:border-zinc-500"
                     />
                     <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center">
                       <select
                         value={mobVUnit}
                         onChange={(e) => setMobVUnit(e.target.value)}
-                        className="dec-select pl-1.5 pr-3 py-0.5 rounded text-[10px] text-amber-300 mono cursor-pointer bg-zinc-950 border border-zinc-800"
+                        className="dec-select pl-1.5 pr-3 py-0.5 rounded text-[10px] text-zinc-300 mono cursor-pointer bg-zinc-950 border border-zinc-800"
                       >
                         <option value="px">px</option>
                         <option value="rem">rem</option>
@@ -310,12 +310,12 @@ export default function FluidBoxTool() {
             </div>
 
             {/* 2. PC / Desktop Viewport Spec */}
-            <div className="p-4 rounded-xl bg-black border border-zinc-800/90 space-y-3.5">
+            <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 space-y-3.5">
               <div className="flex items-center justify-between text-xs font-semibold text-white border-b border-zinc-900 pb-2">
                 <span className="flex items-center gap-1.5">
-                  <Laptop className="w-4 h-4 text-emerald-400" /> PC / Desktop Viewport Spec
+                  <Laptop className="w-4 h-4 text-zinc-400" /> PC / Desktop Viewport Spec
                 </span>
-                <span className="mono text-[11px] px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-800/60">
+                <span className="mono text-[11px] px-2 py-0.5 rounded bg-zinc-900 text-zinc-300 border border-zinc-800">
                   Max: {pcContainerPx}px ({pcMaxRem}rem)
                 </span>
               </div>
@@ -328,7 +328,7 @@ export default function FluidBoxTool() {
                       type="number"
                       value={pcScreenWidth}
                       onChange={(e) => setPcScreenWidth(e.target.value)}
-                      className="mono w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-2.5 pr-7 py-1.5 text-white text-xs focus:outline-none focus:border-emerald-500"
+                      className="mono w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-2.5 pr-7 py-1.5 text-white text-xs focus:outline-none focus:border-zinc-500"
                     />
                     <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-zinc-500 mono">px</span>
                   </div>
@@ -341,7 +341,7 @@ export default function FluidBoxTool() {
                       type="number"
                       value={pcContainerWidth}
                       onChange={(e) => setPcContainerWidth(e.target.value)}
-                      className="mono w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-2.5 pr-7 py-1.5 text-white text-xs focus:outline-none focus:border-emerald-500"
+                      className="mono w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-2.5 pr-7 py-1.5 text-white text-xs focus:outline-none focus:border-zinc-500"
                     />
                     <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-zinc-500 mono">px</span>
                   </div>
@@ -349,21 +349,21 @@ export default function FluidBoxTool() {
               </div>
 
               {/* PC Paddings Row */}
-              <div className="grid grid-cols-2 gap-3 text-xs pt-1 border-t border-zinc-900/80">
+              <div className="grid grid-cols-2 gap-3 text-xs pt-1 border-t border-zinc-900">
                 <div>
-                  <label className="text-[11px] text-emerald-400 font-medium block mb-1">PC Side Pad</label>
+                  <label className="text-[11px] text-zinc-300 font-medium block mb-1">PC Side Pad</label>
                   <div className="relative flex items-center">
                     <input
                       type="number"
                       value={pcSidePad}
                       onChange={(e) => setPcSidePad(e.target.value)}
-                      className="mono w-full bg-zinc-900 border border-emerald-500/70 rounded-lg pl-2.5 pr-14 py-1.5 text-white text-xs focus:outline-none focus:ring-1 focus:ring-emerald-400"
+                      className="mono w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-2.5 pr-14 py-1.5 text-white text-xs focus:outline-none focus:border-zinc-500"
                     />
                     <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center">
                       <select
                         value={pcSideUnit}
                         onChange={(e) => setPcSideUnit(e.target.value)}
-                        className="dec-select pl-1.5 pr-3 py-0.5 rounded text-[10px] text-emerald-300 mono cursor-pointer bg-zinc-950 border border-zinc-800"
+                        className="dec-select pl-1.5 pr-3 py-0.5 rounded text-[10px] text-zinc-300 mono cursor-pointer bg-zinc-950 border border-zinc-800"
                       >
                         <option value="px">px</option>
                         <option value="rem">rem</option>
@@ -373,19 +373,19 @@ export default function FluidBoxTool() {
                 </div>
 
                 <div>
-                  <label className="text-[11px] text-amber-400 font-medium block mb-1">PC Top/Bottom</label>
+                  <label className="text-[11px] text-zinc-300 font-medium block mb-1">PC Top/Bottom</label>
                   <div className="relative flex items-center">
                     <input
                       type="number"
                       value={pcVPad}
                       onChange={(e) => setPcVPad(e.target.value)}
-                      className="mono w-full bg-zinc-900 border border-amber-500/70 rounded-lg pl-2.5 pr-14 py-1.5 text-white text-xs focus:outline-none focus:ring-1 focus:ring-amber-400"
+                      className="mono w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-2.5 pr-14 py-1.5 text-white text-xs focus:outline-none focus:border-zinc-500"
                     />
                     <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center">
                       <select
                         value={pcVUnit}
                         onChange={(e) => setPcVUnit(e.target.value)}
-                        className="dec-select pl-1.5 pr-3 py-0.5 rounded text-[10px] text-amber-300 mono cursor-pointer bg-zinc-950 border border-zinc-800"
+                        className="dec-select pl-1.5 pr-3 py-0.5 rounded text-[10px] text-zinc-300 mono cursor-pointer bg-zinc-950 border border-zinc-800"
                       >
                         <option value="px">px</option>
                         <option value="rem">rem</option>
@@ -399,12 +399,12 @@ export default function FluidBoxTool() {
 
           {/* Geometry Ergonomics & Safety Warning Banner */}
           {hasHazard ? (
-            <div className="mt-4 p-4 rounded-xl border border-rose-800/80 bg-rose-950/40 text-rose-200 transition-all duration-200">
+            <div className="mt-4 p-4 rounded-xl border border-rose-900/50 bg-rose-950/30 text-rose-300/90 transition-all duration-200">
               <div className="flex items-start gap-3">
-                <AlertTriangle className="w-5 h-5 text-rose-400 mt-0.5 shrink-0" />
+                <AlertTriangle className="w-5 h-5 text-rose-400/80 mt-0.5 shrink-0" />
                 <div className="flex-1 text-xs space-y-1.5">
-                  <div className="font-semibold text-sm text-rose-300">⚠️ Screen Overflow Geometry Hazard</div>
-                  <div className="text-zinc-300 leading-relaxed">
+                  <div className="font-semibold text-sm text-rose-300">Screen Overflow Geometry Hazard</div>
+                  <div className="text-zinc-300/80 leading-relaxed">
                     {mobOverflow > 0 && pcOverflow > 0
                       ? `Both Mobile & PC containers overflow screen limits! Mobile exceeds by ${mobOverflow}px, and PC exceeds by ${pcOverflow}px.`
                       : mobOverflow > 0
@@ -415,9 +415,9 @@ export default function FluidBoxTool() {
                     <button
                       type="button"
                       onClick={autoFixGeometry}
-                      className="px-3 py-1.5 rounded-lg bg-rose-900/80 hover:bg-rose-800 text-rose-100 font-semibold text-xs border border-rose-700 shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
+                      className="px-3 py-1.5 rounded-lg bg-rose-950/50 hover:bg-rose-900/60 text-rose-200 font-semibold text-xs border border-rose-900/60 shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
                     >
-                      <Wand2 className="w-3.5 h-3.5 text-xs" />
+                      <Wand2 className="w-3.5 h-3.5 text-xs text-rose-300" />
                       <span>Auto-Fix Container & Padding Geometry</span>
                     </button>
                   </div>
@@ -425,12 +425,12 @@ export default function FluidBoxTool() {
               </div>
             </div>
           ) : (
-            <div className="mt-4 p-4 rounded-xl border border-emerald-800/60 bg-emerald-950/30 text-emerald-200 transition-all duration-200">
+            <div className="mt-4 p-4 rounded-xl border border-emerald-900/50 bg-emerald-950/30 text-emerald-300/90 transition-all duration-200">
               <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-emerald-400 mt-0.5 shrink-0" />
+                <CheckCircle2 className="w-5 h-5 text-emerald-400/80 mt-0.5 shrink-0" />
                 <div className="flex-1 text-xs space-y-1">
-                  <div className="font-semibold text-sm text-emerald-300">✅ Ergonomic & Responsive Geometry Approved</div>
-                  <div className="text-zinc-300 leading-relaxed">
+                  <div className="font-semibold text-sm text-emerald-300">Responsive Geometry Approved</div>
+                  <div className="text-zinc-300/80 leading-relaxed">
                     All side paddings and container widths fit cleanly inside Mobile ({mobScreenPx}px) and PC ({pcScreenPx}px) viewports with safe side gutters.
                   </div>
                 </div>
@@ -443,101 +443,68 @@ export default function FluidBoxTool() {
         <div className="space-y-3 pt-2">
           <div className="flex items-center justify-between text-xs">
             <span className="font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-1.5">
-              <Eye className="w-4 h-4 text-zinc-400" /> Interactive Viewport Simulator
+              <Eye className="w-3.5 h-3.5 text-zinc-400" /> Interactive Viewport Simulator
             </span>
             <div className="flex items-center gap-2">
               <span className="text-zinc-500">Screen Width:</span>
               <span className="mono font-semibold px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-white">
-                {Math.round(simWidth)}px ({deviceTag})
+                {simWidth}px
               </span>
+              <span className="mono text-zinc-400 ml-1">{deviceTag}</span>
             </div>
           </div>
 
           <input
             type="range"
-            min="320"
-            max="2560"
+            min={320}
+            max={1920}
             value={simWidth}
             onChange={(e) => setSimWidth(Number(e.target.value))}
-            className="w-full cursor-pointer accent-emerald-400"
+            className="w-full cursor-pointer"
           />
 
-          {/* Live Screen Frame */}
-          <div className="bg-black border border-zinc-800 rounded-xl h-56 flex flex-col items-center justify-center overflow-hidden p-4 relative">
+          <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-4 sm:p-6 min-h-[160px] flex flex-col justify-center items-center relative overflow-hidden">
+            <div className="absolute top-3 left-3 text-[10px] uppercase tracking-widest text-zinc-600 font-mono">
+              Simulated Screen ({simWidth}px)
+            </div>
+
             <div
-              className="h-40 bg-zinc-950 border border-zinc-800 rounded-lg p-2 flex flex-col items-center justify-between relative transition-all duration-150"
-              style={{ width: `${containerPct}%` }}
+              className="border border-zinc-700 bg-zinc-900/90 rounded-lg p-4 transition-all duration-150 flex flex-col justify-between relative shadow-md"
+              style={{
+                width: `${containerPct}%`,
+                paddingLeft: `${currentSidePx}px`,
+                paddingRight: `${currentSidePx}px`,
+                paddingTop: `${includeVPad ? currentVPx : 16}px`,
+                paddingBottom: `${includeVPad ? currentVPx : 16}px`,
+              }}
             >
-              <div className="w-full border-b border-zinc-900 pb-1.5 flex items-center justify-between text-[10px] text-zinc-600 font-mono px-2">
-                <span>
-                  viewport-width: <strong className="text-zinc-300">{Math.round(simWidth)}px</strong>
-                </span>
-                <span className="text-emerald-400 font-semibold">
-                  Container Width: {Math.round(actualContainerW)}px
-                </span>
+              <div className="text-[11px] mono text-zinc-400 flex items-center justify-between border-b border-zinc-800 pb-2">
+                <span>Container: {actualContainerW}px</span>
+                <span>Sides: {currentSidePx}px</span>
               </div>
-
-              {/* Inner Container Bounds */}
-              <div className="w-full h-full my-auto rounded border-2 border-dashed border-emerald-500/60 bg-emerald-950/20 relative flex flex-col justify-between transition-all duration-150 overflow-hidden">
-                {/* Top Padding Strip */}
-                {includeVPad && currentVPx > 0 && (
-                  <div className="w-full bg-amber-500/15 border-b border-amber-500/30 flex items-center justify-center text-[9px] font-mono text-amber-300 py-0.5">
-                    <span>Top Padding: {Math.round(currentVPx)}px</span>
-                  </div>
-                )}
-
-                {/* Side Strips & Center Area */}
-                <div className="flex-1 w-full flex items-stretch">
-                  <div className="bg-emerald-500/15 border-r border-emerald-500/40 flex items-center justify-center text-[9px] font-mono text-emerald-300 px-1">
-                    <span>{Math.round(currentSidePx)}px</span>
-                  </div>
-
-                  <div className="flex-1 bg-zinc-900/90 border border-zinc-800 m-1 rounded flex flex-col items-center justify-center p-2 text-center shadow-inner">
-                    <div className="text-xs font-semibold text-white tracking-tight flex items-center gap-1.5">
-                      <i className="fa-solid fa-cube text-emerald-400"></i>
-                      <span>Main Container Content Area</span>
-                    </div>
-                    <div className="text-[11px] mono text-zinc-400 mt-1">
-                      width: calc(100% - {mobTotalGutterRem}rem) • max-width: {pcMaxRem}rem
-                    </div>
-                  </div>
-
-                  <div className="bg-emerald-500/15 border-l border-emerald-500/40 flex items-center justify-center text-[9px] font-mono text-emerald-300 px-1">
-                    <span>{Math.round(currentSidePx)}px</span>
-                  </div>
-                </div>
-
-                {/* Bottom Padding Strip */}
-                {includeVPad && currentVPx > 0 && (
-                  <div className="w-full bg-amber-500/15 border-t border-amber-500/30 flex items-center justify-center text-[9px] font-mono text-amber-300 py-0.5">
-                    <span>Bottom Padding: {Math.round(currentVPx)}px</span>
-                  </div>
-                )}
+              <div className="text-xs text-white font-medium text-center py-4">
+                Fluid Content Area
               </div>
             </div>
           </div>
         </div>
 
-        {/* Output Code Section */}
+        {/* Code Exporter */}
         <div className="space-y-3 pt-2">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-800 pb-2.5">
+          <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
             <div className="flex gap-2">
               <button
                 onClick={() => setActiveTab('css')}
                 className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all flex items-center gap-1.5 ${
-                  activeTab === 'css'
-                    ? 'bg-zinc-800 text-white'
-                    : 'bg-transparent text-zinc-400 hover:text-zinc-200'
+                  activeTab === 'css' ? 'bg-zinc-800 text-white' : 'bg-transparent text-zinc-400 hover:text-zinc-200'
                 }`}
               >
-                Custom CSS
+                CSS
               </button>
               <button
                 onClick={() => setActiveTab('tw')}
                 className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all flex items-center gap-1.5 ${
-                  activeTab === 'tw'
-                    ? 'bg-zinc-800 text-white'
-                    : 'bg-transparent text-zinc-400 hover:text-zinc-200'
+                  activeTab === 'tw' ? 'bg-zinc-800 text-white' : 'bg-transparent text-zinc-400 hover:text-zinc-200'
                 }`}
               >
                 Tailwind CSS
@@ -545,44 +512,37 @@ export default function FluidBoxTool() {
               <button
                 onClick={() => setActiveTab('bs')}
                 className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all flex items-center gap-1.5 ${
-                  activeTab === 'bs'
-                    ? 'bg-zinc-800 text-white'
-                    : 'bg-transparent text-zinc-400 hover:text-zinc-200'
+                  activeTab === 'bs' ? 'bg-zinc-800 text-white' : 'bg-transparent text-zinc-400 hover:text-zinc-200'
                 }`}
               >
-                Bootstrap 5
+                Bootstrap
               </button>
             </div>
 
-            {/* Vertical Padding Toggle */}
-            <label className="flex items-center cursor-pointer gap-2 bg-zinc-900/90 border border-zinc-800 hover:border-zinc-700 px-3 py-1.5 rounded-lg transition-all">
-              <ArrowUpDown className="w-3.5 h-3.5 text-amber-400" />
-              <span className="text-xs font-medium text-zinc-300">
-                {includeVPad ? `Include Top/Bottom Padding (${mobVPx}px / ${pcVPx}px)` : 'Exclude Top/Bottom Padding'}
-              </span>
+            <label className="flex items-center gap-2 text-xs text-zinc-400 cursor-pointer">
               <input
                 type="checkbox"
                 checked={includeVPad}
                 onChange={(e) => setIncludeVPad(e.target.checked)}
-                className="ml-1 rounded bg-zinc-800 border-zinc-700 text-emerald-500 focus:ring-emerald-500"
+                className="rounded accent-white bg-zinc-900 border-zinc-700"
               />
+              <span>Include Vertical Padding</span>
             </label>
           </div>
 
-          {/* Code Viewer */}
-          <pre className="mono bg-black border border-zinc-800 rounded-xl p-4 text-xs sm:text-sm leading-relaxed overflow-x-auto min-h-[110px] text-zinc-200 select-all whitespace-pre-wrap">
+          <pre className="mono bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-xs sm:text-sm leading-relaxed overflow-x-auto min-h-[96px] text-zinc-200 select-all whitespace-pre-wrap">
             <code>{generatedCode}</code>
           </pre>
 
           <button
             onClick={handleCopy}
-            className="w-full bg-zinc-100 hover:bg-white active:bg-zinc-200 text-black transition-all text-xs sm:text-sm font-semibold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg cursor-pointer"
+            className="w-full bg-white hover:bg-zinc-200 active:bg-zinc-300 text-black transition-all text-xs sm:text-sm font-semibold py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm"
           >
-            {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
-            <span>{copied ? 'Copied to Clipboard!' : 'Copy Generated Code'}</span>
+            {copied ? <Check className="w-4 h-4 text-black" /> : <Copy className="w-4 h-4" />}
+            <span>{copied ? 'Copied to Clipboard!' : 'Copy Container Code'}</span>
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

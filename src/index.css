@@ -7,6 +7,7 @@
     background-color: #000000;
     color: #f4f4f5;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    letter-spacing: -0.01em;
   }
 }
 
@@ -14,70 +15,66 @@
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Scrollbar customization */
+/* Uber-Style Minimalist Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   background: #000000;
 }
 ::-webkit-scrollbar-thumb {
   background: #27272a;
-  border-radius: 3px;
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #3f3f46;
 }
 
-/* Background grid pattern */
-.bg-grid-pattern {
-  background-image: radial-gradient(
-    rgba(255, 255, 255, 0.08) 1px,
-    transparent 1px
-  );
-  background-size: 24px 24px;
-}
-
-/* Glassmorphism utility */
-.glass-panel {
-  background: rgba(9, 9, 11, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(39, 39, 42, 0.8);
-}
-
-.glass-panel-hover {
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
-}
-.glass-panel-hover:hover {
-  border-color: rgba(63, 63, 70, 1);
-  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.8), 0 0 25px 2px rgba(16, 185, 129, 0.08);
-}
-
-/* Custom range input */
+/* Uber-Style Monochrome Range Slider */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
-  height: 6px;
+  height: 3px;
   background: #18181b;
   border-radius: 9999px;
   outline: none;
-  border: 1px solid #27272a;
 }
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   background: #ffffff;
   cursor: pointer;
   border: 2px solid #000000;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
-  transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+  transition: transform 0.15s ease, background-color 0.15s ease;
 }
 input[type="range"]::-webkit-slider-thumb:hover {
   transform: scale(1.2);
-  box-shadow: 0 0 16px rgba(16, 185, 129, 0.6);
+}
+
+/* Subtle background grid pattern */
+.bg-grid-pattern {
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 1px
+  );
+  background-size: 28px 28px;
+}
+
+/* Minimalist Custom Select */
+.dec-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #09090b;
+  border: 1px solid #27272a;
+  transition: border-color 0.15s ease;
+}
+.dec-select:hover, .dec-select:focus {
+  border-color: #52525b;
+  outline: none;
 }

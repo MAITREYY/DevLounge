@@ -1,157 +1,178 @@
 import React, { useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { Sparkles, ArrowRight, Layers, Search, Filter, ShieldCheck, Check } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Type, BoxSelect, Search, ArrowRight, Layers, Check } from 'lucide-react';
 
-export default function Dashboard({ toolsList, setActiveTool, searchQuery, setSearchQuery }) {
-  const [selectedCategory, setSelectedCategory] = useState('all');
+export default function Dashboard() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filter, setFilter] = useState('all');
 
-  const categories = [
-    { id: 'all', label: 'All Utilities' },
-    { id: 'typography', label: 'Typography' },
-    { id: 'container', label: 'Layout & Containers' },
-    { id: 'design', label: 'Glass & Shadows' },
+  const tools = [
+    {
+      id: 'fluidclamp',
+      path: '/fluidclamp',
+      name: 'FluidClamp',
+      version: 'v1.2',
+      category: 'typography',
+      subtitle: 'Fluid Typography & CSS clamp()',
+      renderIcon: () => <Type className="w-5 h-5 text-white" />,
+      description: 'Create minimal, seamless font size scaling across mobile and desktop viewports without media queries using mathematical CSS clamp().',
+      tags: ['CSS clamp()', 'PX ➔ REM Converter', 'Fluid Curve SVG', 'Tailwind & Bootstrap', 'WCAG 2.1 Audit'],
+    },
+    {
+      id: 'fluidbox',
+      path: '/fluidbox',
+      name: 'FluidBox',
+      version: 'v1.0',
+      category: 'container',
+      subtitle: 'Figma Container & Layout Generator',
+      renderIcon: () => <BoxSelect className="w-5 h-5 text-white" />,
+      description: 'Generate perfectly proportioned layout containers for Mobile and PC Figma artboards with controlled side and top/bottom padding.',
+      tags: ['Figma Artboards', 'Side & Vertical Pad', 'Live Device Simulator', 'Tailwind & Bootstrap', 'Ergonomics Audit'],
+    },
   ];
 
   const filteredTools = useMemo(() => {
-    return toolsList.filter((tool) => {
-      const matchesCategory = selectedCategory === 'all' || tool.category === selectedCategory;
-      const matchesSearch =
+    return tools.filter((t) => {
+      const matchCategory = filter === 'all' || t.category === filter;
+      const matchSearch =
         !searchQuery ||
-        tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        tool.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        tool.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
-
-      return matchesCategory && matchesSearch;
+        t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        t.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        t.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+      return matchCategory && matchSearch;
     });
-  }, [toolsList, selectedCategory, searchQuery]);
+  }, [tools, filter, searchQuery]);
 
   return (
-    <div className="space-y-12 animate-in fade-in duration-300">
+    <div className="space-y-12">
       {/* Hero Header Section */}
-      <section className="text-center space-y-6 max-w-3xl mx-auto pt-6">
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-950/50 border border-amber-800/60 text-xs text-amber-300 shadow-lg shadow-amber-950/40"
-        >
-          <Sparkles className="w-4 h-4 text-amber-400 animate-spin-slow" />
-          <span>Developer Utility Suite & Code Generators v2.0</span>
-        </motion.div>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight"
-        >
+      <header className="text-center space-y-4 max-w-2xl mx-auto pt-6">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-[11px] text-zinc-300 font-mono tracking-wide">
+          <Layers className="w-3.5 h-3.5 text-zinc-400" />
+          <span>Developer Utility Suite</span>
+        </div>
+        <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
           Modern Web Developer <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-amber-300 to-purple-400">
-            Fluid Toolbox
-          </span>
-        </motion.h1>
+          <span className="text-zinc-400 font-normal">Toolbox</span>
+        </h1>
+        <p className="text-zinc-400 text-sm sm:text-base leading-relaxed max-w-lg mx-auto">
+          Lightweight, zero-dependency developer tools to generate responsive typography, screen containers, and layout code in seconds.
+        </p>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="text-zinc-400 text-sm sm:text-base max-w-xl mx-auto leading-relaxed"
-        >
-          Precision developer tools with zero setup. Generate responsive typography, container layouts, glass surfaces, and shadows in seconds.
-        </motion.p>
-
-        {/* Live Filter Category Buttons */}
-        <div className="flex items-center justify-center gap-2 flex-wrap pt-2">
-          {categories.map((cat) => (
+        {/* Live Search Bar */}
+        <div className="pt-4 relative max-w-xl mx-auto">
+          <div className="relative">
+            <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search tools by name, tag, or keyword (e.g. clamp, container)..."
+              className="w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none transition-colors"
+            />
+          </div>
+          {/* Category Filter Chips */}
+          <div className="flex items-center justify-center gap-2 mt-3 flex-wrap text-xs">
             <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat.id)}
-              className={`px-4 py-1.5 rounded-xl text-xs font-medium transition-all ${
-                selectedCategory === cat.id
-                  ? 'bg-emerald-950 text-emerald-300 border border-emerald-800/80 font-bold shadow-md shadow-emerald-950/40'
-                  : 'bg-zinc-950 text-zinc-400 border border-zinc-800/90 hover:text-white hover:bg-zinc-900'
+              onClick={() => setFilter('all')}
+              className={`px-3 py-1 rounded-lg border font-medium transition-all ${
+                filter === 'all'
+                  ? 'bg-zinc-800 text-white border-zinc-700'
+                  : 'bg-zinc-950 text-zinc-400 border-zinc-800 hover:text-white'
               }`}
             >
-              {cat.label}
+              All Tools
             </button>
-          ))}
+            <button
+              onClick={() => setFilter('typography')}
+              className={`px-3 py-1 rounded-lg border font-medium transition-all ${
+                filter === 'typography'
+                  ? 'bg-zinc-800 text-white border-zinc-700'
+                  : 'bg-zinc-950 text-zinc-400 border-zinc-800 hover:text-white'
+              }`}
+            >
+              Typography
+            </button>
+            <button
+              onClick={() => setFilter('container')}
+              className={`px-3 py-1 rounded-lg border font-medium transition-all ${
+                filter === 'container'
+                  ? 'bg-zinc-800 text-white border-zinc-700'
+                  : 'bg-zinc-950 text-zinc-400 border-zinc-800 hover:text-white'
+              }`}
+            >
+              Containers & Layout
+            </button>
+          </div>
         </div>
-      </section>
+      </header>
 
-      {/* Tools Section Grid */}
+      {/* Tools Grid Section */}
       <section className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xs font-extrabold uppercase tracking-wider text-zinc-400 flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-emerald-400" /> Active Developer Tools ({filteredTools.length})
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-2">
+            <Layers className="w-4 h-4 text-zinc-400" /> Active Tools
           </h2>
-          <span className="text-xs text-zinc-500 font-mono">Real-time Client Calculations</span>
+          <span className="text-xs text-zinc-500 font-mono">Showing {filteredTools.length} tools</span>
         </div>
 
-        {/* Tools Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {filteredTools.map((tool) => {
-            const IconComponent = tool.icon;
-            return (
-              <motion.div
-                key={tool.id}
-                whileHover={{ y: -5 }}
-                transition={{ duration: 0.2 }}
-                className="tool-card glass-panel rounded-3xl p-7 flex flex-col justify-between space-y-6 relative overflow-hidden group cursor-pointer"
-                onClick={() => setActiveTool(tool.id)}
-              >
-                {/* Background Ambient Glow */}
-                <div className={`absolute top-0 right-0 w-36 h-36 opacity-20 blur-[60px] pointer-events-none rounded-full ${tool.glowBg}`}></div>
-
-                <div className="space-y-4">
-                  {/* Top Row: Icon + Badges */}
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex items-center gap-4">
-                      <div className={`w-14 h-14 rounded-2xl border flex items-center justify-center p-3 shadow-md bg-black ${tool.borderAccent}`}>
-                        <IconComponent className={`w-7 h-7 ${tool.color}`} />
+          {filteredTools.map((tool) => (
+            <div
+              key={tool.id}
+              className="bg-black border border-zinc-800/90 rounded-2xl p-6 sm:p-7 flex flex-col justify-between space-y-6 relative overflow-hidden group hover:border-zinc-700 transition-colors"
+            >
+              <div className="space-y-4">
+                {/* Top Row: Icon + Title */}
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-center gap-3.5">
+                    <Link to={tool.path} className="p-3 rounded-xl border border-zinc-800 bg-zinc-950 group-hover:border-zinc-700 transition-colors block">
+                      {tool.renderIcon()}
+                    </Link>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-lg font-bold text-white tracking-tight group-hover:text-zinc-200 transition-colors">
+                          <Link to={tool.path}>{tool.name}</Link>
+                        </h3>
+                        <span className="text-[10px] mono px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 font-medium">
+                          {tool.version}
+                        </span>
                       </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h3 className="text-xl font-bold text-white tracking-tight group-hover:text-emerald-400 transition-colors">
-                            {tool.name}
-                          </h3>
-                          {tool.version && (
-                            <span className="text-[10px] mono px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300 font-medium">
-                              {tool.version}
-                            </span>
-                          )}
-                        </div>
-                        <p className={`text-xs font-mono mt-0.5 ${tool.color}`}>{tool.subtitle}</p>
-                      </div>
+                      <p className="text-xs font-mono text-zinc-400 mt-0.5">{tool.subtitle}</p>
                     </div>
                   </div>
-
-                  {/* Description */}
-                  <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-                    {tool.description}
-                  </p>
-
-                  {/* Feature Tags */}
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {tool.tags.map((tag, idx) => (
-                      <span key={idx} className="px-2.5 py-1 rounded-lg bg-black/80 border border-zinc-800/80 text-[11px] text-zinc-400 mono">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
                 </div>
 
-                {/* Footer Action */}
-                <div className="pt-4 border-t border-zinc-900 flex items-center justify-between">
-                  <span className="text-[11px] text-zinc-500 mono flex items-center gap-1">
-                    <Check className="w-3.5 h-3.5 text-emerald-400" /> Production Ready
-                  </span>
-                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white hover:bg-zinc-200 text-black font-extrabold text-xs transition-all shadow-md group-hover:shadow-lg">
-                    <span>Launch {tool.name}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </div>
+                {/* Description */}
+                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                  {tool.description}
+                </p>
+
+                {/* Feature Tags */}
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {tool.tags.map((tag, i) => (
+                    <span key={i} className="px-2.5 py-1 rounded-md bg-zinc-950 border border-zinc-800 text-[11px] text-zinc-400 mono">
+                      {tag}
+                    </span>
+                  ))}
                 </div>
-              </motion.div>
-            );
-          })}
+              </div>
+
+              {/* Card Footer Action */}
+              <div className="pt-4 border-t border-zinc-900 flex items-center justify-between">
+                <span className="text-[11px] text-zinc-500 mono flex items-center gap-1">
+                  <Check className="w-3.5 h-3.5 text-zinc-400" /> Production Ready
+                </span>
+                <Link
+                  to={tool.path}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white hover:bg-zinc-200 text-black font-semibold text-xs transition-all shadow-sm"
+                >
+                  <span>Launch {tool.name}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </div>
