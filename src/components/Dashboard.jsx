@@ -1,12 +1,23 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Type, BoxSelect, Image as ImageIcon, Search, ArrowRight, Layers, Check } from 'lucide-react';
+import { Type, BoxSelect, Image as ImageIcon, Video as VideoIcon, Search, ArrowRight, Layers, Check } from 'lucide-react';
 
 export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState('all');
 
   const tools = [
+    {
+      id: 'fluidvideo',
+      path: '/fluidvideo',
+      name: 'FluidVideo',
+      version: 'v1.0',
+      category: 'media',
+      subtitle: 'Video Converter & Smart Compressor',
+      renderIcon: () => <VideoIcon className="w-5 h-5 text-emerald-400" />,
+      description: 'Convert MP4, WebM, MOV & AVI videos locally to WebM, MP4 or Animated GIF. Mute audio, tune bitrates, rescale resolutions (1080p/720p/480p), and trim clips.',
+      tags: ['MP4 ➔ WebM / GIF', 'Mute / Strip Audio', 'Target Bitrate Slider', 'Resolution Rescaler', '100% Private Browser API'],
+    },
     {
       id: 'fluidimage',
       path: '/fluidimage',

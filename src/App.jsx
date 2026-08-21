@@ -7,6 +7,7 @@ import Dashboard from './components/Dashboard';
 import FluidClampTool from './components/tools/FluidClampTool';
 import FluidBoxTool from './components/tools/FluidBoxTool';
 import FluidImageTool from './components/tools/FluidImageTool';
+import FluidVideoTool from './components/tools/FluidVideoTool';
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="/fluidclamp" element={<FluidClampTool />} />
           <Route path="/fluidbox" element={<FluidBoxTool />} />
           <Route path="/fluidimage" element={<FluidImageTool />} />
+          <Route path="/fluidvideo" element={<FluidVideoTool />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
