@@ -1,12 +1,23 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Type, BoxSelect, Image as ImageIcon, Video as VideoIcon, Search, ArrowRight, Layers, Check } from 'lucide-react';
+import { Type, BoxSelect, Image as ImageIcon, Video as VideoIcon, ShieldCheck, Search, ArrowRight, Layers, Check } from 'lucide-react';
 
 export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState('all');
 
   const tools = [
+    {
+      id: 'fluidcodevault',
+      path: '/fluidcodevault',
+      name: 'FluidCodeVault',
+      version: 'v1.0',
+      category: 'container',
+      subtitle: 'FTP Code Safety & Version Saver',
+      renderIcon: () => <ShieldCheck className="w-5 h-5 text-emerald-400" />,
+      description: 'Safely backup PHP, CSS & JS code before editing WordPress files over FTP. Stores version history locally with side-by-side code diffs & emergency 1-click restore.',
+      tags: ['FTP Safety Net', 'WordPress PHP/CSS', 'LocalStorage Encrypted', 'Line Diff Inspector', '1-Click Restore'],
+    },
     {
       id: 'fluidvideo',
       path: '/fluidvideo',

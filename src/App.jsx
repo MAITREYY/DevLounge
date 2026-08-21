@@ -8,6 +8,7 @@ import FluidClampTool from './components/tools/FluidClampTool';
 import FluidBoxTool from './components/tools/FluidBoxTool';
 import FluidImageTool from './components/tools/FluidImageTool';
 import FluidVideoTool from './components/tools/FluidVideoTool';
+import FluidCodeVaultTool from './components/tools/FluidCodeVaultTool';
 
 export default function App() {
   return (
@@ -22,13 +23,14 @@ export default function App() {
       <Header />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 bg-grid-pattern">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 bg-grid-pattern">
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/fluidclamp" element={<FluidClampTool />} />
           <Route path="/fluidbox" element={<FluidBoxTool />} />
           <Route path="/fluidimage" element={<FluidImageTool />} />
           <Route path="/fluidvideo" element={<FluidVideoTool />} />
+          <Route path="/fluidcodevault" element={<FluidCodeVaultTool />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
