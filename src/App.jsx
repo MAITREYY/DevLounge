@@ -9,6 +9,7 @@ import FluidBoxTool from './components/tools/FluidBoxTool';
 import FluidImageTool from './components/tools/FluidImageTool';
 import FluidVideoTool from './components/tools/FluidVideoTool';
 import FluidCodeVaultTool from './components/tools/FluidCodeVaultTool';
+import FluidTailwindTool from './components/tools/FluidTailwindTool';
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/fluidimage" element={<FluidImageTool />} />
           <Route path="/fluidvideo" element={<FluidVideoTool />} />
           <Route path="/fluidcodevault" element={<FluidCodeVaultTool />} />
+          <Route path="/fluidtailwind" element={<FluidTailwindTool />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

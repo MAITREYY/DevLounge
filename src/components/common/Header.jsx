@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ArrowLeft, Type, BoxSelect, Image as ImageIcon, Video as VideoIcon, ShieldCheck, Layers } from 'lucide-react';
+import { ArrowLeft, Type, BoxSelect, Image as ImageIcon, Video as VideoIcon, ShieldCheck, Zap, Layers } from 'lucide-react';
 
 export default function Header() {
   const location = useLocation();
@@ -10,6 +10,7 @@ export default function Header() {
   const isImage = location.pathname === '/fluidimage';
   const isVideo = location.pathname === '/fluidvideo';
   const isCodeVault = location.pathname === '/fluidcodevault';
+  const isTailwind = location.pathname === '/fluidtailwind';
 
   return (
     <nav className="border-b border-zinc-800/60 bg-black/90 backdrop-blur-md sticky top-0 z-50">
@@ -27,13 +28,15 @@ export default function Header() {
               <VideoIcon className="w-4 h-4 text-emerald-400" />
             ) : isCodeVault ? (
               <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            ) : isTailwind ? (
+              <Zap className="w-4 h-4 text-emerald-400" />
             ) : (
               <Layers className="w-4 h-4 text-white" />
             )}
           </div>
           <div className="flex items-baseline gap-2">
             <span className="font-semibold text-base tracking-tight text-white group-hover:text-zinc-200 transition-colors">
-              {isClamp ? 'FluidClamp' : isBox ? 'FluidBox' : isImage ? 'FluidImage' : isVideo ? 'FluidVideo' : isCodeVault ? 'FluidCodeVault' : 'FluidTools'}
+              {isClamp ? 'FluidClamp' : isBox ? 'FluidBox' : isImage ? 'FluidImage' : isVideo ? 'FluidVideo' : isCodeVault ? 'FluidCodeVault' : isTailwind ? 'FluidTailwind' : 'FluidTools'}
             </span>
             <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 mono tracking-wider">
               {isClamp ? 'v1.2' : 'v1.0'}

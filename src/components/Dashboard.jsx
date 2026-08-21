@@ -1,12 +1,23 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Type, BoxSelect, Image as ImageIcon, Video as VideoIcon, ShieldCheck, Search, ArrowRight, Layers, Check } from 'lucide-react';
+import { Type, BoxSelect, Image as ImageIcon, Video as VideoIcon, ShieldCheck, Zap, Search, ArrowRight, Layers, Check } from 'lucide-react';
 
 export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState('all');
 
   const tools = [
+    {
+      id: 'fluidtailwind',
+      path: '/fluidtailwind',
+      name: 'FluidTailwind',
+      version: 'v1.0',
+      category: 'container',
+      subtitle: 'Tailwind CDN-to-Production CSS Compiler',
+      renderIcon: () => <Zap className="w-5 h-5 text-emerald-400" />,
+      description: 'Turn off Tailwind Play CDN scripts! Scan 20+ WordPress PHP/HTML files, extract unique utility classes, and compile a minified production CSS bundle instantly.',
+      tags: ['Tailwind Class Extractor', 'CDN ➔ Production CSS', 'Multi-File / Folder Upload', 'WP Enqueue Generator', 'Zero-Build Setup'],
+    },
     {
       id: 'fluidcodevault',
       path: '/fluidcodevault',
