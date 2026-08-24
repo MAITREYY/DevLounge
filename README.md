@@ -1,8 +1,8 @@
-# 🚀 DevSuite Pro — Fluid Developer Utility Suite v2.0
+# 🚀 DevLounge — Developer Utility Suite v2.0
 
 > **Modern Web Developer Toolbox & Precision Fluid UI Generators**
 
-DevSuite Pro (FluidTools Suite v2.0) is a modern, ultra-fast web application built with **Vite**, **React 18**, **Tailwind CSS**, and **Framer Motion**. It provides zero-dependency CSS generators and layout calculators to create responsive typography, container artboards, image conversions, glassmorphism surfaces, CSS grids, and ambient box shadows in seconds.
+DevLounge is a modern, ultra-fast web application built with **Vite**, **React 18**, **Tailwind CSS**, and **Framer Motion**. It provides zero-dependency CSS generators and layout calculators to create responsive typography, container artboards, image conversions, glassmorphism surfaces, CSS grids, and ambient box shadows in seconds.
 
 ---
 

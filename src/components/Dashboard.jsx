@@ -93,11 +93,11 @@ export default function Dashboard() {
       <header className="text-center space-y-4 max-w-2xl mx-auto pt-6">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-[11px] text-zinc-300 font-mono tracking-wide">
           <Layers className="w-3.5 h-3.5 text-zinc-400" />
-          <span>Developer Utility Suite</span>
+          <span>DevLounge Utility Suite</span>
         </div>
         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
-          Modern Web Developer <br />
-          <span className="text-zinc-400 font-normal">Toolbox</span>
+          DevLounge <br />
+          <span className="text-zinc-400 font-normal">Developer Suite</span>
         </h1>
         <p className="text-zinc-400 text-sm sm:text-base leading-relaxed max-w-lg mx-auto">
           Lightweight, zero-dependency developer tools to generate responsive typography, screen containers, image optimization, and layout code in seconds.

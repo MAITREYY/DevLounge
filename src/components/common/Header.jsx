@@ -36,7 +36,7 @@ export default function Header() {
           </div>
           <div className="flex items-baseline gap-2">
             <span className="font-semibold text-base tracking-tight text-white group-hover:text-zinc-200 transition-colors">
-              {isClamp ? 'FluidClamp' : isBox ? 'FluidBox' : isImage ? 'FluidImage' : isVideo ? 'FluidVideo' : isCodeVault ? 'FluidCodeVault' : isTailwind ? 'FluidTailwind' : 'FluidTools'}
+              {isClamp ? 'FluidClamp' : isBox ? 'FluidBox' : isImage ? 'FluidImage' : isVideo ? 'FluidVideo' : isCodeVault ? 'FluidCodeVault' : isTailwind ? 'FluidTailwind' : 'DevLounge'}
             </span>
             <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 mono tracking-wider">
               {isClamp ? 'v1.2' : 'v1.0'}
