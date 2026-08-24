@@ -302,7 +302,7 @@ export default function FluidImageTool() {
             <ImageIcon className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-lg font-bold text-white tracking-tight">FluidImage</h1>
+            <h1 className="text-lg font-bold text-white tracking-tight">Image Converter</h1>
             <p className="text-xs text-zinc-400">Instant Image Format Converter & Size Inspector</p>
           </div>
         </div>

@@ -5,12 +5,12 @@ import { ArrowLeft, Type, BoxSelect, Image as ImageIcon, Video as VideoIcon, Shi
 export default function Header() {
   const location = useLocation();
   const isHome = location.pathname === '/';
-  const isClamp = location.pathname === '/fluidclamp';
-  const isBox = location.pathname === '/fluidbox';
-  const isImage = location.pathname === '/fluidimage';
-  const isVideo = location.pathname === '/fluidvideo';
-  const isCodeVault = location.pathname === '/fluidcodevault';
-  const isTailwind = location.pathname === '/fluidtailwind';
+  const isClamp = location.pathname === '/fluidclamp' || location.pathname === '/fluid-clamp';
+  const isBox = location.pathname === '/fluidbox' || location.pathname === '/fluid-box';
+  const isImage = location.pathname === '/fluidimage' || location.pathname === '/image-converter';
+  const isVideo = location.pathname === '/fluidvideo' || location.pathname === '/video-converter';
+  const isCodeVault = location.pathname === '/fluidcodevault' || location.pathname === '/code-vault';
+  const isTailwind = location.pathname === '/fluidtailwind' || location.pathname === '/tailwind-extractor';
 
   return (
     <nav className="border-b border-zinc-800/60 bg-black/90 backdrop-blur-md sticky top-0 z-50">
@@ -36,10 +36,10 @@ export default function Header() {
           </div>
           <div className="flex items-baseline gap-2">
             <span className="font-semibold text-base tracking-tight text-white group-hover:text-zinc-200 transition-colors">
-              {isClamp ? 'FluidClamp' : isBox ? 'FluidBox' : isImage ? 'FluidImage' : isVideo ? 'FluidVideo' : isCodeVault ? 'FluidCodeVault' : isTailwind ? 'FluidTailwind' : 'DevLounge'}
+              {isClamp ? 'Fluid Clamp' : isBox ? 'Fluid Box' : isImage ? 'Image Converter' : isVideo ? 'Video Converter' : isCodeVault ? 'Code Vault' : isTailwind ? 'Tailwind Extractor' : 'DevLounge'}
             </span>
             <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 mono tracking-wider">
-              {isClamp ? 'v1.2' : 'v1.0'}
+              {isCodeVault ? 'WIP' : isClamp ? 'v1.2' : 'v1.0'}
             </span>
           </div>
         </Link>

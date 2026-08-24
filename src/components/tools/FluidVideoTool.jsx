@@ -665,7 +665,7 @@ export default function FluidVideoTool() {
               <Video className="w-5 h-5" />
             </span>
             <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-              FluidVideo
+              Video Converter
             </h1>
             <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 mono font-semibold">
               v1.0

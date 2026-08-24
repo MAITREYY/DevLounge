@@ -28,11 +28,17 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/fluidclamp" element={<FluidClampTool />} />
+          <Route path="/fluid-clamp" element={<FluidClampTool />} />
           <Route path="/fluidbox" element={<FluidBoxTool />} />
+          <Route path="/fluid-box" element={<FluidBoxTool />} />
           <Route path="/fluidimage" element={<FluidImageTool />} />
+          <Route path="/image-converter" element={<FluidImageTool />} />
           <Route path="/fluidvideo" element={<FluidVideoTool />} />
+          <Route path="/video-converter" element={<FluidVideoTool />} />
           <Route path="/fluidcodevault" element={<FluidCodeVaultTool />} />
+          <Route path="/code-vault" element={<FluidCodeVaultTool />} />
           <Route path="/fluidtailwind" element={<FluidTailwindTool />} />
+          <Route path="/tailwind-extractor" element={<FluidTailwindTool />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

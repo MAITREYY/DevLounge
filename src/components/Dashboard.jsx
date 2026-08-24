@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Type, BoxSelect, Image as ImageIcon, Video as VideoIcon, ShieldCheck, Zap, Search, ArrowRight, Layers, Check } from 'lucide-react';
+import { Type, BoxSelect, Image as ImageIcon, Video as VideoIcon, ShieldCheck, Zap, Search, ArrowRight, Layers, Check, Clock } from 'lucide-react';
 
 export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -10,7 +10,7 @@ export default function Dashboard() {
     {
       id: 'fluidtailwind',
       path: '/fluidtailwind',
-      name: 'FluidTailwind',
+      name: 'Tailwind Extractor',
       version: 'v1.0',
       category: 'container',
       subtitle: 'Tailwind CDN-to-Production CSS Compiler',
@@ -21,18 +21,19 @@ export default function Dashboard() {
     {
       id: 'fluidcodevault',
       path: '/fluidcodevault',
-      name: 'FluidCodeVault',
-      version: 'v1.0',
+      name: 'Code Vault',
+      version: 'Coming Soon',
+      isWip: true,
       category: 'container',
-      subtitle: 'FTP Code Safety & Version Saver',
+      subtitle: 'FTP Code Safety & Version Saver (Coming Soon)',
       renderIcon: () => <ShieldCheck className="w-5 h-5 text-white" />,
       description: 'Safely backup PHP, CSS & JS code before editing WordPress files over FTP. Stores version history locally with side-by-side code diffs & emergency 1-click restore.',
-      tags: ['FTP Safety Net', 'WordPress PHP/CSS', 'LocalStorage Encrypted', 'Line Diff Inspector', '1-Click Restore'],
+      tags: ['Work in Progress', 'Launching Soon', 'FTP Safety Net', 'WordPress PHP/CSS', 'LocalStorage Encrypted'],
     },
     {
       id: 'fluidvideo',
       path: '/fluidvideo',
-      name: 'FluidVideo',
+      name: 'Video Converter',
       version: 'v1.0',
       category: 'media',
       subtitle: 'Video Converter & Smart Compressor',
@@ -43,7 +44,7 @@ export default function Dashboard() {
     {
       id: 'fluidimage',
       path: '/fluidimage',
-      name: 'FluidImage',
+      name: 'Image Converter',
       version: 'v1.0',
       category: 'media',
       subtitle: 'Image Format Converter & Smart Compressor',
@@ -54,7 +55,7 @@ export default function Dashboard() {
     {
       id: 'fluidclamp',
       path: '/fluidclamp',
-      name: 'FluidClamp',
+      name: 'Fluid Clamp',
       version: 'v1.2',
       category: 'typography',
       subtitle: 'Fluid Typography & CSS clamp()',
@@ -65,7 +66,7 @@ export default function Dashboard() {
     {
       id: 'fluidbox',
       path: '/fluidbox',
-      name: 'FluidBox',
+      name: 'Fluid Box',
       version: 'v1.0',
       category: 'container',
       subtitle: 'Figma Container & Layout Generator',
@@ -180,13 +181,19 @@ export default function Dashboard() {
                 {/* Top Row: Icon + Title */}
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-center gap-3.5">
-                    <Link to={tool.path} className="p-3 rounded-xl border border-zinc-800 bg-zinc-950 group-hover:border-zinc-700 transition-colors block">
-                      {tool.renderIcon()}
-                    </Link>
+                    {tool.isWip ? (
+                      <div className="p-3 rounded-xl border border-zinc-800 bg-zinc-950 opacity-60">
+                        {tool.renderIcon()}
+                      </div>
+                    ) : (
+                      <Link to={tool.path} className="p-3 rounded-xl border border-zinc-800 bg-zinc-950 group-hover:border-zinc-700 transition-colors block">
+                        {tool.renderIcon()}
+                      </Link>
+                    )}
                     <div>
                       <div className="flex items-center gap-2">
                         <h3 className="text-lg font-bold text-white tracking-tight group-hover:text-zinc-200 transition-colors">
-                          <Link to={tool.path}>{tool.name}</Link>
+                          {tool.isWip ? tool.name : <Link to={tool.path}>{tool.name}</Link>}
                         </h3>
                         <span className="text-[10px] mono px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 font-medium">
                           {tool.version}
@@ -214,16 +221,33 @@ export default function Dashboard() {
 
               {/* Card Footer Action */}
               <div className="pt-4 border-t border-zinc-900 flex items-center justify-between">
-                <span className="text-[11px] text-zinc-500 mono flex items-center gap-1">
-                  <Check className="w-3.5 h-3.5 text-zinc-400" /> Production Ready
-                </span>
-                <Link
-                  to={tool.path}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white hover:bg-zinc-200 text-black font-semibold text-xs transition-all shadow-sm"
-                >
-                  <span>Launch {tool.name}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
+                {tool.isWip ? (
+                  <>
+                    <span className="text-[11px] text-zinc-400 mono flex items-center gap-1">
+                      <Clock className="w-3.5 h-3.5 text-zinc-400" /> Launching Soon
+                    </span>
+                    <button
+                      disabled
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-500 font-semibold text-xs cursor-not-allowed"
+                    >
+                      <span>Coming Soon</span>
+                      <Clock className="w-3.5 h-3.5" />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-[11px] text-zinc-500 mono flex items-center gap-1">
+                      <Check className="w-3.5 h-3.5 text-zinc-400" /> Production Ready
+                    </span>
+                    <Link
+                      to={tool.path}
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white hover:bg-zinc-200 text-black font-semibold text-xs transition-all shadow-sm"
+                    >
+                      <span>Launch {tool.name}</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           ))}

@@ -325,10 +325,10 @@ add_action('wp_enqueue_scripts', 'enqueue_production_tailwind');`;
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-white text-xs font-mono mb-2">
             <Zap className="w-3.5 h-3.5" />
-            <span>FluidTailwind Extractor & Production CSS Compiler v1.0</span>
+            <span>Tailwind Extractor & Production CSS Compiler v1.0</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Tailwind CDN-to-Production CSS Generator
+            Tailwind Extractor & Production CSS Generator
           </h1>
           <p className="text-zinc-400 text-sm mt-1">
             Turn off CDN scripts! Scan 20+ WordPress theme files or template snippets and compile a minified production CSS bundle instantly.
