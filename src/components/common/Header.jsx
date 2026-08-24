@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ArrowLeft, Type, BoxSelect, Image as ImageIcon, Video as VideoIcon, ShieldCheck, Zap, Layers } from 'lucide-react';
+import { ArrowLeft, Type, BoxSelect, Image as ImageIcon, Video as VideoIcon, ShieldCheck, Zap, Layers, Code } from 'lucide-react';
 
 export default function Header() {
   const location = useLocation();
   const isHome = location.pathname === '/';
+  const isSvg = location.pathname === '/fluidsvg' || location.pathname === '/svg-converter';
   const isClamp = location.pathname === '/fluidclamp' || location.pathname === '/fluid-clamp';
   const isBox = location.pathname === '/fluidbox' || location.pathname === '/fluid-box';
   const isImage = location.pathname === '/fluidimage' || location.pathname === '/image-converter';
@@ -18,7 +19,9 @@ export default function Header() {
         {/* Brand Logo & Title */}
         <Link to="/" className="flex items-center gap-3 group">
           <div className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-white transition-all duration-200 group-hover:border-zinc-700">
-            {isClamp ? (
+            {isSvg ? (
+              <Code className="w-4 h-4 text-white" />
+            ) : isClamp ? (
               <Type className="w-4 h-4 text-white" />
             ) : isBox ? (
               <BoxSelect className="w-4 h-4 text-white" />
@@ -36,7 +39,7 @@ export default function Header() {
           </div>
           <div className="flex items-baseline gap-2">
             <span className="font-semibold text-base tracking-tight text-white group-hover:text-zinc-200 transition-colors">
-              {isClamp ? 'Fluid Clamp' : isBox ? 'Fluid Box' : isImage ? 'Image Converter' : isVideo ? 'Video Converter' : isCodeVault ? 'Code Vault' : isTailwind ? 'Tailwind Extractor' : 'DevLounge'}
+              {isSvg ? 'Fluid SVG' : isClamp ? 'Fluid Clamp' : isBox ? 'Fluid Box' : isImage ? 'Image Converter' : isVideo ? 'Video Converter' : isCodeVault ? 'Code Vault' : isTailwind ? 'Tailwind Extractor' : 'DevLounge'}
             </span>
             <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 mono tracking-wider">
               {isCodeVault ? 'WIP' : isClamp ? 'v1.2' : 'v1.0'}

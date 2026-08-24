@@ -1,12 +1,23 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Type, BoxSelect, Image as ImageIcon, Video as VideoIcon, ShieldCheck, Zap, Search, ArrowRight, Layers, Check, Clock } from 'lucide-react';
+import { Type, BoxSelect, Image as ImageIcon, Video as VideoIcon, ShieldCheck, Zap, Search, ArrowRight, Layers, Check, Clock, Code } from 'lucide-react';
 
 export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState('all');
 
   const tools = [
+    {
+      id: 'fluidsvg',
+      path: '/fluidsvg',
+      name: 'Fluid SVG',
+      version: 'v1.0',
+      category: 'media',
+      subtitle: 'SVG Image-to-Code & Code-to-Image Studio',
+      renderIcon: () => <Code className="w-5 h-5 text-white" />,
+      description: 'Bi-directional SVG Studio! Convert SVG files to clean React JSX/TSX, Vue 3, Svelte, Base64 & CSS code, or render SVG code to PNG, JPEG & WebP images.',
+      tags: ['SVG ➔ React JSX / TSX', 'SVG ➔ Vue & Svelte', 'Code ➔ PNG / WebP / JPG', 'SVGO Optimizer', 'Copy Image to Clipboard'],
+    },
     {
       id: 'fluidtailwind',
       path: '/fluidtailwind',

@@ -10,6 +10,7 @@ import FluidImageTool from './components/tools/FluidImageTool';
 import FluidVideoTool from './components/tools/FluidVideoTool';
 import FluidCodeVaultTool from './components/tools/FluidCodeVaultTool';
 import FluidTailwindTool from './components/tools/FluidTailwindTool';
+import FluidSvgTool from './components/tools/FluidSvgTool';
 
 export default function App() {
   return (
@@ -27,6 +28,8 @@ export default function App() {
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 bg-grid-pattern">
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/fluidsvg" element={<FluidSvgTool />} />
+          <Route path="/svg-converter" element={<FluidSvgTool />} />
           <Route path="/fluidclamp" element={<FluidClampTool />} />
           <Route path="/fluid-clamp" element={<FluidClampTool />} />
           <Route path="/fluidbox" element={<FluidBoxTool />} />
