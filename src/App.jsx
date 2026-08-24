@@ -1,16 +1,16 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import Header from './components/common/Header';
-import Footer from './components/common/Footer';
-import ScrollToTop from './components/common/ScrollToTop';
-import Dashboard from './components/Dashboard';
-import FluidClampTool from './components/tools/FluidClampTool';
-import FluidBoxTool from './components/tools/FluidBoxTool';
-import FluidImageTool from './components/tools/FluidImageTool';
-import FluidVideoTool from './components/tools/FluidVideoTool';
-import FluidCodeVaultTool from './components/tools/FluidCodeVaultTool';
-import FluidTailwindTool from './components/tools/FluidTailwindTool';
-import FluidSvgTool from './components/tools/FluidSvgTool';
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Header from "./components/common/Header";
+import Footer from "./components/common/Footer";
+import ScrollToTop from "./components/common/ScrollToTop";
+import Dashboard from "./components/Dashboard";
+import FluidClampTool from "./components/tools/FluidClampTool";
+import FluidBoxTool from "./components/tools/FluidBoxTool";
+import FluidImageTool from "./components/tools/FluidImageTool";
+import FluidVideoTool from "./components/tools/FluidVideoTool";
+import FluidCodeVaultTool from "./components/tools/FluidCodeVaultTool";
+import FluidTailwindTool from "./components/tools/FluidTailwindTool";
+import FluidSvgTool from "./components/tools/FluidSvgTool";
 
 export default function App() {
   return (

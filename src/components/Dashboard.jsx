@@ -1,100 +1,164 @@
-import React, { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import { Type, BoxSelect, Image as ImageIcon, Video as VideoIcon, ShieldCheck, Zap, Search, ArrowRight, Layers, Check, Clock, Code } from 'lucide-react';
+import React, { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
+import {
+  Type,
+  BoxSelect,
+  Image as ImageIcon,
+  Video as VideoIcon,
+  ShieldCheck,
+  Zap,
+  Search,
+  ArrowRight,
+  Layers,
+  Check,
+  Clock,
+  Code,
+} from "lucide-react";
 
 export default function Dashboard() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filter, setFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filter, setFilter] = useState("all");
 
   const tools = [
     {
-      id: 'fluidsvg',
-      path: '/fluidsvg',
-      name: 'Fluid SVG',
-      version: 'v1.0',
-      category: 'media',
-      subtitle: 'SVG Image-to-Code & Code-to-Image Studio',
+      id: "fluidsvg",
+      path: "/fluidsvg",
+      name: "Fluid SVG",
+      version: "v1.0",
+      category: "media",
+      subtitle: "SVG Image-to-Code & Code-to-Image Studio",
       renderIcon: () => <Code className="w-5 h-5 text-white" />,
-      description: 'Bi-directional SVG Studio! Convert SVG files to clean React JSX/TSX, Vue 3, Svelte, Base64 & CSS code, or render SVG code to PNG, JPEG & WebP images.',
-      tags: ['SVG ➔ React JSX / TSX', 'SVG ➔ Vue & Svelte', 'Code ➔ PNG / WebP / JPG', 'SVGO Optimizer', 'Copy Image to Clipboard'],
+      description:
+        "Bi-directional SVG Studio! Convert SVG files to clean React JSX/TSX, Vue 3, Svelte, Base64 & CSS code, or render SVG code to PNG, JPEG & WebP images.",
+      tags: [
+        "SVG ➔ React JSX / TSX",
+        "SVG ➔ Vue & Svelte",
+        "Code ➔ PNG / WebP / JPG",
+        "SVGO Optimizer",
+        "Copy Image to Clipboard",
+      ],
     },
     {
-      id: 'fluidtailwind',
-      path: '/fluidtailwind',
-      name: 'Tailwind Extractor',
-      version: 'v1.0',
-      category: 'container',
-      subtitle: 'Tailwind CDN-to-Production CSS Compiler',
+      id: "fluidtailwind",
+      path: "/fluidtailwind",
+      name: "Tailwind Extractor",
+      version: "v1.0",
+      category: "container",
+      subtitle: "Tailwind CDN-to-Production CSS Compiler",
       renderIcon: () => <Zap className="w-5 h-5 text-white" />,
-      description: 'Turn off Tailwind Play CDN scripts! Scan 20+ WordPress PHP/HTML files, extract unique utility classes, and compile a minified production CSS bundle instantly.',
-      tags: ['Tailwind Class Extractor', 'CDN ➔ Production CSS', 'Multi-File / Folder Upload', 'WP Enqueue Generator', 'Zero-Build Setup'],
+      description:
+        "Turn off Tailwind Play CDN scripts! Scan 20+ WordPress PHP/HTML files, extract unique utility classes, and compile a minified production CSS bundle instantly.",
+      tags: [
+        "Tailwind Class Extractor",
+        "CDN ➔ Production CSS",
+        "Multi-File / Folder Upload",
+        "WP Enqueue Generator",
+        "Zero-Build Setup",
+      ],
     },
     {
-      id: 'fluidcodevault',
-      path: '/fluidcodevault',
-      name: 'Code Vault',
-      version: 'Coming Soon',
+      id: "fluidcodevault",
+      path: "/fluidcodevault",
+      name: "Code Vault",
+      version: "Coming Soon",
       isWip: true,
-      category: 'container',
-      subtitle: 'FTP Code Safety & Version Saver (Coming Soon)',
+      category: "container",
+      subtitle: "FTP Code Safety & Version Saver (Coming Soon)",
       renderIcon: () => <ShieldCheck className="w-5 h-5 text-white" />,
-      description: 'Safely backup PHP, CSS & JS code before editing WordPress files over FTP. Stores version history locally with side-by-side code diffs & emergency 1-click restore.',
-      tags: ['Work in Progress', 'Launching Soon', 'FTP Safety Net', 'WordPress PHP/CSS', 'LocalStorage Encrypted'],
+      description:
+        "Safely backup PHP, CSS & JS code before editing WordPress files over FTP. Stores version history locally with side-by-side code diffs & emergency 1-click restore.",
+      tags: [
+        "Work in Progress",
+        "Launching Soon",
+        "FTP Safety Net",
+        "WordPress PHP/CSS",
+        "LocalStorage Encrypted",
+      ],
     },
     {
-      id: 'fluidvideo',
-      path: '/fluidvideo',
-      name: 'Video Converter',
-      version: 'v1.0',
-      category: 'media',
-      subtitle: 'Video Converter & Smart Compressor',
+      id: "fluidvideo",
+      path: "/fluidvideo",
+      name: "Video Converter",
+      version: "v1.0",
+      category: "media",
+      subtitle: "Video Converter & Smart Compressor",
       renderIcon: () => <VideoIcon className="w-5 h-5 text-white" />,
-      description: 'Convert MP4, WebM, MOV & AVI videos locally to WebM, MP4 or Animated GIF. Mute audio, tune bitrates, rescale resolutions (1080p/720p/480p), and trim clips.',
-      tags: ['MP4 ➔ WebM / GIF', 'Mute / Strip Audio', 'Target Bitrate Slider', 'Resolution Rescaler', '100% Private Browser API'],
+      description:
+        "Convert MP4, WebM, MOV & AVI videos locally to WebM, MP4 or Animated GIF. Mute audio, tune bitrates, rescale resolutions (1080p/720p/480p), and trim clips.",
+      tags: [
+        "MP4 ➔ WebM / GIF",
+        "Mute / Strip Audio",
+        "Target Bitrate Slider",
+        "Resolution Rescaler",
+        "100% Private Browser API",
+      ],
     },
     {
-      id: 'fluidimage',
-      path: '/fluidimage',
-      name: 'Image Converter',
-      version: 'v1.0',
-      category: 'media',
-      subtitle: 'Image Format Converter & Smart Compressor',
+      id: "fluidimage",
+      path: "/fluidimage",
+      name: "Image Converter",
+      version: "v1.0",
+      category: "media",
+      subtitle: "Image Format Converter & Smart Compressor",
       renderIcon: () => <ImageIcon className="w-5 h-5 text-white" />,
-      description: 'Convert PNG, JPEG, WebP, AVIF & BMP images locally with live quality tuning, dimensional scaling, and side-by-side comparison. 100% private.',
-      tags: ['WebP / AVIF / PNG / JPG', 'Batch Converter', 'Quality Slider', 'Side-by-Side Inspector', '100% Private Browser API'],
+      description:
+        "Convert PNG, JPEG, WebP, AVIF & BMP images locally with live quality tuning, dimensional scaling, and side-by-side comparison. 100% private.",
+      tags: [
+        "WebP / AVIF / PNG / JPG",
+        "Batch Converter",
+        "Quality Slider",
+        "Side-by-Side Inspector",
+        "100% Private Browser API",
+      ],
     },
     {
-      id: 'fluidclamp',
-      path: '/fluidclamp',
-      name: 'Fluid Clamp',
-      version: 'v1.2',
-      category: 'typography',
-      subtitle: 'Fluid Typography & CSS clamp()',
+      id: "fluidclamp",
+      path: "/fluidclamp",
+      name: "Fluid Clamp",
+      version: "v1.2",
+      category: "typography",
+      subtitle: "Fluid Typography & CSS clamp()",
       renderIcon: () => <Type className="w-5 h-5 text-white" />,
-      description: 'Create minimal, seamless font size scaling across mobile and desktop viewports without media queries using mathematical CSS clamp().',
-      tags: ['CSS clamp()', 'PX ➔ REM Converter', 'Fluid Curve SVG', 'Tailwind & Bootstrap', 'WCAG 2.1 Audit'],
+      description:
+        "Create minimal, seamless font size scaling across mobile and desktop viewports without media queries using mathematical CSS clamp().",
+      tags: [
+        "CSS clamp()",
+        "PX ➔ REM Converter",
+        "Fluid Curve SVG",
+        "Tailwind & Bootstrap",
+        "WCAG 2.1 Audit",
+      ],
     },
     {
-      id: 'fluidbox',
-      path: '/fluidbox',
-      name: 'Fluid Box',
-      version: 'v1.0',
-      category: 'container',
-      subtitle: 'Figma Container & Layout Generator',
+      id: "fluidbox",
+      path: "/fluidbox",
+      name: "Fluid Box",
+      version: "v1.0",
+      category: "container",
+      subtitle: "Figma Container & Layout Generator",
       renderIcon: () => <BoxSelect className="w-5 h-5 text-white" />,
-      description: 'Generate perfectly proportioned layout containers for Mobile and PC Figma artboards with controlled side and top/bottom padding.',
-      tags: ['Figma Artboards', 'Side & Vertical Pad', 'Live Device Simulator', 'Tailwind & Bootstrap', 'Ergonomics Audit'],
+      description:
+        "Generate perfectly proportioned layout containers for Mobile and PC Figma artboards with controlled side and top/bottom padding.",
+      tags: [
+        "Figma Artboards",
+        "Side & Vertical Pad",
+        "Live Device Simulator",
+        "Tailwind & Bootstrap",
+        "Ergonomics Audit",
+      ],
     },
   ];
 
   const filteredTools = useMemo(() => {
     return tools.filter((t) => {
-      const matchCategory = filter === 'all' || t.category === filter;
+      const matchCategory = filter === "all" || t.category === filter;
       const matchSearch =
         !searchQuery ||
         t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         t.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        t.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+        t.tags.some((tag) =>
+          tag.toLowerCase().includes(searchQuery.toLowerCase()),
+        );
       return matchCategory && matchSearch;
     });
   }, [tools, filter, searchQuery]);
@@ -112,7 +176,9 @@ export default function Dashboard() {
           <span className="text-zinc-400 font-normal">Developer Suite</span>
         </h1>
         <p className="text-zinc-400 text-sm sm:text-base leading-relaxed max-w-lg mx-auto">
-          Lightweight, zero-dependency developer tools to generate responsive typography, screen containers, image optimization, and layout code in seconds.
+          Lightweight, zero-dependency developer tools to generate responsive
+          typography, screen containers, image optimization, and layout code in
+          seconds.
         </p>
 
         {/* Live Search Bar */}
@@ -130,41 +196,41 @@ export default function Dashboard() {
           {/* Category Filter Chips */}
           <div className="flex items-center justify-center gap-2 mt-3 flex-wrap text-xs">
             <button
-              onClick={() => setFilter('all')}
+              onClick={() => setFilter("all")}
               className={`px-3 py-1 rounded-lg border font-medium transition-all ${
-                filter === 'all'
-                  ? 'bg-zinc-800 text-white border-zinc-700'
-                  : 'bg-zinc-950 text-zinc-400 border-zinc-800 hover:text-white'
+                filter === "all"
+                  ? "bg-zinc-800 text-white border-zinc-700"
+                  : "bg-zinc-950 text-zinc-400 border-zinc-800 hover:text-white"
               }`}
             >
               All Tools
             </button>
             <button
-              onClick={() => setFilter('media')}
+              onClick={() => setFilter("media")}
               className={`px-3 py-1 rounded-lg border font-medium transition-all ${
-                filter === 'media'
-                  ? 'bg-zinc-800 text-white border-zinc-700'
-                  : 'bg-zinc-950 text-zinc-400 border-zinc-800 hover:text-white'
+                filter === "media"
+                  ? "bg-zinc-800 text-white border-zinc-700"
+                  : "bg-zinc-950 text-zinc-400 border-zinc-800 hover:text-white"
               }`}
             >
               Media & Images
             </button>
             <button
-              onClick={() => setFilter('typography')}
+              onClick={() => setFilter("typography")}
               className={`px-3 py-1 rounded-lg border font-medium transition-all ${
-                filter === 'typography'
-                  ? 'bg-zinc-800 text-white border-zinc-700'
-                  : 'bg-zinc-950 text-zinc-400 border-zinc-800 hover:text-white'
+                filter === "typography"
+                  ? "bg-zinc-800 text-white border-zinc-700"
+                  : "bg-zinc-950 text-zinc-400 border-zinc-800 hover:text-white"
               }`}
             >
               Typography
             </button>
             <button
-              onClick={() => setFilter('container')}
+              onClick={() => setFilter("container")}
               className={`px-3 py-1 rounded-lg border font-medium transition-all ${
-                filter === 'container'
-                  ? 'bg-zinc-800 text-white border-zinc-700'
-                  : 'bg-zinc-950 text-zinc-400 border-zinc-800 hover:text-white'
+                filter === "container"
+                  ? "bg-zinc-800 text-white border-zinc-700"
+                  : "bg-zinc-950 text-zinc-400 border-zinc-800 hover:text-white"
               }`}
             >
               Containers & Layout
@@ -179,10 +245,12 @@ export default function Dashboard() {
           <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-2">
             <Layers className="w-4 h-4 text-zinc-400" /> Active Tools
           </h2>
-          <span className="text-xs text-zinc-500 font-mono">Showing {filteredTools.length} tools</span>
+          <span className="text-xs text-zinc-500 font-mono">
+            Showing {filteredTools.length} tools
+          </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {filteredTools.map((tool) => (
             <div
               key={tool.id}
@@ -197,20 +265,29 @@ export default function Dashboard() {
                         {tool.renderIcon()}
                       </div>
                     ) : (
-                      <Link to={tool.path} className="p-3 rounded-xl border border-zinc-800 bg-zinc-950 group-hover:border-zinc-700 transition-colors block">
+                      <Link
+                        to={tool.path}
+                        className="p-3 rounded-xl border border-zinc-800 bg-zinc-950 group-hover:border-zinc-700 transition-colors block"
+                      >
                         {tool.renderIcon()}
                       </Link>
                     )}
                     <div>
                       <div className="flex items-center gap-2">
                         <h3 className="text-lg font-bold text-white tracking-tight group-hover:text-zinc-200 transition-colors">
-                          {tool.isWip ? tool.name : <Link to={tool.path}>{tool.name}</Link>}
+                          {tool.isWip ? (
+                            tool.name
+                          ) : (
+                            <Link to={tool.path}>{tool.name}</Link>
+                          )}
                         </h3>
                         <span className="text-[10px] mono px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 font-medium">
                           {tool.version}
                         </span>
                       </div>
-                      <p className="text-xs font-mono text-zinc-400 mt-0.5">{tool.subtitle}</p>
+                      <p className="text-xs font-mono text-zinc-400 mt-0.5">
+                        {tool.subtitle}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -223,7 +300,10 @@ export default function Dashboard() {
                 {/* Feature Tags */}
                 <div className="flex flex-wrap gap-1.5 pt-1">
                   {tool.tags.map((tag, i) => (
-                    <span key={i} className="px-2.5 py-1 rounded-md bg-zinc-950 border border-zinc-800 text-[11px] text-zinc-400 mono">
+                    <span
+                      key={i}
+                      className="px-2.5 py-1 rounded-md bg-zinc-950 border border-zinc-800 text-[11px] text-zinc-400 mono"
+                    >
                       {tag}
                     </span>
                   ))}
@@ -235,7 +315,8 @@ export default function Dashboard() {
                 {tool.isWip ? (
                   <>
                     <span className="text-[11px] text-zinc-400 mono flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5 text-zinc-400" /> Launching Soon
+                      <Clock className="w-3.5 h-3.5 text-zinc-400" /> Launching
+                      Soon
                     </span>
                     <button
                       disabled
@@ -248,7 +329,8 @@ export default function Dashboard() {
                 ) : (
                   <>
                     <span className="text-[11px] text-zinc-500 mono flex items-center gap-1">
-                      <Check className="w-3.5 h-3.5 text-zinc-400" /> Production Ready
+                      <Check className="w-3.5 h-3.5 text-zinc-400" /> Production
+                      Ready
                     </span>
                     <Link
                       to={tool.path}
