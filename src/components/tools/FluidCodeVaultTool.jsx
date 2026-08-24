@@ -374,9 +374,9 @@ export default function FluidCodeVaultTool() {
             key={idx}
             className={`flex items-start gap-3 px-2 py-0.5 rounded ${
               row.type === 'added'
-                ? 'bg-emerald-950/60 text-emerald-300 border-l-2 border-emerald-500'
+                ? 'bg-zinc-800 text-white border-l-2 border-white'
                 : row.type === 'removed'
-                ? 'bg-red-950/60 text-red-300 border-l-2 border-red-500 line-through opacity-80'
+                ? 'bg-zinc-900 text-zinc-400 border-l-2 border-zinc-600 line-through opacity-80'
                 : 'text-zinc-400'
             }`}
           >
@@ -396,7 +396,7 @@ export default function FluidCodeVaultTool() {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-800 pb-6">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/40 text-emerald-400 text-xs font-mono mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-white text-xs font-mono mb-2">
             <ShieldCheck className="w-3.5 h-3.5" />
             <span>FluidCodeVault v1.3 — FTP Code Safety & Project Manager</span>
           </div>
@@ -412,10 +412,10 @@ export default function FluidCodeVaultTool() {
           {projects.length > 0 && (
             <button
               onClick={handleClearAllData}
-              className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-red-950/40 hover:bg-red-900/60 border border-red-800/60 text-red-300 text-xs font-medium transition-colors"
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-xs font-medium transition-colors"
               title="Clear All Projects & Files"
             >
-              <Trash2 className="w-3.5 h-3.5 text-red-400" />
+              <Trash2 className="w-3.5 h-3.5 text-zinc-400" />
               <span>Clear All Data</span>
             </button>
           )}
@@ -424,7 +424,7 @@ export default function FluidCodeVaultTool() {
             onClick={() => setIsCreatingProject(true)}
             className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 text-xs font-medium transition-colors"
           >
-            <FolderPlus className="w-4 h-4 text-emerald-400" />
+            <FolderPlus className="w-4 h-4 text-white" />
             <span>New Project</span>
           </button>
           
@@ -433,7 +433,7 @@ export default function FluidCodeVaultTool() {
               setIsCreating(true);
               setActiveFile(null);
             }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-semibold text-xs transition-all shadow-md shadow-emerald-950/40"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white hover:bg-zinc-200 text-black font-semibold text-xs transition-all shadow-md"
           >
             <Plus className="w-4 h-4" />
             <span>New Backup File</span>
@@ -456,13 +456,13 @@ export default function FluidCodeVaultTool() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search projects or file names..."
-                className="w-full bg-zinc-900 border border-zinc-800 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500"
+                className="w-full bg-zinc-900 border border-zinc-800 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-600"
               />
             </div>
 
             <div className="flex items-center justify-between text-xs text-zinc-400 font-mono pt-1">
               <span>{projects.length} Projects Total</span>
-              <span className="text-emerald-400 flex items-center gap-1">
+              <span className="text-white flex items-center gap-1">
                 <Database className="w-3 h-3" /> Encrypted LocalStorage
               </span>
             </div>
@@ -470,10 +470,10 @@ export default function FluidCodeVaultTool() {
 
           {/* New Project Inline Form */}
           {isCreatingProject && (
-            <form onSubmit={handleAddProjectOnly} className="bg-zinc-950 border border-emerald-500/50 rounded-2xl p-4 space-y-3">
+            <form onSubmit={handleAddProjectOnly} className="bg-zinc-950 border border-zinc-700 rounded-2xl p-4 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-white flex items-center gap-2">
-                  <FolderPlus className="w-4 h-4 text-emerald-400" /> Create New Project
+                  <FolderPlus className="w-4 h-4 text-white" /> Create New Project
                 </span>
                 <button
                   type="button"
@@ -489,11 +489,11 @@ export default function FluidCodeVaultTool() {
                 value={newProjectName}
                 onChange={(e) => setNewProjectName(e.target.value)}
                 placeholder="Project Name (e.g. Client Site WP)..."
-                className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-600"
               />
               <button
                 type="submit"
-                className="w-full py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs transition-colors"
+                className="w-full py-2 rounded-xl bg-white hover:bg-zinc-200 text-black font-bold text-xs transition-colors"
               >
                 Create Project
               </button>
@@ -508,7 +508,7 @@ export default function FluidCodeVaultTool() {
                 <p className="text-xs text-zinc-400">No projects or files created yet.</p>
                 <button
                   onClick={() => setIsCreatingProject(true)}
-                  className="mt-3 text-xs text-emerald-400 underline font-medium"
+                  className="mt-3 text-xs text-white underline font-medium"
                 >
                   Create your first project
                 </button>
@@ -530,7 +530,7 @@ export default function FluidCodeVaultTool() {
                         onClick={() => setActiveProject(proj)}
                         className="flex items-center gap-2.5 cursor-pointer flex-1"
                       >
-                        <Folder className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <Folder className="w-4 h-4 text-white shrink-0" />
                         <h3 className="text-xs font-bold text-white truncate max-w-[160px]">
                           {proj.name}
                         </h3>
@@ -542,7 +542,7 @@ export default function FluidCodeVaultTool() {
                       {/* Delete Whole Project Button */}
                       <button
                         onClick={() => handleDeleteProject(proj.id, proj.name)}
-                        className="p-1.5 rounded-lg text-zinc-500 hover:text-red-400 hover:bg-zinc-800 transition-colors"
+                        className="p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-800 transition-colors"
                         title="Delete Entire Project"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -569,12 +569,12 @@ export default function FluidCodeVaultTool() {
                               }}
                               className={`p-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between ${
                                 isFileActive
-                                  ? 'bg-emerald-950/30 border-emerald-500/80 text-white font-medium'
+                                  ? 'bg-zinc-900 border-zinc-600 text-white font-medium'
                                   : 'bg-zinc-900/30 border-zinc-800/60 text-zinc-300 hover:border-zinc-700'
                               }`}
                             >
                               <div className="flex items-center gap-2.5 overflow-hidden">
-                                <FileCode2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                                <FileCode2 className="w-3.5 h-3.5 text-white shrink-0" />
                                 <span className="text-xs font-mono truncate">{file.filename}</span>
                               </div>
 
@@ -583,7 +583,7 @@ export default function FluidCodeVaultTool() {
                                   e.stopPropagation();
                                   handleDeleteFile(proj.id, file.id);
                                 }}
-                                className="p-1 rounded text-zinc-500 hover:text-red-400 hover:bg-zinc-800 transition-colors"
+                                className="p-1 rounded text-zinc-500 hover:text-white hover:bg-zinc-800 transition-colors"
                                 title="Delete File"
                               >
                                 <Trash2 className="w-3 h-3" />
@@ -609,7 +609,7 @@ export default function FluidCodeVaultTool() {
             <form onSubmit={handleCreateFileSnapshot} className="bg-zinc-950 border border-zinc-800 rounded-2xl p-6 space-y-6">
               <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
                 <div className="flex items-center gap-2">
-                  <Plus className="w-5 h-5 text-emerald-400" />
+                  <Plus className="w-5 h-5 text-white" />
                   <h2 className="text-lg font-bold text-white">Save Pre-Edit Code Backup</h2>
                 </div>
                 <button
@@ -623,8 +623,8 @@ export default function FluidCodeVaultTool() {
 
               {/* Error Warning Banner */}
               {errorMessage && (
-                <div className="p-3.5 rounded-xl bg-red-950/60 border border-red-800/80 text-red-300 text-xs flex items-center gap-3">
-                  <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
+                <div className="p-3.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs flex items-center gap-3">
+                  <AlertTriangle className="w-4 h-4 text-white shrink-0" />
                   <span>{errorMessage}</span>
                 </div>
               )}
@@ -636,7 +636,7 @@ export default function FluidCodeVaultTool() {
                   <select
                     value={selectedProjectId}
                     onChange={(e) => setSelectedProjectId(e.target.value)}
-                    className="w-full bg-zinc-900 border border-zinc-800 focus:border-emerald-500 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none"
+                    className="w-full bg-zinc-900 border border-zinc-800 focus:border-zinc-600 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none"
                   >
                     {projects.map(p => (
                       <option key={p.id} value={p.id}>Project: {p.name}</option>
@@ -654,7 +654,7 @@ export default function FluidCodeVaultTool() {
                       value={customProjectName}
                       onChange={(e) => setCustomProjectName(e.target.value)}
                       placeholder="e.g. Client WP Portal"
-                      className="w-full bg-zinc-900 border border-zinc-800 focus:border-emerald-500 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none"
+                      className="w-full bg-zinc-900 border border-zinc-800 focus:border-zinc-600 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none"
                     />
                   </div>
                 )}
@@ -671,7 +671,7 @@ export default function FluidCodeVaultTool() {
                   value={newFilename}
                   onChange={(e) => handleFilenameChange(e.target.value)}
                   placeholder="functions.php"
-                  className="w-full bg-zinc-900 border border-zinc-800 focus:border-emerald-500 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none"
+                  className="w-full bg-zinc-900 border border-zinc-800 focus:border-zinc-600 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none"
                 />
                 <p className="text-[11px] text-zinc-500 italic">
                   Note: Duplicate filenames within the same project are not allowed.
@@ -685,7 +685,7 @@ export default function FluidCodeVaultTool() {
                   value={newNote}
                   onChange={(e) => setNewNote(e.target.value)}
                   placeholder="e.g. Working code before adding custom WooCommerce hook"
-                  className="w-full bg-zinc-900 border border-zinc-800 focus:border-emerald-500 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none"
+                  className="w-full bg-zinc-900 border border-zinc-800 focus:border-zinc-600 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none"
                 />
               </div>
 
@@ -698,9 +698,9 @@ export default function FluidCodeVaultTool() {
                     <button
                       type="button"
                       onClick={handlePasteClipboard}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-xs text-emerald-400 hover:text-emerald-300 font-medium transition-colors"
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-xs text-white hover:text-zinc-200 font-medium transition-colors"
                     >
-                      <ClipboardPaste className="w-3.5 h-3.5 text-emerald-400" />
+                      <ClipboardPaste className="w-3.5 h-3.5 text-white" />
                       <span>Paste Clipboard</span>
                     </button>
                   </div>
@@ -711,7 +711,7 @@ export default function FluidCodeVaultTool() {
                   value={newCode}
                   onChange={(e) => setNewCode(e.target.value)}
                   placeholder="Paste your working code here or click 'Paste Clipboard'..."
-                  className="w-full bg-black border border-zinc-800 focus:border-emerald-500 rounded-xl p-4 font-mono text-xs text-emerald-400 placeholder-zinc-600 focus:outline-none leading-relaxed"
+                  className="w-full bg-black border border-zinc-800 focus:border-zinc-600 rounded-xl p-4 font-mono text-xs text-zinc-300 placeholder-zinc-600 focus:outline-none leading-relaxed"
                 />
               </div>
 
@@ -725,7 +725,7 @@ export default function FluidCodeVaultTool() {
                 </button>
                 <button
                   type="submit"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs transition-all shadow-md"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-zinc-200 text-black font-bold text-xs transition-all shadow-md"
                 >
                   <Save className="w-4 h-4" />
                   <span>Save Backup Snapshot</span>
@@ -740,11 +740,11 @@ export default function FluidCodeVaultTool() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-800 pb-5">
                 <div>
                   <div className="flex items-center gap-2 text-xs font-mono text-zinc-400 mb-1">
-                    <Folder className="w-3.5 h-3.5 text-emerald-400" />
+                    <Folder className="w-3.5 h-3.5 text-white" />
                     <span>Project: {activeProject.name}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <FileCode2 className="w-5 h-5 text-emerald-400" />
+                    <FileCode2 className="w-5 h-5 text-white" />
                     <h2 className="text-xl font-bold text-white">{activeFile.filename}</h2>
                   </div>
                   <p className="text-xs text-zinc-400 mt-1">{activeFile.note}</p>
@@ -756,13 +756,13 @@ export default function FluidCodeVaultTool() {
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-xs font-medium transition-colors"
                     title="Download .bak file"
                   >
-                    <Download className="w-3.5 h-3.5 text-emerald-400" />
+                    <Download className="w-3.5 h-3.5 text-white" />
                     <span>Download .bak</span>
                   </button>
 
                   <button
                     onClick={() => handleDeleteFile(activeProject.id, activeFile.id)}
-                    className="p-2 rounded-xl bg-zinc-900 hover:bg-red-950/60 border border-zinc-800 text-zinc-400 hover:text-red-400 transition-colors"
+                    className="p-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-white transition-colors"
                     title="Delete File"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -773,7 +773,7 @@ export default function FluidCodeVaultTool() {
               {/* Action Toolbar & Version Selector */}
               <div className="flex flex-wrap items-center justify-between gap-3 bg-zinc-900/60 p-3 rounded-xl border border-zinc-800/80">
                 <div className="flex items-center gap-2">
-                  <History className="w-4 h-4 text-emerald-400" />
+                  <History className="w-4 h-4 text-white" />
                   <span className="text-xs font-mono text-zinc-300 font-medium">Revisions:</span>
                   <div className="flex gap-1.5 flex-wrap">
                     {activeFile.versions.map((ver, idx) => (
@@ -781,7 +781,7 @@ export default function FluidCodeVaultTool() {
                         key={ver.versionId}
                         className={`text-[11px] font-mono px-2 py-0.5 rounded-md border ${
                           idx === 0
-                            ? 'bg-emerald-950 text-emerald-300 border-emerald-700 font-semibold'
+                            ? 'bg-zinc-800 text-white border-zinc-600 font-semibold'
                             : 'bg-zinc-900 text-zinc-400 border-zinc-800'
                         }`}
                       >
@@ -796,7 +796,7 @@ export default function FluidCodeVaultTool() {
                     onClick={() => setDiffMode(!diffMode)}
                     className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-mono border transition-all ${
                       diffMode
-                        ? 'bg-emerald-950 text-emerald-300 border-emerald-600'
+                        ? 'bg-zinc-800 text-white border-zinc-600'
                         : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:text-white'
                     }`}
                   >
@@ -806,7 +806,7 @@ export default function FluidCodeVaultTool() {
 
                   <button
                     onClick={() => handleCopy(activeFile.versions[0].code, activeFile.id)}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs transition-colors shadow-sm"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-lg bg-white hover:bg-zinc-200 text-black font-bold text-xs transition-colors shadow-sm"
                   >
                     {copiedId === activeFile.id ? (
                       <>
@@ -827,8 +827,8 @@ export default function FluidCodeVaultTool() {
               {diffMode && activeFile.versions.length >= 2 ? (
                 <div className="space-y-2">
                   <p className="text-xs font-mono text-zinc-400">
-                    Comparing <span className="text-red-400">{activeFile.versions[1]?.versionName}</span> vs{' '}
-                    <span className="text-emerald-400">{activeFile.versions[0]?.versionName}</span>
+                    Comparing <span className="text-zinc-400">{activeFile.versions[1]?.versionName}</span> vs{' '}
+                    <span className="text-white">{activeFile.versions[0]?.versionName}</span>
                   </p>
                   {renderDiffView(activeFile.versions[1].code, activeFile.versions[0].code)}
                 </div>
@@ -838,7 +838,7 @@ export default function FluidCodeVaultTool() {
                     <span>Active Version: {activeFile.versions[0]?.versionName}</span>
                     <span>{activeFile.versions[0]?.lines} Lines | {activeFile.versions[0]?.bytes} Bytes</span>
                   </div>
-                  <pre className="bg-black border border-zinc-800 rounded-xl p-4 font-mono text-xs text-emerald-400 overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-[480px]">
+                  <pre className="bg-black border border-zinc-800 rounded-xl p-4 font-mono text-xs text-zinc-300 overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-[480px]">
                     {activeFile.versions[0]?.code}
                   </pre>
                 </div>
@@ -847,7 +847,7 @@ export default function FluidCodeVaultTool() {
               {/* Quick Append Revision Panel */}
               <div className="bg-zinc-900/40 border border-zinc-800/80 rounded-xl p-4 space-y-3">
                 <label className="text-xs font-mono uppercase tracking-wider text-zinc-300 font-semibold flex items-center gap-2">
-                  <Edit3 className="w-3.5 h-3.5 text-emerald-400" /> Append New Revision to {activeFile.filename}
+                  <Edit3 className="w-3.5 h-3.5 text-white" /> Append New Revision to {activeFile.filename}
                 </label>
                 <div className="flex gap-2">
                   <button
@@ -860,7 +860,7 @@ export default function FluidCodeVaultTool() {
                     }}
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-200 text-xs font-medium transition-colors"
                   >
-                    <Plus className="w-3.5 h-3.5 text-emerald-400" />
+                    <Plus className="w-3.5 h-3.5 text-white" />
                     <span>Append Revision Snapshot</span>
                   </button>
                 </div>
@@ -870,7 +870,7 @@ export default function FluidCodeVaultTool() {
           ) : (
             /* Empty State */
             <div className="bg-zinc-950 border border-zinc-800/80 rounded-2xl p-12 text-center space-y-4">
-              <ShieldCheck className="w-12 h-12 text-emerald-400/80 mx-auto" />
+              <ShieldCheck className="w-12 h-12 text-zinc-500 mx-auto" />
               <div className="space-y-1">
                 <h3 className="text-lg font-bold text-white">Select a Project or File to View</h3>
                 <p className="text-xs text-zinc-400 max-w-md mx-auto leading-relaxed">
@@ -882,12 +882,12 @@ export default function FluidCodeVaultTool() {
                   onClick={() => setIsCreatingProject(true)}
                   className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-200 text-xs font-medium"
                 >
-                  <FolderPlus className="w-4 h-4 text-emerald-400" />
+                  <FolderPlus className="w-4 h-4 text-white" />
                   <span>New Project</span>
                 </button>
                 <button
                   onClick={() => setIsCreating(true)}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs transition-all shadow-md"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-zinc-200 text-black font-bold text-xs transition-all shadow-md"
                 >
                   <Plus className="w-4 h-4" />
                   <span>New Backup File</span>

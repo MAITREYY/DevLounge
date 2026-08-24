@@ -323,7 +323,7 @@ add_action('wp_enqueue_scripts', 'enqueue_production_tailwind');`;
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-800 pb-6">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/40 text-emerald-400 text-xs font-mono mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-white text-xs font-mono mb-2">
             <Zap className="w-3.5 h-3.5" />
             <span>FluidTailwind Extractor & Production CSS Compiler v1.0</span>
           </div>
@@ -341,7 +341,7 @@ add_action('wp_enqueue_scripts', 'enqueue_production_tailwind');`;
               onClick={() => setFiles([])}
               className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-xs font-medium transition-colors"
             >
-              <Trash2 className="w-3.5 h-3.5 text-red-400" />
+              <Trash2 className="w-3.5 h-3.5 text-zinc-400" />
               <span>Clear Files ({files.length})</span>
             </button>
           )}
@@ -357,10 +357,10 @@ add_action('wp_enqueue_scripts', 'enqueue_production_tailwind');`;
           {/* Multi-File Upload Zone */}
           <div className="bg-zinc-950 border border-zinc-800/80 rounded-2xl p-5 space-y-4">
             <label className="text-xs font-mono uppercase tracking-wider text-zinc-400 font-semibold flex items-center gap-2">
-              <FolderUp className="w-4 h-4 text-emerald-400" /> Upload Project Files (.php, .html, .js)
+              <FolderUp className="w-4 h-4 text-white" /> Upload Project Files (.php, .html, .js)
             </label>
 
-            <div className="relative border-2 border-dashed border-zinc-800 hover:border-emerald-500/80 rounded-xl p-6 text-center space-y-3 transition-colors bg-zinc-900/30 group cursor-pointer">
+            <div className="relative border-2 border-dashed border-zinc-800 hover:border-zinc-600 rounded-xl p-6 text-center space-y-3 transition-colors bg-zinc-900/30 group cursor-pointer">
               <input
                 type="file"
                 multiple
@@ -368,7 +368,7 @@ add_action('wp_enqueue_scripts', 'enqueue_production_tailwind');`;
                 onChange={handleFileUpload}
                 className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
               />
-              <Upload className="w-8 h-8 text-zinc-500 group-hover:text-emerald-400 mx-auto transition-colors" />
+              <Upload className="w-8 h-8 text-zinc-500 group-hover:text-white mx-auto transition-colors" />
               <div className="space-y-1">
                 <p className="text-xs font-bold text-white">
                   Drop 20+ WordPress PHP/HTML files or click to upload
@@ -383,19 +383,19 @@ add_action('wp_enqueue_scripts', 'enqueue_production_tailwind');`;
           {/* Quick Raw Code Paste Option */}
           <div className="bg-zinc-950 border border-zinc-800/80 rounded-2xl p-5 space-y-3">
             <label className="text-xs font-mono uppercase tracking-wider text-zinc-400 font-semibold flex items-center gap-2">
-              <Code className="w-4 h-4 text-emerald-400" /> Or Paste Raw Code Snippet
+              <Code className="w-4 h-4 text-white" /> Or Paste Raw Code Snippet
             </label>
             <textarea
               rows={4}
               value={rawPasteCode}
               onChange={(e) => setRawPasteCode(e.target.value)}
               placeholder="<div className='flex items-center justify-between bg-zinc-900 p-4 rounded-xl'>..."
-              className="w-full bg-black border border-zinc-800 rounded-xl p-3 text-xs font-mono text-emerald-400 placeholder-zinc-600 focus:outline-none focus:border-emerald-500"
+              className="w-full bg-black border border-zinc-800 rounded-xl p-3 text-xs font-mono text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-zinc-600"
             />
             <button
               onClick={handleAddPastedCode}
               disabled={!rawPasteCode.trim()}
-              className="w-full py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-emerald-400 font-medium text-xs disabled:opacity-40 transition-colors"
+              className="w-full py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white font-medium text-xs disabled:opacity-40 transition-colors"
             >
               + Add Snippet to Scan List
             </button>
@@ -405,9 +405,9 @@ add_action('wp_enqueue_scripts', 'enqueue_production_tailwind');`;
           <div className="bg-zinc-950 border border-zinc-800/80 rounded-2xl p-5 space-y-4">
             <div className="flex items-center justify-between">
               <label className="text-xs font-mono uppercase tracking-wider text-zinc-400 font-semibold flex items-center gap-2">
-                <Layers className="w-4 h-4 text-emerald-400" /> Extracted Class Summary
+                <Layers className="w-4 h-4 text-white" /> Extracted Class Summary
               </label>
-              <span className="text-xs font-mono text-emerald-400 font-bold">
+              <span className="text-xs font-mono text-white font-bold">
                 {extractedClasses.length} Unique Classes
               </span>
             </div>
@@ -430,7 +430,7 @@ add_action('wp_enqueue_scripts', 'enqueue_production_tailwind');`;
                 {/* Tag Pills Preview */}
                 <div className="flex flex-wrap gap-1 max-h-32 overflow-y-auto pt-2 border-t border-zinc-900">
                   {extractedClasses.map((cls, i) => (
-                    <span key={i} className="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] font-mono text-emerald-300">
+                    <span key={i} className="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] font-mono text-zinc-300">
                       .{cls}
                     </span>
                   ))}
@@ -448,7 +448,7 @@ add_action('wp_enqueue_scripts', 'enqueue_production_tailwind');`;
           <div className="bg-zinc-950 border border-zinc-800/80 rounded-2xl p-6 space-y-4">
             <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
               <div className="flex items-center gap-2">
-                <Cpu className="w-5 h-5 text-emerald-400" />
+                <Cpu className="w-5 h-5 text-white" />
                 <div>
                   <h2 className="text-sm font-bold text-white">tailwind-production.min.css</h2>
                   <p className="text-[11px] font-mono text-zinc-500">
@@ -462,14 +462,14 @@ add_action('wp_enqueue_scripts', 'enqueue_production_tailwind');`;
                   onClick={() => copyToClipboard(generatedCssBundle, 'css')}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 text-xs font-medium transition-colors"
                 >
-                  {copiedType === 'css' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                  {copiedType === 'css' ? <Check className="w-3.5 h-3.5 text-white" /> : <Copy className="w-3.5 h-3.5" />}
                   <span>Copy CSS</span>
                 </button>
 
                 <button
                   onClick={handleDownloadCss}
                   disabled={extractedClasses.length === 0}
-                  className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs disabled:opacity-40 transition-colors shadow-md"
+                  className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-white hover:bg-zinc-200 text-black font-bold text-xs disabled:opacity-40 transition-colors shadow-md"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Download .min.css</span>
@@ -477,7 +477,7 @@ add_action('wp_enqueue_scripts', 'enqueue_production_tailwind');`;
               </div>
             </div>
 
-            <pre className="bg-black border border-zinc-800 rounded-xl p-4 font-mono text-xs text-emerald-400 overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-[380px]">
+            <pre className="bg-black border border-zinc-800 rounded-xl p-4 font-mono text-xs text-zinc-300 overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-[380px]">
               {generatedCssBundle}
             </pre>
           </div>
@@ -485,7 +485,7 @@ add_action('wp_enqueue_scripts', 'enqueue_production_tailwind');`;
           {/* WordPress & HTML Integration Snippets */}
           <div className="bg-zinc-950 border border-zinc-800/80 rounded-2xl p-6 space-y-4">
             <h3 className="text-xs font-mono uppercase tracking-wider text-zinc-300 font-semibold flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Production Integration Code
+              <CheckCircle2 className="w-4 h-4 text-white" /> Production Integration Code
             </h3>
 
             {/* WordPress Enqueue PHP */}
@@ -494,7 +494,7 @@ add_action('wp_enqueue_scripts', 'enqueue_production_tailwind');`;
                 <span>1. WordPress functions.php Enqueue Code:</span>
                 <button
                   onClick={() => copyToClipboard(wpPhpSnippet, 'wp')}
-                  className="text-emerald-400 hover:underline flex items-center gap-1 text-[11px]"
+                  className="text-white hover:underline flex items-center gap-1 text-[11px]"
                 >
                   {copiedType === 'wp' ? 'Copied!' : 'Copy PHP Snippet'}
                 </button>
@@ -510,7 +510,7 @@ add_action('wp_enqueue_scripts', 'enqueue_production_tailwind');`;
                 <span>2. Standard HTML &lt;head&gt; Link Tag:</span>
                 <button
                   onClick={() => copyToClipboard(htmlLinkSnippet, 'html')}
-                  className="text-emerald-400 hover:underline flex items-center gap-1 text-[11px]"
+                  className="text-white hover:underline flex items-center gap-1 text-[11px]"
                 >
                   {copiedType === 'html' ? 'Copied!' : 'Copy HTML Tag'}
                 </button>

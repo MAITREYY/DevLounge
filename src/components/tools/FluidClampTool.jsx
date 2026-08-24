@@ -722,23 +722,17 @@ export default function FluidClampTool() {
           </div>
 
           {/* Overall Audit Banner */}
-          <div className={`p-4 rounded-xl border flex items-start gap-3 transition-colors ${
-            overallAudit.type === 'danger'
-              ? 'bg-rose-950/30 border-rose-900/50 text-rose-300/90'
-              : overallAudit.type === 'warning'
-              ? 'bg-amber-950/30 border-amber-900/50 text-amber-300/90'
-              : 'bg-emerald-950/30 border-emerald-900/50 text-emerald-300/90'
-          }`}>
+          <div className="p-4 rounded-xl border flex items-start gap-3 transition-colors bg-zinc-950 border-zinc-800 text-zinc-300">
             {overallAudit.type === 'danger' ? (
-              <XCircle className="w-5 h-5 text-rose-400/80 mt-0.5 shrink-0" />
+              <XCircle className="w-5 h-5 text-zinc-400 mt-0.5 shrink-0" />
             ) : overallAudit.type === 'warning' ? (
-              <AlertTriangle className="w-5 h-5 text-amber-400/80 mt-0.5 shrink-0" />
+              <AlertTriangle className="w-5 h-5 text-zinc-400 mt-0.5 shrink-0" />
             ) : (
-              <CheckCircle2 className="w-5 h-5 text-emerald-400/80 mt-0.5 shrink-0" />
+              <CheckCircle2 className="w-5 h-5 text-white mt-0.5 shrink-0" />
             )}
             <div className="flex-1 text-xs">
-              <div className="font-semibold text-sm mb-0.5">{overallAudit.title}</div>
-              <div className="text-zinc-300/80 leading-relaxed">{overallAudit.desc}</div>
+              <div className="font-semibold text-sm mb-0.5 text-white">{overallAudit.title}</div>
+              <div className="text-zinc-400 leading-relaxed">{overallAudit.desc}</div>
             </div>
           </div>
 
@@ -749,10 +743,10 @@ export default function FluidClampTool() {
                 <span className="text-zinc-400 font-medium flex items-center gap-1.5"><Smartphone className="w-3.5 h-3.5 text-zinc-500" /> Mobile (320-440px)</span>
                 <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold border ${
                   mobAudit.status === 'pass'
-                    ? 'bg-emerald-950/40 text-emerald-300 border-emerald-900/60'
+                    ? 'bg-zinc-900 text-white border-zinc-700'
                     : mobAudit.status === 'warn'
-                    ? 'bg-amber-950/40 text-amber-300 border-amber-900/60'
-                    : 'bg-rose-950/40 text-rose-300 border-rose-900/60'
+                    ? 'bg-zinc-900 text-zinc-300 border-zinc-800'
+                    : 'bg-zinc-900 text-zinc-400 border-zinc-800'
                 }`}>
                   {mobAudit.status.toUpperCase()}
                 </span>
@@ -766,10 +760,10 @@ export default function FluidClampTool() {
                 <span className="text-zinc-400 font-medium flex items-center gap-1.5"><Tablet className="w-3.5 h-3.5 text-zinc-500" /> Tablet (768px)</span>
                 <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold border ${
                   tabAudit.status === 'pass'
-                    ? 'bg-emerald-950/40 text-emerald-300 border-emerald-900/60'
+                    ? 'bg-zinc-900 text-white border-zinc-700'
                     : tabAudit.status === 'warn'
-                    ? 'bg-amber-950/40 text-amber-300 border-amber-900/60'
-                    : 'bg-rose-950/40 text-rose-300 border-rose-900/60'
+                    ? 'bg-zinc-900 text-zinc-300 border-zinc-800'
+                    : 'bg-zinc-900 text-zinc-400 border-zinc-800'
                 }`}>
                   {tabAudit.status.toUpperCase()}
                 </span>
@@ -783,10 +777,10 @@ export default function FluidClampTool() {
                 <span className="text-zinc-400 font-medium flex items-center gap-1.5"><Laptop className="w-3.5 h-3.5 text-zinc-500" /> Desktop (1440px+)</span>
                 <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold border ${
                   deskAudit.status === 'pass'
-                    ? 'bg-emerald-950/40 text-emerald-300 border-emerald-900/60'
+                    ? 'bg-zinc-900 text-white border-zinc-700'
                     : deskAudit.status === 'warn'
-                    ? 'bg-amber-950/40 text-amber-300 border-amber-900/60'
-                    : 'bg-rose-950/40 text-rose-300 border-rose-900/60'
+                    ? 'bg-zinc-900 text-zinc-300 border-zinc-800'
+                    : 'bg-zinc-900 text-zinc-400 border-zinc-800'
                 }`}>
                   {deskAudit.status.toUpperCase()}
                 </span>
@@ -839,13 +833,13 @@ export default function FluidClampTool() {
 
               <div className="flex items-center gap-2 font-mono text-[10px]">
                 <span className={`px-2.5 py-1 rounded-full border font-bold ${
-                  contrastResult.passAA ? 'bg-emerald-950/40 text-emerald-300 border-emerald-900/60' : 'bg-rose-950/40 text-rose-300 border-rose-900/60'
+                  contrastResult.passAA ? 'bg-zinc-900 text-white border-zinc-700' : 'bg-zinc-900 text-zinc-400 border-zinc-800'
                 }`}>
                   WCAG AA (Normal Text {'>='} 4.5:1): {contrastResult.passAA ? 'PASS' : 'FAIL'}
                 </span>
 
                 <span className={`px-2.5 py-1 rounded-full border font-bold ${
-                  contrastResult.passAAA ? 'bg-emerald-950/40 text-emerald-300 border-emerald-900/60' : 'bg-amber-950/40 text-amber-300 border-amber-900/60'
+                  contrastResult.passAAA ? 'bg-zinc-900 text-white border-zinc-700' : 'bg-zinc-900 text-zinc-400 border-zinc-800'
                 }`}>
                   WCAG AAA (Normal Text {'>='} 7:1): {contrastResult.passAAA ? 'PASS' : 'FAIL'}
                 </span>

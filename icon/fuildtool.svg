@@ -2,7 +2,7 @@
   <rect width="32" height="32" rx="8" fill="#09090b" />
   <g fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M16 6 L6 11 L16 16 L26 11 Z" stroke="#ffffff" />
-    <path d="M6 16 L16 21 L26 16" stroke="#10b981" />
-    <path d="M6 21 L16 26 L26 21" stroke="#71717a" />
+    <path d="M6 16 L16 21 L26 16" stroke="#a1a1aa" />
+    <path d="M6 21 L16 26 L26 21" stroke="#52525b" />
   </g>
 </svg>

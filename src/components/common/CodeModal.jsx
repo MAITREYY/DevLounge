@@ -38,7 +38,7 @@ export default function CodeModal({ isOpen, onClose, codeSnippets, title = "Expo
           {/* Modal Header */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800/80 bg-zinc-900/50">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-emerald-950/80 border border-emerald-800/60 flex items-center justify-center text-emerald-400">
+              <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-white">
                 <Code className="w-4 h-4" />
               </div>
               <h3 className="font-bold text-white text-base tracking-tight">{title}</h3>
@@ -59,7 +59,7 @@ export default function CodeModal({ isOpen, onClose, codeSnippets, title = "Expo
                 onClick={() => setActiveTab(tab.id)}
                 className={`px-3 py-1.5 rounded-t-lg text-xs font-mono font-medium transition-all border-b-2 -mb-px ${
                   activeTab === tab.id
-                    ? 'border-emerald-500 text-emerald-400 bg-zinc-900/60'
+                    ? 'border-white text-white bg-zinc-900/60'
                     : 'border-transparent text-zinc-400 hover:text-zinc-200'
                 }`}
               >
@@ -71,7 +71,7 @@ export default function CodeModal({ isOpen, onClose, codeSnippets, title = "Expo
           {/* Code Viewer Body */}
           <div className="p-6 space-y-4">
             <div className="relative group">
-              <pre className="bg-black border border-zinc-800/90 rounded-xl p-4 font-mono text-xs sm:text-sm text-emerald-300 overflow-x-auto leading-relaxed shadow-inner max-h-72 select-all">
+              <pre className="bg-black border border-zinc-800/90 rounded-xl p-4 font-mono text-xs sm:text-sm text-zinc-200 overflow-x-auto leading-relaxed shadow-inner max-h-72 select-all">
                 <code>{currentSnippet}</code>
               </pre>
               <button
@@ -80,8 +80,8 @@ export default function CodeModal({ isOpen, onClose, codeSnippets, title = "Expo
               >
                 {copied ? (
                   <>
-                    <Check className="w-3.5 h-3.5 text-emerald-400" />
-                    <span className="text-emerald-400">Copied!</span>
+                    <Check className="w-3.5 h-3.5 text-white" />
+                    <span className="text-white">Copied!</span>
                   </>
                 ) : (
                   <>
@@ -94,7 +94,7 @@ export default function CodeModal({ isOpen, onClose, codeSnippets, title = "Expo
 
             <div className="flex items-center justify-between text-[11px] text-zinc-500 font-mono">
               <span className="flex items-center gap-1">
-                <Terminal className="w-3.5 h-3.5 text-emerald-500" /> Ready for production stylesheets & frameworks
+                <Terminal className="w-3.5 h-3.5 text-zinc-400" /> Ready for production stylesheets & frameworks
               </span>
               <span>UTF-8 • Clean Output</span>
             </div>

@@ -425,12 +425,12 @@ export default function FluidBoxTool() {
               </div>
             </div>
           ) : (
-            <div className="mt-4 p-4 rounded-xl border border-emerald-900/50 bg-emerald-950/30 text-emerald-300/90 transition-all duration-200">
+            <div className="mt-4 p-4 rounded-xl border border-zinc-800 bg-zinc-950 text-zinc-300 transition-all duration-200">
               <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-emerald-400/80 mt-0.5 shrink-0" />
+                <CheckCircle2 className="w-5 h-5 text-white mt-0.5 shrink-0" />
                 <div className="flex-1 text-xs space-y-1">
-                  <div className="font-semibold text-sm text-emerald-300">Responsive Geometry Approved</div>
-                  <div className="text-zinc-300/80 leading-relaxed">
+                  <div className="font-semibold text-sm text-white">Responsive Geometry Approved</div>
+                  <div className="text-zinc-400 leading-relaxed">
                     All side paddings and container widths fit cleanly inside Mobile ({mobScreenPx}px) and PC ({pcScreenPx}px) viewports with safe side gutters.
                   </div>
                 </div>

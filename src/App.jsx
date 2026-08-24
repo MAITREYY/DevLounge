@@ -18,7 +18,7 @@ export default function App() {
       <ScrollToTop />
 
       {/* Subtle Ambient Glow */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-64 bg-emerald-950/20 blur-[140px] pointer-events-none rounded-full"></div>
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-64 bg-zinc-800/15 blur-[140px] pointer-events-none rounded-full"></div>
 
       {/* Global Minimalist Header */}
       <Header />

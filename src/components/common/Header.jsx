@@ -23,13 +23,13 @@ export default function Header() {
             ) : isBox ? (
               <BoxSelect className="w-4 h-4 text-white" />
             ) : isImage ? (
-              <ImageIcon className="w-4 h-4 text-emerald-400" />
+              <ImageIcon className="w-4 h-4 text-white" />
             ) : isVideo ? (
-              <VideoIcon className="w-4 h-4 text-emerald-400" />
+              <VideoIcon className="w-4 h-4 text-white" />
             ) : isCodeVault ? (
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <ShieldCheck className="w-4 h-4 text-white" />
             ) : isTailwind ? (
-              <Zap className="w-4 h-4 text-emerald-400" />
+              <Zap className="w-4 h-4 text-white" />
             ) : (
               <Layers className="w-4 h-4 text-white" />
             )}
