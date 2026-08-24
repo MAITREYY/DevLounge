@@ -21,6 +21,24 @@ export default function Dashboard() {
 
   const tools = [
     {
+      id: "fluidfont",
+      path: "/fluidfont",
+      name: "Fluid Font Studio",
+      version: "v1.0",
+      category: "media",
+      subtitle: "Browser Font Subsetter, Format Converter & Type Inspector",
+      renderIcon: () => <Type className="w-5 h-5 text-white" />,
+      description:
+        "Subset TTF/OTF/WOFF/WOFF2 fonts to reduce payload size by up to 90%. Convert web font formats, generate @font-face CSS snippets, inspect character glyph maps, and test live typography.",
+      tags: [
+        "Font Subsetter (Save 90%)",
+        "TTF ➔ WOFF / WOFF2",
+        "@font-face CSS Generator",
+        "Glyph Character Map",
+        "Live Type Tester",
+      ],
+    },
+    {
       id: "fluidsvg",
       path: "/fluidsvg",
       name: "Fluid SVG",
