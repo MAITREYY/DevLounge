@@ -1,0 +1,501 @@
+/* DevLounge Floating Extension Content Script Styles — Ultra-Minimalist & Stationary (No Card Shift on Hover) */
+
+:host {
+  all: initial;
+  font-family: -apple-system, BlinkMacSystemFont, "Geist", "Inter", "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Floating Overlay Container */
+.devlounge-dock-overlay {
+  position: fixed;
+  z-index: 2147483647;
+  width: 420px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 40px);
+  background: rgba(9, 9, 11, 0.94);
+  backdrop-filter: blur(32px) saturate(210%);
+  -webkit-backdrop-filter: blur(32px) saturate(210%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 32px 64px -16px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.03), 0 0 60px rgba(255, 255, 255, 0.02);
+  color: #f4f4f5;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.96);
+}
+
+.devlounge-dock-overlay.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+/* Preset Screen Positions */
+.devlounge-dock-overlay.pos-top-right {
+  top: 24px;
+  right: 24px;
+}
+
+.devlounge-dock-overlay.pos-top-left {
+  top: 24px;
+  left: 24px;
+}
+
+.devlounge-dock-overlay.pos-top-center {
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.96);
+}
+.devlounge-dock-overlay.pos-top-center.is-visible {
+  transform: translateX(-50%) scale(1);
+}
+
+.devlounge-dock-overlay.pos-center-center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.96);
+}
+.devlounge-dock-overlay.pos-center-center.is-visible {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.devlounge-dock-overlay.pos-bottom-right {
+  bottom: 24px;
+  right: 24px;
+}
+
+/* Header Bar & Drag Handle */
+.devlounge-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: rgba(18, 18, 22, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  cursor: grab;
+  user-select: none;
+  position: relative;
+}
+
+.devlounge-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+}
+
+.devlounge-header:active {
+  cursor: grabbing;
+}
+
+.devlounge-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.devlounge-logo-icon {
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.devlounge-title-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.devlounge-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.devlounge-subtitle {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #71717a;
+}
+
+.devlounge-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.devlounge-icon-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #71717a;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.devlounge-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Minimalist Navigation Container */
+.devlounge-nav-container {
+  padding: 14px 20px 4px 20px;
+}
+
+.devlounge-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 4px;
+  background: rgba(18, 18, 22, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+}
+
+.devlounge-tab {
+  flex: 1;
+  padding: 8px 14px;
+  background: transparent;
+  border: none;
+  border-radius: 9px;
+  color: #a1a1aa;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.devlounge-tab:hover {
+  color: #f4f4f5;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.devlounge-tab.is-active {
+  background: rgba(39, 39, 42, 0.9);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+/* Body Content Area */
+.devlounge-body {
+  padding: 14px 20px 20px 20px;
+  overflow-y: auto;
+  max-height: 460px;
+}
+
+.devlounge-body::-webkit-scrollbar {
+  width: 5px;
+}
+.devlounge-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+.devlounge-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
+}
+
+/* Tab Panels */
+.devlounge-tab-panel {
+  display: none;
+}
+
+.devlounge-tab-panel.is-active {
+  display: block;
+}
+
+/* Stationary Tool Cards Grid (No Positional Movement on Hover) */
+.devlounge-tools-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.devlounge-tool-card {
+  background: rgba(18, 18, 22, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  /* Card remains completely stationary */
+  transform: none !important;
+}
+
+.devlounge-tool-card:hover {
+  background: rgba(28, 28, 34, 0.85);
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.devlounge-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.devlounge-card-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a1a1aa;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.devlounge-tool-card:hover .devlounge-card-icon {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: scale(1.08);
+}
+
+.devlounge-card-arrow {
+  color: #52525b;
+  transition: transform 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+  opacity: 0.6;
+}
+
+.devlounge-tool-card:hover .devlounge-card-arrow {
+  color: #ffffff;
+  opacity: 1;
+  transform: translate(3px, -3px);
+}
+
+.devlounge-card-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f4f4f5;
+  letter-spacing: -0.01em;
+  margin-top: 2px;
+  transition: color 0.2s ease;
+}
+
+.devlounge-tool-card:hover .devlounge-card-title {
+  color: #ffffff;
+}
+
+.devlounge-card-desc {
+  font-size: 10px;
+  color: #71717a;
+  line-height: 1.35;
+}
+
+/* Quick Image Converter */
+.devlounge-quick-tool {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.devlounge-dropzone {
+  border: 2px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 32px 20px;
+  text-align: center;
+  cursor: pointer;
+  background: rgba(18, 18, 22, 0.3);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.devlounge-dropzone:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(39, 39, 42, 0.4);
+}
+
+.devlounge-dropzone-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a1a1aa;
+}
+
+.devlounge-dropzone-text {
+  font-size: 11px;
+  font-weight: 500;
+  color: #a1a1aa;
+}
+
+.devlounge-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.devlounge-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #71717a;
+}
+
+.devlounge-input-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+
+.devlounge-input {
+  background: #18181b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 9px 12px;
+  color: #ffffff;
+  font-size: 11px;
+  outline: none;
+}
+
+.devlounge-input:focus {
+  border-color: #a1a1aa;
+  box-shadow: 0 0 0 2px rgba(161, 161, 170, 0.2);
+}
+
+.devlounge-btn {
+  background: #27272a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  padding: 9px 16px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.devlounge-btn:hover {
+  background: #3f3f46;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.devlounge-btn-primary {
+  background: #ffffff;
+  color: #09090b;
+  border: none;
+  font-weight: 700;
+}
+
+.devlounge-btn-primary:hover {
+  background: #f4f4f5;
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.2);
+}
+
+.devlounge-code-output {
+  background: #09090b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 12px;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 11px;
+  color: #38bdf8;
+  word-break: break-all;
+}
+
+/* Minimalist Footer Bar */
+.devlounge-footer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: rgba(14, 14, 18, 0.8);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 10px;
+  color: #71717a;
+}
+
+.devlounge-pos-selector {
+  display: flex;
+  gap: 4px;
+}
+
+.devlounge-pos-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #71717a;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 9px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.devlounge-pos-btn:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.devlounge-pos-btn.is-active {
+  background: #27272a;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+kbd {
+  background: #18181b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 2px 5px;
+  font-size: 9px;
+  color: #a1a1aa;
+}

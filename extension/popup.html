@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevLounge Suite</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="brand">
+      <div class="logo">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </div>
+      <div class="brand-text">
+        <span class="title">DevLounge</span>
+        <span class="subtitle">Utility Suite</span>
+      </div>
+    </div>
+    <button class="btn-dock" id="btn-toggle-floating" title="Toggle Floating Dock on Active Webpage">
+      <span>Float Dock</span>
+    </button>
+  </div>
+
+  <!-- Settings Bar -->
+  <div class="settings-bar">
+    <label for="base-url">App Base URL:</label>
+    <input type="text" id="base-url" value="http://localhost:3000" placeholder="http://localhost:3000">
+    <button id="btn-save-url">Save</button>
+  </div>
+
+  <!-- Search & Navigation -->
+  <div class="nav-bar">
+    <input type="text" id="search-tools" class="search-input" placeholder="Search tools (Clamp, Image, Tailwind)...">
+  </div>
+
+  <!-- Tools Grid -->
+  <div class="tools-grid" id="tools-grid">
+    <div class="tool-card" data-route="/fluid-clamp" data-name="fluid clamp font scaling css">
+      <div class="card-icon">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Fluid Clamp</div>
+        <div class="card-desc">CSS clamp font scaler</div>
+      </div>
+      <div class="card-arrow">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+      </div>
+    </div>
+
+    <div class="tool-card" data-route="/image-converter" data-name="image converter webp png avif format convert">
+      <div class="card-icon">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Image Converter</div>
+        <div class="card-desc">WebP, PNG & AVIF converter</div>
+      </div>
+      <div class="card-arrow">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+      </div>
+    </div>
+
+    <div class="tool-card" data-route="/tailwind-extractor" data-name="tailwind extractor css scan">
+      <div class="card-icon">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Tailwind Extractor</div>
+        <div class="card-desc">Scan files & extract CSS</div>
+      </div>
+      <div class="card-arrow">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+      </div>
+    </div>
+
+    <div class="tool-card" data-route="/video-converter" data-name="video converter mp4 webm animated gif">
+      <div class="card-icon">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Video Converter</div>
+        <div class="card-desc">Convert MP4, WebM & GIF</div>
+      </div>
+      <div class="card-arrow">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+      </div>
+    </div>
+
+    <div class="tool-card" data-route="/code-vault" data-name="code vault ftp backup diff php css js">
+      <div class="card-icon">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Code Vault</div>
+        <div class="card-desc">Code backup & FTP diff studio</div>
+      </div>
+      <div class="card-arrow">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+      </div>
+    </div>
+
+    <div class="tool-card" data-route="/fluid-box" data-name="fluid box figma container responsive layout">
+      <div class="card-icon">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Fluid Box</div>
+        <div class="card-desc">Figma container studio</div>
+      </div>
+      <div class="card-arrow">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+      </div>
+    </div>
+
+    <div class="tool-card" data-route="/font-converter" data-name="fluid font subsetter ttf otf webfont">
+      <div class="card-icon">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Fluid Font</div>
+        <div class="card-desc">TTF/OTF subsetter & webfont</div>
+      </div>
+      <div class="card-arrow">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+      </div>
+    </div>
+
+    <div class="tool-card" data-route="/svg-converter" data-name="fluid svg optimizer jsx convert sanitize">
+      <div class="card-icon">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Fluid SVG</div>
+        <div class="card-desc">SVG optimizer & JSX studio</div>
+      </div>
+      <div class="card-arrow">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span>Toggle Dock: <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd></span>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

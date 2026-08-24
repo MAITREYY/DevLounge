@@ -1,0 +1,239 @@
+/* DevLounge Popup Ultra-Minimalist Stylesheet — Stationary Cards */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 360px;
+  background: #09090b;
+  color: #f4f4f5;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: 14px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, #27272a 0%, #09090b 100%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-text .title {
+  font-weight: 700;
+  font-size: 14px;
+  color: #ffffff;
+  line-height: 1.1;
+}
+
+.brand-text .subtitle {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #71717a;
+}
+
+.btn-dock {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-dock:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* Settings Bar */
+.settings-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  background: rgba(24, 24, 27, 0.5);
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 10px;
+}
+
+.settings-bar label {
+  color: #71717a;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.settings-bar input {
+  flex: 1;
+  background: #18181b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 4px 8px;
+  color: #ffffff;
+  font-size: 10px;
+  outline: none;
+}
+
+.settings-bar button {
+  background: #27272a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.settings-bar button:hover {
+  background: #3f3f46;
+}
+
+/* Nav & Search */
+.nav-bar {
+  margin-top: 10px;
+}
+
+.search-input {
+  width: 100%;
+  background: #18181b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 7px 10px;
+  color: #ffffff;
+  font-size: 11px;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: #a1a1aa;
+}
+
+/* Tools Grid */
+.tools-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.tools-grid::-webkit-scrollbar {
+  width: 4px;
+}
+.tools-grid::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
+}
+
+.tool-card {
+  background: rgba(20, 20, 24, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 9px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  /* Card remains completely stationary */
+  transform: none !important;
+}
+
+.tool-card:hover {
+  background: rgba(30, 30, 36, 0.85);
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.card-icon {
+  font-size: 16px;
+  transition: transform 0.18s ease, color 0.18s ease;
+}
+
+.tool-card:hover .card-icon {
+  color: #ffffff;
+  transform: scale(1.08);
+}
+
+.card-info {
+  flex: 1;
+}
+
+.card-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  transition: color 0.18s ease;
+}
+
+.card-desc {
+  font-size: 10px;
+  color: #a1a1aa;
+  margin-top: 1px;
+}
+
+.card-arrow {
+  color: #52525b;
+  font-size: 12px;
+  transition: transform 0.18s ease, color 0.18s ease, opacity 0.18s ease;
+  opacity: 0.6;
+}
+
+.tool-card:hover .card-arrow {
+  color: #ffffff;
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+
+/* Footer */
+.footer {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 9px;
+  color: #71717a;
+  text-align: center;
+}
+
+kbd {
+  background: #18181b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  padding: 1px 4px;
+  font-family: inherit;
+  color: #a1a1aa;
+}
