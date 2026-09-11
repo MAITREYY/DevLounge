@@ -95,24 +95,24 @@ export default function FluidClampTool() {
 
   // Presets
   const applyPreset = (presetKey) => {
-    if (presetKey === 'hero') {
-      setMobileFont(32);
-      setDesktopFont(64);
-      setMobileW(440);
-      setDesktopW(1440);
-    } else if (presetKey === 'h2') {
-      setMobileFont(24);
-      setDesktopFont(40);
-      setMobileW(440);
-      setDesktopW(1440);
-    } else if (presetKey === 'sub') {
-      setMobileFont(16);
-      setDesktopFont(24);
-      setMobileW(440);
-      setDesktopW(1440);
-    } else if (presetKey === 'body') {
-      setMobileFont(14);
-      setDesktopFont(18);
+    const presetMap = {
+      'h1-display': { mobF: 36, deskF: 72 },
+      'h1': { mobF: 32, deskF: 56 },
+      'h2': { mobF: 24, deskF: 40 },
+      'h3': { mobF: 20, deskF: 32 },
+      'h4': { mobF: 18, deskF: 24 },
+      'h5': { mobF: 16, deskF: 20 },
+      'h6': { mobF: 14, deskF: 16 },
+      'lead': { mobF: 18, deskF: 22 },
+      'body': { mobF: 14, deskF: 18 },
+      'small': { mobF: 12, deskF: 14 },
+      'caption': { mobF: 11, deskF: 13 },
+      'micro': { mobF: 10, deskF: 12 },
+    };
+
+    if (presetMap[presetKey]) {
+      setMobileFont(presetMap[presetKey].mobF);
+      setDesktopFont(presetMap[presetKey].deskF);
       setMobileW(440);
       setDesktopW(1440);
     }
@@ -315,163 +315,193 @@ export default function FluidClampTool() {
       {/* Quick Presets Bar */}
       <section className="mb-6 space-y-3">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-1.5">
-            <Sliders className="w-3.5 h-3.5 text-zinc-400" /> Quick Presets
+          <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5 font-mono">
+            <Sliders className="w-3.5 h-3.5 text-amber-400" /> Typography Quick Presets (H1-H6 & Paragraphs)
           </span>
-          <span className="text-xs text-zinc-500">Click to apply configuration</span>
+          <span className="text-[11px] text-zinc-500 font-mono">Click to apply configuration</span>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-          <button
-            type="button"
-            onClick={() => applyPreset('hero')}
-            className="preset-btn px-3.5 py-2.5 rounded-xl bg-black hover:bg-zinc-900 border border-zinc-800 text-left transition-all hover:border-zinc-700 group"
-          >
-            <div className="flex items-center justify-between text-xs font-medium text-white group-hover:text-zinc-200">
-              <span className="flex items-center gap-1.5"><Heading className="w-3.5 h-3.5 text-zinc-500" /> Hero Title</span>
-            </div>
-            <div className="text-[11px] mono text-zinc-500 mt-1">32px &rarr; 64px</div>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => applyPreset('h2')}
-            className="preset-btn px-3.5 py-2.5 rounded-xl bg-black hover:bg-zinc-900 border border-zinc-800 text-left transition-all hover:border-zinc-700 group"
-          >
-            <div className="flex items-center justify-between text-xs font-medium text-white group-hover:text-zinc-200">
-              <span className="flex items-center gap-1.5"><AlignLeft className="w-3.5 h-3.5 text-zinc-500" /> Section H2</span>
-            </div>
-            <div className="text-[11px] mono text-zinc-500 mt-1">24px &rarr; 40px</div>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => applyPreset('sub')}
-            className="preset-btn px-3.5 py-2.5 rounded-xl bg-black hover:bg-zinc-900 border border-zinc-800 text-left transition-all hover:border-zinc-700 group"
-          >
-            <div className="flex items-center justify-between text-xs font-medium text-white group-hover:text-zinc-200">
-              <span className="flex items-center gap-1.5"><Type className="w-3.5 h-3.5 text-zinc-500" /> Subtitle</span>
-            </div>
-            <div className="text-[11px] mono text-zinc-500 mt-1">16px &rarr; 24px</div>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => applyPreset('body')}
-            className="preset-btn px-3.5 py-2.5 rounded-xl bg-black hover:bg-zinc-900 border border-zinc-800 text-left transition-all hover:border-zinc-700 group"
-          >
-            <div className="flex items-center justify-between text-xs font-medium text-white group-hover:text-zinc-200">
-              <span className="flex items-center gap-1.5"><AlignLeft className="w-3.5 h-3.5 text-zinc-500" /> Body Text</span>
-            </div>
-            <div className="text-[11px] mono text-zinc-500 mt-1">14px &rarr; 18px</div>
-          </button>
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2">
+          {[
+            { id: 'h1-display', label: 'H1 Display', range: '36 ➔ 72px', isHead: true },
+            { id: 'h1', label: 'H1 Page Title', range: '32 ➔ 56px', isHead: true },
+            { id: 'h2', label: 'H2 Section', range: '24 ➔ 40px', isHead: true },
+            { id: 'h3', label: 'H3 Sub-section', range: '20 ➔ 32px', isHead: true },
+            { id: 'h4', label: 'H4 Card Title', range: '18 ➔ 24px', isHead: true },
+            { id: 'h5', label: 'H5 Header', range: '16 ➔ 20px', isHead: true },
+            { id: 'h6', label: 'H6 Small Title', range: '14 ➔ 16px', isHead: true },
+            { id: 'lead', label: 'Lead Paragraph', range: '18 ➔ 22px', isHead: false },
+            { id: 'body', label: 'Body Regular', range: '14 ➔ 18px', isHead: false },
+            { id: 'small', label: 'Body Small', range: '12 ➔ 14px', isHead: false },
+            { id: 'caption', label: 'Caption / Badge', range: '11 ➔ 13px', isHead: false },
+            { id: 'micro', label: 'Micro Label', range: '10 ➔ 12px', isHead: false },
+          ].map((preset) => (
+            <button
+              key={preset.id}
+              type="button"
+              onClick={() => applyPreset(preset.id)}
+              className="px-2.5 py-2 rounded-xl bg-zinc-950 hover:bg-zinc-900 border border-zinc-800/80 hover:border-amber-500/40 text-left transition-all group flex flex-col justify-between"
+            >
+              <div className="flex items-center justify-between text-[11px] font-semibold text-zinc-300 group-hover:text-amber-200">
+                <span className="truncate">{preset.label}</span>
+              </div>
+              <div className="text-[10px] font-mono text-zinc-500 group-hover:text-zinc-400 mt-1">
+                {preset.range}
+              </div>
+            </button>
+          ))}
         </div>
       </section>
 
       {/* Main Card Container */}
       <div className="bg-black border border-zinc-800 rounded-2xl p-6 sm:p-8 space-y-8 shadow-xl">
         {/* Viewport & Font Parameters Input Grid */}
-        <div>
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-4 flex items-center gap-1.5">
-            <Sliders className="w-3.5 h-3.5 text-zinc-400" /> Viewport & Font Parameters
-          </h2>
+        <div className="space-y-6">
+          <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
+              <Sliders className="w-3.5 h-3.5 text-amber-400" /> Viewport & Font Parameters (Figma Design Sync)
+            </h2>
+            <span className="text-[10px] font-mono text-zinc-500">
+              Row 1: Mobile Baseline • Row 2: Desktop Baseline
+            </span>
+          </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-xs font-medium text-zinc-400 mb-1.5 flex items-center justify-between">
-                <span>Min Viewport</span>
-                <Smartphone className="w-3 h-3 text-zinc-600" />
-              </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  value={minW}
-                  onChange={(e) => setMinW(e.target.value)}
-                  className="mono w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none"
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs mono">px</span>
+          {/* ROW 1: MOBILE PARAMETERS */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-300 font-mono">
+              <Smartphone className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Mobile Design Parameters</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-zinc-950/60 p-4 rounded-xl border border-zinc-800/80">
+              {/* 1. Min Viewport */}
+              <div>
+                <label className="block text-xs font-medium text-zinc-300 mb-1 flex items-center justify-between">
+                  <span>Min Viewport</span>
+                  <Smartphone className="w-3 h-3 text-zinc-500" />
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    value={minW}
+                    onChange={(e) => setMinW(e.target.value)}
+                    className="mono w-full bg-black border border-zinc-800 focus:border-emerald-500/80 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none transition-colors"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs mono">px</span>
+                </div>
+                <p className="text-[10px] text-zinc-500 mt-1 leading-tight">
+                  Lowest width limit where text stops scaling down
+                </p>
+              </div>
+
+              {/* 2. Figma Mobile Viewport Width */}
+              <div>
+                <label className="block text-xs font-medium text-zinc-300 mb-1 flex items-center justify-between">
+                  <span>Figma Mobile Width</span>
+                  <Smartphone className="w-3 h-3 text-zinc-500" />
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    value={mobileW}
+                    onChange={(e) => setMobileW(e.target.value)}
+                    className="mono w-full bg-black border border-zinc-800 focus:border-emerald-500/80 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none transition-colors"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs mono">px</span>
+                </div>
+                <p className="text-[10px] text-zinc-500 mt-1 leading-tight">
+                  Figma mobile design frame/canvas width (e.g. 440px)
+                </p>
+              </div>
+
+              {/* 3. Figma Mobile Font Size */}
+              <div>
+                <label className="block text-xs font-semibold text-emerald-400 mb-1 flex items-center justify-between">
+                  <span>Mobile Font Size</span>
+                  <Type className="w-3 h-3 text-emerald-400" />
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={mobileFont}
+                    onChange={(e) => setMobileFont(e.target.value)}
+                    className="mono w-full bg-black border border-emerald-500/40 focus:border-emerald-400 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-white focus:outline-none transition-colors"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-400 text-xs mono font-semibold">px</span>
+                </div>
+                <p className="text-[10px] text-emerald-400/80 mt-1 leading-tight">
+                  Font size set in Figma mobile design frame
+                </p>
               </div>
             </div>
+          </div>
 
-            <div>
-              <label className="block text-xs font-medium text-zinc-400 mb-1.5 flex items-center justify-between">
-                <span>Mobile Viewport</span>
-                <Smartphone className="w-3 h-3 text-zinc-600" />
-              </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  value={mobileW}
-                  onChange={(e) => setMobileW(e.target.value)}
-                  className="mono w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none"
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs mono">px</span>
-              </div>
+          {/* ROW 2: DESKTOP PARAMETERS */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-300 font-mono">
+              <Laptop className="w-3.5 h-3.5 text-sky-400" />
+              <span>Desktop Design Parameters</span>
             </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-white mb-1.5 flex items-center justify-between">
-                <span>Mobile Size</span>
-                <Type className="w-3 h-3 text-zinc-400" />
-              </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  step="0.1"
-                  value={mobileFont}
-                  onChange={(e) => setMobileFont(e.target.value)}
-                  className="mono w-full bg-zinc-950 border border-zinc-700 focus:border-zinc-400 rounded-xl px-3.5 py-2.5 text-sm font-medium text-white focus:outline-none"
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 text-xs mono">px</span>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-zinc-950/60 p-4 rounded-xl border border-zinc-800/80">
+              {/* 4. Max Viewport */}
+              <div>
+                <label className="block text-xs font-medium text-zinc-300 mb-1 flex items-center justify-between">
+                  <span>Max Viewport</span>
+                  <Monitor className="w-3 h-3 text-zinc-500" />
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    value={maxW}
+                    onChange={(e) => setMaxW(e.target.value)}
+                    className="mono w-full bg-black border border-zinc-800 focus:border-sky-500/80 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none transition-colors"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs mono">px</span>
+                </div>
+                <p className="text-[10px] text-zinc-500 mt-1 leading-tight">
+                  Maximum width limit until which text scales up
+                </p>
               </div>
-            </div>
 
-            <div>
-              <label className="block text-xs font-semibold text-white mb-1.5 flex items-center justify-between">
-                <span>Desktop Size</span>
-                <Type className="w-3.5 h-3.5 text-zinc-400" />
-              </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  step="0.1"
-                  value={desktopFont}
-                  onChange={(e) => setDesktopFont(e.target.value)}
-                  className="mono w-full bg-zinc-950 border border-zinc-700 focus:border-zinc-400 rounded-xl px-3.5 py-2.5 text-sm font-medium text-white focus:outline-none"
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 text-xs mono">px</span>
+              {/* 5. Figma Desktop Viewport Width */}
+              <div>
+                <label className="block text-xs font-medium text-zinc-300 mb-1 flex items-center justify-between">
+                  <span>Figma Desktop Width</span>
+                  <Laptop className="w-3 h-3 text-zinc-500" />
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    value={desktopW}
+                    onChange={(e) => setDesktopW(e.target.value)}
+                    className="mono w-full bg-black border border-zinc-800 focus:border-sky-500/80 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none transition-colors"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs mono">px</span>
+                </div>
+                <p className="text-[10px] text-zinc-500 mt-1 leading-tight">
+                  Figma desktop design frame/canvas width (e.g. 1440px)
+                </p>
               </div>
-            </div>
 
-            <div>
-              <label className="block text-xs font-medium text-zinc-400 mb-1.5 flex items-center justify-between">
-                <span>Desktop Viewport</span>
-                <Laptop className="w-3 h-3 text-zinc-600" />
-              </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  value={desktopW}
-                  onChange={(e) => setDesktopW(e.target.value)}
-                  className="mono w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none"
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs mono">px</span>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-zinc-400 mb-1.5 flex items-center justify-between">
-                <span>Max Viewport</span>
-                <Monitor className="w-3 h-3 text-zinc-600" />
-              </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  value={maxW}
-                  onChange={(e) => setMaxW(e.target.value)}
-                  className="mono w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-500 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none"
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs mono">px</span>
+              {/* 6. Figma Desktop Font Size */}
+              <div>
+                <label className="block text-xs font-semibold text-sky-400 mb-1 flex items-center justify-between">
+                  <span>Desktop Font Size</span>
+                  <Type className="w-3 h-3 text-sky-400" />
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={desktopFont}
+                    onChange={(e) => setDesktopFont(e.target.value)}
+                    className="mono w-full bg-black border border-sky-500/40 focus:border-sky-400 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-white focus:outline-none transition-colors"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sky-400 text-xs mono font-semibold">px</span>
+                </div>
+                <p className="text-[10px] text-sky-400/80 mt-1 leading-tight">
+                  Font size set in Figma desktop design frame
+                </p>
               </div>
             </div>
           </div>
