@@ -568,71 +568,110 @@ export default function FluidBoxTool() {
           />
 
           {/* Color Legend Bar */}
-          <div className="flex items-center justify-between text-[11px] font-mono bg-zinc-950 border border-zinc-800/80 px-4 py-2 rounded-xl">
-            <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between text-[11px] font-mono bg-zinc-950 border border-zinc-800/80 px-4 py-3 rounded-xl gap-2 shadow-inner">
+            <div className="flex flex-wrap items-center gap-4">
               <span className="flex items-center gap-1.5 text-emerald-400">
-                <span className="w-3 h-3 rounded bg-emerald-500/30 border border-emerald-500/60 inline-block"></span>
-                Green: Side Padding ({currentSidePx}px each)
+                <span className="w-3 h-3 rounded-sm bg-emerald-500/20 border border-emerald-500/50 inline-block"></span>
+                Padding (X: {currentSidePx}px, Y: {includeVPad ? currentVPx : 0}px)
               </span>
               <span className="flex items-center gap-1.5 text-indigo-300">
-                <span className="w-3 h-3 rounded bg-indigo-500/30 border border-indigo-500/60 inline-block"></span>
-                Indigo: Container Area ({actualContainerW}px)
+                <span className="w-3 h-3 rounded-sm bg-indigo-500/20 border border-indigo-500/50 inline-block"></span>
+                Container Bounds ({actualContainerW}px)
               </span>
             </div>
-            <span className="text-zinc-500">
+            <span className="text-zinc-500 flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded-sm bg-indigo-500/10 border border-indigo-400/30 inline-block"></span>
               Inner Content Width: <strong className="text-white">{innerContentWidth}px</strong>
             </span>
           </div>
 
           {/* FULL WIDTH SIMULATION CANVAS */}
-          <div className="w-full bg-zinc-950 border border-zinc-800 rounded-2xl p-4 sm:p-6 min-h-[220px] flex flex-col justify-center relative overflow-hidden">
-            <div className="text-[10px] uppercase tracking-widest text-zinc-500 font-mono mb-3 flex items-center justify-between">
-              <span>Simulated Viewport Canvas ({simWidth}px Total Width)</span>
-              <span>{deviceTag}</span>
+          <div className="w-full bg-zinc-950 border border-zinc-800 rounded-2xl p-4 sm:p-6 min-h-[300px] flex flex-col justify-center relative overflow-hidden shadow-2xl">
+            {/* Geometric Background Pattern */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'linear-gradient(zinc-500 1px, transparent 1px), linear-gradient(90deg, zinc-500 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
+            
+            <div className="text-[10px] uppercase tracking-widest text-zinc-500 font-mono mb-4 flex items-center justify-between relative z-10">
+              <span className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse"></div>
+                Simulated Viewport Canvas ({simWidth}px)
+              </span>
+              <span className="bg-zinc-900 px-2 py-1 rounded border border-zinc-800 text-amber-400/80">{deviceTag}</span>
             </div>
 
-            {/* Screen Frame Box */}
-            <div className="w-full bg-black border border-zinc-800 rounded-xl p-3 sm:p-5 flex justify-center relative shadow-2xl">
-              {/* Scaled Container Box */}
+            {/* Screen Frame Box (The Browser Window) */}
+            <div className="w-full bg-black/80 border border-zinc-700/50 rounded-xl p-4 sm:p-8 flex justify-center relative shadow-[inset_0_0_40px_rgba(0,0,0,0.8)] backdrop-blur-sm z-10 my-4">
+              
+              {/* Scaled Container Box (Futuristic Dashed Border) */}
               <div
-                className="transition-all duration-150 flex items-center justify-between rounded-xl overflow-hidden border border-indigo-500/40 bg-indigo-950/40 p-1.5 shadow-lg"
+                className="transition-all duration-300 flex flex-col items-center justify-center rounded border border-dashed border-indigo-500/60 bg-indigo-950/20 relative shadow-[0_0_20px_rgba(99,102,241,0.05)]"
                 style={{
                   width: `${containerPct}%`,
                 }}
               >
-                {/* Left Side Padding Block (Green) */}
-                <div
-                  className="bg-emerald-500/20 border border-emerald-500/50 rounded-lg p-3 text-center shrink-0 transition-all flex items-center justify-center"
-                  style={{ width: `${Math.max(48, currentSidePx)}px` }}
-                  title={`Left Side Padding: ${currentSidePx}px`}
-                >
-                  <span className="text-[10px] font-mono text-emerald-300 font-bold rotate-0 sm:rotate-0 truncate">
-                    {currentSidePx}px
-                  </span>
+                {/* Top Padding Block (Green) */}
+                {includeVPad && currentVPx > 0 && (
+                  <div
+                    className="w-full bg-emerald-500/10 border-b border-emerald-500/40 flex items-center justify-center overflow-hidden transition-all duration-300"
+                    style={{ height: `${Math.max(24, currentVPx)}px` }}
+                  >
+                    <span className="text-[9px] font-mono text-emerald-400/80 uppercase tracking-widest">Top: {currentVPx}px</span>
+                  </div>
+                )}
+
+                {/* Middle Row (Left Pad + Content + Right Pad) */}
+                <div className="flex w-full items-stretch flex-1 min-h-[100px]">
+                  {/* Left Side Padding Block (Green) */}
+                  <div
+                    className="bg-emerald-500/10 border-r border-emerald-500/40 flex items-center justify-center shrink-0 transition-all duration-300 overflow-hidden relative group"
+                    style={{ width: `${Math.max(30, currentSidePx)}px` }}
+                  >
+                    <span className="text-[9px] font-mono text-emerald-400/80 rotate-[-90deg] sm:rotate-0 whitespace-nowrap absolute">
+                      {currentSidePx}px
+                    </span>
+                  </div>
+
+                  {/* Center Fluid Content Area (Indigo) */}
+                  <div className="flex-1 bg-indigo-500/10 border border-indigo-400/20 m-1 rounded-sm flex flex-col items-center justify-center p-2 relative overflow-hidden backdrop-blur-md">
+                    {/* Inner minimal grid lines */}
+                    <div className="absolute inset-0 border border-indigo-500/10 m-1 rounded-sm pointer-events-none"></div>
+                    
+                    <span className="text-[10px] sm:text-xs font-bold text-indigo-200 z-10 tracking-[0.2em] uppercase">Content Area</span>
+                    <span className="text-[10px] text-indigo-300/80 z-10 font-mono mt-1.5 bg-indigo-950/50 px-2 py-0.5 rounded border border-indigo-500/20">
+                      W: {innerContentWidth}px
+                    </span>
+                  </div>
+
+                  {/* Right Side Padding Block (Green) */}
+                  <div
+                    className="bg-emerald-500/10 border-l border-emerald-500/40 flex items-center justify-center shrink-0 transition-all duration-300 overflow-hidden relative group"
+                    style={{ width: `${Math.max(30, currentSidePx)}px` }}
+                  >
+                    <span className="text-[9px] font-mono text-emerald-400/80 rotate-[90deg] sm:rotate-0 whitespace-nowrap absolute">
+                      {currentSidePx}px
+                    </span>
+                  </div>
                 </div>
 
-                {/* Center Fluid Content Area (Indigo) */}
-                <div className="flex-1 px-3 py-4 text-center font-mono space-y-1 overflow-hidden">
-                  <div className="text-xs font-bold text-white tracking-tight">
-                    Fluid Content Area ({innerContentWidth}px)
+                {/* Bottom Padding Block (Green) */}
+                {includeVPad && currentVPx > 0 && (
+                  <div
+                    className="w-full bg-emerald-500/10 border-t border-emerald-500/40 flex items-center justify-center overflow-hidden transition-all duration-300"
+                    style={{ height: `${Math.max(24, currentVPx)}px` }}
+                  >
+                    <span className="text-[9px] font-mono text-emerald-400/80 uppercase tracking-widest">Btm: {currentVPx}px</span>
                   </div>
-                  <div className="text-[10px] text-indigo-300/80 truncate">
-                    Max Bound: {pcContainerPx}px • Current Width: {actualContainerW}px
-                  </div>
-                </div>
+                )}
 
-                {/* Right Side Padding Block (Green) */}
-                <div
-                  className="bg-emerald-500/20 border border-emerald-500/50 rounded-lg p-3 text-center shrink-0 transition-all flex items-center justify-center"
-                  style={{ width: `${Math.max(48, currentSidePx)}px` }}
-                  title={`Right Side Padding: ${currentSidePx}px`}
-                >
-                  <span className="text-[10px] font-mono text-emerald-300 font-bold rotate-0 sm:rotate-0 truncate">
-                    {currentSidePx}px
-                  </span>
+                {/* Container Boundary Tag */}
+                <div className="absolute -bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap z-20">
+                  <div className="text-[9px] font-mono text-indigo-300 bg-black/90 px-2.5 py-1 border border-indigo-500/40 rounded-full shadow-lg flex items-center gap-1.5">
+                    <Layers className="w-2.5 h-2.5 text-indigo-400" />
+                    Container: {actualContainerW}px
+                  </div>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
 
@@ -808,7 +847,7 @@ export default function FluidBoxTool() {
                 <span>Include Vertical Padding</span>
               </label>
             </div>
-            <pre className="mono bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-xs sm:text-sm leading-relaxed overflow-x-auto min-h-[96px] text-zinc-200 select-all whitespace-pre-wrap mb-3">
+            <pre className="mono bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-xs sm:text-sm leading-relaxed overflow-x-auto min-h-[96px] text-zinc-200 selection:bg-zinc-700/50 selection:text-white whitespace-pre-wrap mb-3">
               <code>{generatedCode}</code>
             </pre>
             <button
