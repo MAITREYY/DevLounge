@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 import ScrollToTop from "./components/common/ScrollToTop";
+import QuickToolsSidebar from "./components/common/QuickToolsSidebar";
 import Dashboard from "./components/Dashboard";
 import FluidClampTool from "./components/tools/FluidClampTool";
 import FluidBoxTool from "./components/tools/FluidBoxTool";
@@ -18,6 +19,9 @@ export default function App() {
     <div className="min-h-screen flex flex-col bg-black text-zinc-100 selection:bg-zinc-800 selection:text-white relative">
       {/* Scroll to Top helper on route change */}
       <ScrollToTop />
+
+      {/* Floating Quick Tools Sidebar Switcher on right edge */}
+      <QuickToolsSidebar />
 
       {/* Subtle Ambient Glow */}
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-64 bg-zinc-800/15 blur-[140px] pointer-events-none rounded-full"></div>

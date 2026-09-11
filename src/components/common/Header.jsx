@@ -12,6 +12,7 @@ export default function Header() {
   const isVideo = location.pathname === '/fluidvideo' || location.pathname === '/video-converter';
   const isCodeVault = location.pathname === '/fluidcodevault' || location.pathname === '/code-vault';
   const isTailwind = location.pathname === '/fluidtailwind' || location.pathname === '/tailwind-extractor';
+  const isFont = location.pathname === '/fluidfont' || location.pathname === '/font-converter' || location.pathname === '/font-subsetter';
 
   return (
     <nav className="border-b border-zinc-800/60 bg-black/90 backdrop-blur-md sticky top-0 z-50">
@@ -33,16 +34,34 @@ export default function Header() {
               <ShieldCheck className="w-4 h-4 text-white" />
             ) : isTailwind ? (
               <Zap className="w-4 h-4 text-white" />
+            ) : isFont ? (
+              <Type className="w-4 h-4 text-white" />
             ) : (
               <Layers className="w-4 h-4 text-white" />
             )}
           </div>
           <div className="flex items-baseline gap-2">
             <span className="font-semibold text-base tracking-tight text-white group-hover:text-zinc-200 transition-colors">
-              {isSvg ? 'Fluid SVG' : isClamp ? 'Fluid Clamp' : isBox ? 'Fluid Box' : isImage ? 'Image Converter' : isVideo ? 'Video Converter' : isCodeVault ? 'Code Vault' : isTailwind ? 'Tailwind Extractor' : 'DevLounge'}
+              {isSvg
+                ? 'Fluid SVG'
+                : isClamp
+                ? 'Fluid Clamp'
+                : isBox
+                ? 'Fluid Box'
+                : isImage
+                ? 'Image Converter'
+                : isVideo
+                ? 'Video Converter'
+                : isCodeVault
+                ? 'Code Vault'
+                : isTailwind
+                ? 'Tailwind Extractor'
+                : isFont
+                ? 'Fluid Font Studio'
+                : 'DevLounge'}
             </span>
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 mono tracking-wider">
-              {isCodeVault ? 'WIP' : isClamp ? 'v1.2' : 'v1.0'}
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 mono tracking-wider font-semibold">
+              {isCodeVault || isTailwind || isFont ? 'BETA' : isClamp ? 'v1.2' : 'v1.0'}
             </span>
           </div>
         </Link>
