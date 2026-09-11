@@ -535,14 +535,19 @@ export default function FluidClampTool() {
           />
 
           <div
-            className="border border-zinc-800 rounded-xl h-36 flex items-center justify-center overflow-hidden p-6 relative group transition-colors"
-            style={{ backgroundColor: bgColor, color: textColor }}
+            className="border border-zinc-800 rounded-xl flex items-center justify-center overflow-hidden p-6 relative group transition-all duration-200"
+            style={{
+              backgroundColor: bgColor,
+              color: textColor,
+              minHeight: `${Math.min(260, Math.max(140, currentFontPx * 2.2))}px`,
+              maxHeight: '260px',
+            }}
           >
             <div className="absolute top-3 left-3 text-[10px] uppercase tracking-widest opacity-60 font-mono">
               Simulated Viewport Output
             </div>
             <span
-              className="font-semibold text-center tracking-tight leading-tight transition-all duration-75 px-4 select-none"
+              className="font-semibold text-center tracking-tight leading-tight transition-all duration-75 px-4 select-none break-words max-w-full"
               style={{ fontSize: `${currentFontPx}px` }}
             >
               Scales smoothly across viewports
