@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useCallback } from 'react';
 import { triggerCopyConfetti } from '../../utils/helpers';
 import {
   Upload,
@@ -144,6 +144,7 @@ export default function FluidImageTool() {
         id,
         file,
         name: file.name,
+        customName: '',
         origSize: file.size,
         previewUrl,
         compBlob: null,
@@ -223,15 +224,25 @@ export default function FluidImageTool() {
     setSelectedFileId(null);
   };
 
+  // Update custom name for a file
+  const handleCustomNameChange = useCallback((id, value) => {
+    setFiles((prev) => prev.map((f) => f.id === id ? { ...f, customName: value } : f));
+  }, []);
+
   // Download Single Converted File
   const handleDownloadSingle = (item) => {
     if (!item || !item.compUrl) return;
     const ext = FORMAT_OPTIONS.find((f) => f.value === format)?.ext || 'webp';
     const nameWithoutExt = item.name.replace(/\.[^/.]+$/, '');
 
+    // Use custom name if provided, otherwise default to originalName_converted
+    const downloadName = item.customName && item.customName.trim()
+      ? `${item.customName.trim()}.${ext}`
+      : `${nameWithoutExt}_converted.${ext}`;
+
     const link = document.createElement('a');
     link.href = item.compUrl;
-    link.download = `${nameWithoutExt}_converted.${ext}`;
+    link.download = downloadName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -396,6 +407,18 @@ export default function FluidImageTool() {
                 <div className="space-y-2">
                   <div className="h-52 bg-zinc-950 rounded-xl border border-zinc-900 flex items-center justify-center overflow-hidden">
                     <img src={activeFile.previewUrl} alt="Original" className="max-h-full max-w-full object-contain" />
+                  </div>
+
+                  {/* Optional Custom Download Name */}
+                  <div className="flex items-center gap-2 px-3 py-2 bg-zinc-950 rounded-xl border border-zinc-900">
+                    <span className="text-[11px] font-mono text-zinc-500 whitespace-nowrap">Name:</span>
+                    <input
+                      type="text"
+                      value={activeFile.customName}
+                      onChange={(e) => handleCustomNameChange(activeFile.id, e.target.value)}
+                      placeholder={activeFile.name.replace(/\.[^/.]+$/, '') + '_converted'}
+                      className="flex-1 bg-transparent text-xs text-white font-mono outline-none placeholder:text-zinc-600 border-none"
+                    />
                   </div>
 
                   <div className="flex items-center justify-between text-xs font-mono px-3.5 py-2.5 bg-zinc-950 rounded-xl border border-zinc-900 text-zinc-400">
