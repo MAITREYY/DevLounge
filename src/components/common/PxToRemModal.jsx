@@ -5,12 +5,46 @@ import {
   Copy,
   Check,
   Calculator,
-  ArrowRight,
   Code2,
   Zap,
   Box,
   RotateCcw,
+  AlertTriangle,
+  Type,
 } from "lucide-react";
+
+// Helper to compute Tailwind step & text class from PX font size
+const getTailwindInfo = (pxVal) => {
+  const num = parseFloat(pxVal);
+  if (isNaN(num) || num <= 0) return { val: "text-0", isExact: true, closest: "0", twClass: "text-0" };
+
+  const exactRatio = num / 4;
+  const standardSteps = [
+    0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 72, 80, 96
+  ];
+
+  const isExact = standardSteps.includes(exactRatio);
+
+  let closest = standardSteps[0];
+  let minDiff = Math.abs(exactRatio - closest);
+  for (let i = 1; i < standardSteps.length; i++) {
+    const diff = Math.abs(exactRatio - standardSteps[i]);
+    if (diff < minDiff) {
+      minDiff = diff;
+      closest = standardSteps[i];
+    }
+  }
+
+  const twClass = isExact ? `text-${exactRatio}` : `text-${closest}`;
+
+  return {
+    exactRatio,
+    isExact,
+    closest,
+    valToCopy: twClass,
+    twClass,
+  };
+};
 
 export default function PxToRemModal({ isOpen, onClose, initialPx = "16" }) {
   const [pxValue, setPxValue] = useState(initialPx);
@@ -19,11 +53,19 @@ export default function PxToRemModal({ isOpen, onClose, initialPx = "16" }) {
 
   useEffect(() => {
     if (initialPx) {
-      setPxValue(initialPx);
+      // Clean up initial px
+      const cleaned = initialPx.toString().replace(/[^0-9.]/g, "");
+      setPxValue(cleaned || "16");
     }
   }, [initialPx]);
 
   if (!isOpen) return null;
+
+  // Sanitizer for typing or pasting from Figma (e.g., "16px", "font-size: 16px;")
+  const handlePxChange = (rawVal) => {
+    const cleaned = rawVal.replace(/[^0-9.]/g, "");
+    setPxValue(cleaned);
+  };
 
   // Calculation
   const numPx = parseFloat(pxValue);
@@ -32,17 +74,23 @@ export default function PxToRemModal({ isOpen, onClose, initialPx = "16" }) {
       ? 0
       : parseFloat((numPx / (basePx || 16)).toFixed(4));
   const remString = `${remNumber}rem`;
+  const tailwindInfo = getTailwindInfo(numPx);
 
   const handleCopy = (type) => {
-    // Only copy the number + rem string e.g. "12rem" or "28rem"
-    navigator.clipboard.writeText(remString);
+    let textToCopy = remString;
+
+    if (type === "tailwind") {
+      textToCopy = tailwindInfo.valToCopy;
+    }
+
+    navigator.clipboard.writeText(textToCopy);
     setCopiedBtn(type);
     setTimeout(() => {
       setCopiedBtn(null);
     }, 1800);
   };
 
-  const quickPresets = [8, 12, 14, 16, 20, 24, 28, 32, 44, 48, 64, 96, 192, 448];
+  const quickPresets = [8, 12, 14, 16, 18, 20, 24, 28, 32, 36, 44, 48, 64, 96];
 
   const modalContent = (
     <div className="fixed inset-0 z-[100000] flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fadeIn font-sans">
@@ -54,17 +102,17 @@ export default function PxToRemModal({ isOpen, onClose, initialPx = "16" }) {
         <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-800/80 bg-zinc-900/60">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400">
-              <Calculator className="w-4 h-4" />
+              <Type className="w-4 h-4" />
             </div>
             <div>
               <h3 className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
                 PX ➔ REM Tool
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-300 font-semibold">
-                  Quick Converter
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-300 font-semibold uppercase">
+                  Text Sizing Only
                 </span>
               </h3>
               <p className="text-[11px] text-zinc-400">
-                Convert pixels to REM & copy for CSS, Tailwind & Bootstrap
+                Convert pixel font sizes to REM specifically for text sizing (<code className="text-amber-400/90 font-mono">font-size</code>)
               </p>
             </div>
           </div>
@@ -110,17 +158,17 @@ export default function PxToRemModal({ isOpen, onClose, initialPx = "16" }) {
 
           {/* Inputs Section */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {/* Input 1: PX Value */}
+            {/* Input 1: Text PX Value */}
             <div className="space-y-1.5">
               <label className="block text-xs font-semibold text-zinc-300">
-                Input PX
+                Text PX Input (from Figma)
               </label>
               <div className="relative">
                 <input
-                  type="number"
+                  type="text"
                   value={pxValue}
-                  onChange={(e) => setPxValue(e.target.value)}
-                  placeholder="e.g. 16, 28, 448"
+                  onChange={(e) => handlePxChange(e.target.value)}
+                  placeholder="e.g. 16, 24, 28"
                   className="w-full bg-black border border-zinc-800 focus:border-amber-500/60 focus:ring-1 focus:ring-amber-500/50 rounded-xl px-3 py-2 text-sm text-white font-mono placeholder-zinc-600 focus:outline-none transition-all"
                   autoFocus
                 />
@@ -133,18 +181,15 @@ export default function PxToRemModal({ isOpen, onClose, initialPx = "16" }) {
             {/* Input 2: Calculated REM Result */}
             <div className="space-y-1.5">
               <label className="block text-xs font-semibold text-zinc-300">
-                Calculated Result
+                Calculated Text REM
               </label>
               <div className="relative">
                 <input
                   type="text"
                   readOnly
                   value={remString}
-                  className="w-full bg-zinc-900/90 border border-amber-500/40 rounded-xl px-3 py-2 text-sm font-mono text-amber-400 font-bold focus:outline-none"
+                  className="w-full bg-zinc-900/90 border border-amber-500/40 rounded-xl px-3 py-2 text-sm font-mono text-amber-400 font-bold focus:outline-none select-all"
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-mono text-amber-400/70 font-semibold pointer-events-none">
-                  rem
-                </span>
               </div>
             </div>
           </div>
@@ -152,7 +197,7 @@ export default function PxToRemModal({ isOpen, onClose, initialPx = "16" }) {
           {/* Quick Presets */}
           <div>
             <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider block mb-1.5">
-              Quick Presets (px):
+              Text Font Presets (px):
             </span>
             <div className="flex flex-wrap gap-1.5">
               {quickPresets.map((preset) => (
@@ -171,17 +216,17 @@ export default function PxToRemModal({ isOpen, onClose, initialPx = "16" }) {
             </div>
           </div>
 
-          {/* Divider */}
-          <div className="border-t border-zinc-800/80 pt-4">
-            <span className="text-xs font-bold text-zinc-300 block mb-2.5 flex items-center justify-between">
-              <span>Copy REM Output</span>
+          {/* Divider & Copy Actions */}
+          <div className="border-t border-zinc-800/80 pt-4 space-y-3">
+            <span className="text-xs font-bold text-zinc-300 block flex items-center justify-between">
+              <span>Copy Text Size</span>
               <span className="text-[10px] font-normal font-mono text-zinc-500">
-                Copies exact rem string (e.g. {remString})
+                Copies exact value cleanly (e.g. {remString})
               </span>
             </span>
 
-            {/* 3 Copy Buttons */}
-            <div className="grid grid-cols-3 gap-2">
+            {/* 2 Copy Buttons (CSS & Tailwind) */}
+            <div className="grid grid-cols-2 gap-3">
               {/* 1. Custom CSS */}
               <button
                 onClick={() => handleCopy("css")}
@@ -202,10 +247,7 @@ export default function PxToRemModal({ isOpen, onClose, initialPx = "16" }) {
                       <span className="text-emerald-400 font-bold">Copied!</span>
                     </>
                   ) : (
-                    <>
-                      <Copy className="w-3 h-3 text-zinc-500 group-hover:text-zinc-300" />
-                      <span className="text-zinc-400">{remString}</span>
-                    </>
+                    <span className="text-zinc-400">{remString}</span>
                   )}
                 </div>
               </button>
@@ -230,42 +272,27 @@ export default function PxToRemModal({ isOpen, onClose, initialPx = "16" }) {
                       <span className="text-sky-400 font-bold">Copied!</span>
                     </>
                   ) : (
-                    <>
-                      <Copy className="w-3 h-3 text-zinc-500 group-hover:text-zinc-300" />
-                      <span className="text-zinc-400">{remString}</span>
-                    </>
-                  )}
-                </div>
-              </button>
-
-              {/* 3. Bootstrap */}
-              <button
-                onClick={() => handleCopy("bootstrap")}
-                className={`flex flex-col items-center justify-center p-3 rounded-xl border transition-all duration-200 group ${
-                  copiedBtn === "bootstrap"
-                    ? "bg-purple-500/20 border-purple-500/60 text-purple-300"
-                    : "bg-zinc-900 hover:bg-zinc-800/90 border-zinc-800 hover:border-zinc-700 text-zinc-300 hover:text-white"
-                }`}
-              >
-                <div className="flex items-center gap-1.5 mb-1">
-                  <Box className="w-3.5 h-3.5 text-purple-400" />
-                  <span className="text-xs font-bold">Bootstrap</span>
-                </div>
-                <div className="flex items-center gap-1 text-[11px] font-mono">
-                  {copiedBtn === "bootstrap" ? (
-                    <>
-                      <Check className="w-3.5 h-3.5 text-purple-400" />
-                      <span className="text-purple-400 font-bold">Copied!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3 h-3 text-zinc-500 group-hover:text-zinc-300" />
-                      <span className="text-zinc-400">{remString}</span>
-                    </>
+                    <span className="text-zinc-400">{tailwindInfo.valToCopy}</span>
                   )}
                 </div>
               </button>
             </div>
+
+            {/* Non-Standard Tailwind Warning Box */}
+            {!tailwindInfo.isExact && !isNaN(numPx) && numPx > 0 && (
+              <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 text-xs text-amber-300 space-y-1">
+                <div className="flex items-center gap-1.5 font-bold text-amber-200">
+                  <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+                  <span>Tailwind Scale Non-Standard Value Warning</span>
+                </div>
+                <p className="leading-relaxed text-amber-200/90 text-[11px]">
+                  <strong>{pxValue}px</strong> ({remString}) does not map to an exact standard step on Tailwind's default spacing scale (approx step <strong>{tailwindInfo.exactRatio}</strong>). Clicking Tailwind will copy the closest standard step: <strong>{tailwindInfo.closest}</strong> ({tailwindInfo.closest * 4}px).
+                </p>
+                <p className="text-[10px] text-amber-400/80 font-medium pt-0.5">
+                  💡 <em>Tip: For custom fluid font scaling without losing exact Figma precision, try the <strong>Fluid Clamp Generator</strong> tool.</em>
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -274,3 +301,4 @@ export default function PxToRemModal({ isOpen, onClose, initialPx = "16" }) {
 
   return ReactDOM.createPortal(modalContent, document.body);
 }
+

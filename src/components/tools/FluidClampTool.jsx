@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { triggerCopyConfetti, getContrastRatio } from '../../utils/helpers';
-import { Type, Sparkles, Sliders, Eye, Check, Copy, RotateCcw, ShieldCheck, Heading, AlignLeft, CheckCircle2, AlertTriangle, XCircle, Monitor, Smartphone, Tablet, Laptop, ChevronRight, ChevronLeft, Palette } from 'lucide-react';
+import { Type, Sparkles, Sliders, Eye, Check, Copy, RotateCcw, ShieldCheck, Heading, AlignLeft, CheckCircle2, AlertTriangle, XCircle, Monitor, Smartphone, Tablet, Laptop, ChevronRight, ChevronLeft, Palette, Save, Trash2, BookmarkCheck } from 'lucide-react';
 
 export default function FluidClampTool() {
   // Input Parameters State
@@ -12,6 +12,54 @@ export default function FluidClampTool() {
   const [desktopW, setDesktopW] = useState(1440);
   const [maxW, setMaxW] = useState(1920);
 
+  // Saved Viewport Profile State (Figma Canvas Details)
+  const [savedProfile, setSavedProfile] = useState(null);
+  const [profileNotice, setProfileNotice] = useState(null);
+
+  // On mount, load saved viewport profile from localStorage if present
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('fluid_clamp_viewport_profile');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed.minW && parsed.mobileW && parsed.desktopW && parsed.maxW) {
+          setMinW(parsed.minW);
+          setMobileW(parsed.mobileW);
+          setDesktopW(parsed.desktopW);
+          setMaxW(parsed.maxW);
+          setSavedProfile(parsed);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to load saved viewport profile", err);
+    }
+  }, []);
+
+  const handleSaveViewportProfile = () => {
+    const profileData = {
+      minW: parseFloat(minW) || 320,
+      mobileW: parseFloat(mobileW) || 440,
+      desktopW: parseFloat(desktopW) || 1440,
+      maxW: parseFloat(maxW) || 1920,
+      updatedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+    localStorage.setItem('fluid_clamp_viewport_profile', JSON.stringify(profileData));
+    setSavedProfile(profileData);
+    setProfileNotice('Canvas viewport parameters saved locally for this Figma project!');
+    setTimeout(() => setProfileNotice(null), 3000);
+  };
+
+  const handleClearViewportProfile = () => {
+    localStorage.removeItem('fluid_clamp_viewport_profile');
+    setSavedProfile(null);
+    setMinW(320);
+    setMobileW(440);
+    setDesktopW(1440);
+    setMaxW(1920);
+    setProfileNotice('Saved viewport details removed! Reset to standard default screen bounds.');
+    setTimeout(() => setProfileNotice(null), 3000);
+  };
+
   // Live Simulator & Options
   const [previewSlider, setPreviewSlider] = useState(440);
   const [activeTab, setActiveTab] = useState('css');
@@ -21,6 +69,7 @@ export default function FluidClampTool() {
   // WCAG Color Contrast Audit State
   const [textColor, setTextColor] = useState('#ffffff');
   const [bgColor, setBgColor] = useState('#000000');
+
 
   // Helper
   const round = (n, d = 4) => {
@@ -357,6 +406,60 @@ export default function FluidClampTool() {
       <div className="bg-black border border-zinc-800 rounded-2xl p-6 sm:p-8 space-y-8 shadow-xl">
         {/* Viewport & Font Parameters Input Grid */}
         <div className="space-y-6">
+          {/* Saved Figma Canvas Viewport Profile Persistence Card */}
+          <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-4 space-y-3 font-sans">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400">
+                  <BookmarkCheck className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-white flex items-center gap-2">
+                    Figma Viewport Canvas Profile
+                    {savedProfile && (
+                      <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono font-bold uppercase border border-emerald-500/30">
+                        Saved Locally
+                      </span>
+                    )}
+                  </h4>
+                  <p className="text-[11px] text-zinc-400 mt-0.5">
+                    {savedProfile
+                      ? `Saved 4 canvas details for this project: Mobile (${mobileW}px) • Desktop (${desktopW}px) • Min (${minW}px) • Max (${maxW}px)`
+                      : "Save your 4 Figma canvas viewport widths (Min, Mobile, Desktop, Max) so you don't lose accuracy when testing text sizes."}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  onClick={handleSaveViewportProfile}
+                  className="px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 text-xs font-semibold transition-all flex items-center gap-1.5"
+                  title="Save current 4 viewport parameters locally for this Figma project"
+                >
+                  <Save className="w-3.5 h-3.5" />
+                  <span>{savedProfile ? "Update Saved Canvas" : "Save Canvas Details"}</span>
+                </button>
+
+                {savedProfile && (
+                  <button
+                    onClick={handleClearViewportProfile}
+                    className="px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-300 text-xs font-semibold transition-all flex items-center gap-1.5"
+                    title="Click here to remove saved viewport profile for this Figma project"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    <span>Remove Saved Profile</span>
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {profileNotice && (
+              <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/30 text-[11px] font-mono text-amber-300 flex items-center justify-between">
+                <span>{profileNotice}</span>
+              </div>
+            )}
+          </div>
+
           <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
             <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
               <Sliders className="w-3.5 h-3.5 text-amber-400" /> Viewport & Font Parameters (Figma Design Sync)
